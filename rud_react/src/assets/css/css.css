@@ -1,0 +1,13 @@
+
+
+/* table.css */
+.custom-table th,
+.custom-table td {
+    border: 1px solid #dee2e6; /* 테두리 색상 */
+    text-align: center; /* 중앙 정렬 */
+}
+
+.custom-table th[colspan="3"],
+.custom-table th[colspan="3"] + th {
+    border-left: 1px solid #dee2e6; /* '현재'와 '리밸런싱' 사이의 선 */
+}

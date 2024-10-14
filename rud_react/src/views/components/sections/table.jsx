@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Table } from 'reactstrap';
+import '../../../assets/css/css.css'; // CSS 파일 경로에 맞게 수정
 
 // 더미 데이터 정의
 const dummyData = [
@@ -17,8 +18,6 @@ const PageTable = () => {
                 <Container>
                     <Row className="justify-content-center">
                         <Col md="7" className="text-center">
-                            <h1 className="title font-bold">Table</h1>
-                            <h6 className="subtitle"></h6>
                         </Col>
                     </Row>
                 </Container>
@@ -27,14 +26,25 @@ const PageTable = () => {
                 <Row>
                     <Col md="12">
                         <div className="table-responsive">
-                            <Table>
+                            <Table className="custom-table">
                                 <thead>
                                     <tr>
                                         <th>종목명</th>
                                         <th>주가</th>
+                                        <th colSpan="3" style={{ textAlign: 'center' }}>현재</th>
+                                        <th></th>
+                                        <th colSpan="3" style={{ textAlign: 'center' }}>리밸런싱</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
                                         <th>수량</th>
-                                        <th>현재 잔고</th>
+                                        <th>잔고</th>
                                         <th>비중</th>
+                                        <th>희망비중</th>
+                                        <th>희망투자금</th>
+                                        <th>희망수량</th>
+                                        <th>수량조절</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,6 +55,10 @@ const PageTable = () => {
                                             <td>{item.quantity}</td>
                                             <td>{item.balance}</td>
                                             <td>{item.ratio}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     ))}
                                 </tbody>
