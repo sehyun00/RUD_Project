@@ -40,6 +40,7 @@ const Components = () => {
             <div className="page-wrapper">
                 <div className="container-fluid">
                     <PageTable />
+                    <Labels />
                 </div>
             </div>
         </div>
