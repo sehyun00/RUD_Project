@@ -21,11 +21,11 @@ const PageTable = () => {
                             <Table>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
+                                        <th>종목명</th>
+                                        <th>주가</th>
+                                        <th>수량</th>
+                                        <th>현재 잔고</th>
+                                        <th>비중</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,39 +37,11 @@ const PageTable = () => {
                                         <td><span className="label label-danger">admin</span> </td>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
-                                        <td>Deshmukh</td>
-                                        <td>Gaylord</td>
-                                        <td>@Ritesh</td>
-                                        <td><span className="label label-info">member</span> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Sanghani</td>
-                                        <td>Gusikowski</td>
-                                        <td>@Govinda</td>
-                                        <td><span className="label label-warning">developer</span> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Roshan</td>
-                                        <td>Rogahn</td>
-                                        <td>@Hritik</td>
-                                        <td><span className="label label-success">supporter</span> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Joshi</td>
-                                        <td>Hickle</td>
-                                        <td>@Maruti</td>
-                                        <td><span className="label label-info">member</span> </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>Nigam</td>
-                                        <td>Eichmann</td>
-                                        <td>@Sonu</td>
-                                        <td><span className="label label-success">supporter</span> </td>
+                                        <td>SCHD</td>
+                                        <td>23.56</td>
+                                        <td>23</td>
+                                        <td>541.88</td>
+                                        <td>100%</td>
                                     </tr>
                                 </tbody>
                             </Table>
