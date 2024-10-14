@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import { Container, NavbarBrand, Navbar, Nav, NavItem, NavbarToggler, Collapse } from 'reactstrap';
 
-import logo from '../../assets/images/logos/smc.png';
+import logo from '../../assets/images/logos/Qr2I2KV5H3f3BuOfHNoHLvTFkj9HWlAOCVAXdVoWtPLKvRNTtzh0sLmegSyNNfLP1RRqo4xq_hYwf5JjQjwp3Q.mp4';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +20,10 @@ const Header = () => {
                 <Container className="po-relative">
                     <Navbar className="navbar-expand-lg h6-nav-bar">
                         <NavbarBrand href="/">
+<<<<<<< HEAD
+=======
+                         <video src={logo} style={{ width: '250px', height: '250px' }} muted autoPlay loop/>
+>>>>>>> 07c3347b78f81eb06aa7bcb4abcad50de8bb15d3
                         </NavbarBrand>
                         <NavbarToggler onClick={toggle}>
                             <span className="ti-menu"></span>
