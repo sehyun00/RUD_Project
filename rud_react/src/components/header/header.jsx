@@ -20,7 +20,6 @@ const Header = () => {
                 <Container className="po-relative">
                     <Navbar className="navbar-expand-lg h6-nav-bar">
                         <NavbarBrand href="/">
-                            <img src={logo} alt="wrapkit" style={{ width: '160px', height: '50px' }} />
                         </NavbarBrand>
                         <NavbarToggler onClick={toggle}>
                             <span className="ti-menu"></span>
