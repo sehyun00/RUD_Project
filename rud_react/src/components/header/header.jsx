@@ -20,10 +20,6 @@ const Header = () => {
                 <Container className="po-relative">
                     <Navbar className="navbar-expand-lg h6-nav-bar">
                         <NavbarBrand href="/">
-<<<<<<< HEAD
-=======
-                         <video src={logo} style={{ width: '250px', height: '250px' }} muted autoPlay loop/>
->>>>>>> 07c3347b78f81eb06aa7bcb4abcad50de8bb15d3
                         </NavbarBrand>
                         <NavbarToggler onClick={toggle}>
                             <span className="ti-menu"></span>
