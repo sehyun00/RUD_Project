@@ -45,7 +45,7 @@ input[type="email"],
 input[type="password"] {
     padding: 10px;
     border: 1.5px solid #ccc;
-    border-radius: 8px; /* 코너 반경을 10으로 설정 */
+    border-radius: 8px !important; /* 코너 반경을 10으로 설정 */
     width: 100%;
     overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
 }
