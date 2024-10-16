@@ -13,13 +13,8 @@ var hist = createBrowserHistory();
 root.render(
     <HashRouter history={hist}>
         <Routes>
-            {/* <Route path="/custom-components" element={<CustomComponents />} /> */}
-            <Route path="/" element={<Components />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} /> {/* 기본 페이지를 로그인 페이지로 변경 */}
+            <Route path="/home" element={<Components />} />
         </Routes>
     </HashRouter>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
