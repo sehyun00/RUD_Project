@@ -37,6 +37,7 @@ const LoginPage = () => {
                     </div>
                     <button type="submit">로그인</button>
                 </form>
+                <a href="/signup" className="signup-link">회원 가입</a> {/* 회원 가입 링크 추가 */}
             </div>
         </div>
     );

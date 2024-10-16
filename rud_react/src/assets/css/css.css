@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    background-color: #181a20;
 }
 
 .container {
@@ -14,11 +14,11 @@ body {
 }
 
 .card {
-    width: 300px; /* 신용카드 크기 */
-    padding: 20px;
-    background-color: white;
+    width: 450px; /* 카드 크기 */
+    padding: 40px;
+    background-color: rgb(247, 251, 255);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 8px; /* 카드 모서리 둥글기 */
+    border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
 }
 
 h1 {
@@ -43,8 +43,8 @@ label {
 input[type="email"],
 input[type="password"] {
     padding: 10px;
-    border: 1.5px solid #ccc;
-    border-radius: 8px !important; /* 모든 모서리에 반경을 8로 설정 */
+    border: 1.5px solid #2b3139;
+    border-radius: 10px !important; /* squircle 효과를 위한 둥근 모서리 */
     width: 100%;
     overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
 }
@@ -52,12 +52,26 @@ input[type="password"] {
 button {
     padding: 10px;
     background-color: #007bff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     color: #fff;
     border: none;
-    border-radius: 10px; /* 버튼 모서리 둥글기 */
+    border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
     cursor: pointer;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+.signup-link {
+    display: block; /* 블록 요소로 설정하여 전체 너비 사용 */
+    margin-top: 10px; /* 버튼과의 간격 */
+    text-align: right; /* 오른쪽 정렬 */
+    color: #007bff; /* 링크 색상 */
+    font-size: 14px; /* 글씨 크기 */
+    text-decoration: none; /* 기본 밑줄 제거 */
+}
+
+.signup-link:hover {
+    text-decoration: underline; /* hover 시 밑줄 추가 */
 }
