@@ -1,5 +1,7 @@
+// table.jsx
+
 import React, { useState } from "react";
-import "../../../assets/css/css.css";
+import "../../css/components/table.css";
 import { Container, Row, Col, Table } from "reactstrap";
 
 // 더미 데이터 정의
@@ -109,6 +111,11 @@ const PageTable = () => {
   return (
     <div>
       <div className="spacer" id="table-component">
+        <Container>
+          <Row className="justify-content-center">
+            <Col md="7" className="text-center"></Col>
+          </Row>
+        </Container>
       </div>
       <Container>
         <Row>
