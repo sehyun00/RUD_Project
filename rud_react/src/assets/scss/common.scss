@@ -9,6 +9,7 @@ File: scss
 /******************* 
 Topbar
 *******************/
+
 .topbar {
     padding: 0px;
     transition: 0.2s ease-in;
@@ -21,8 +22,6 @@ Topbar
 Header 6
 *******************/
 .header6 {
-    background-color: #00a2ff; // 배경색 추가
-
     .navbar-toggler {
         color: $white;
     }
@@ -31,7 +30,6 @@ Header 6
         line-height: 80px;
     }
 }
-
 
 .h6-nav-bar {
     padding: 0px;
