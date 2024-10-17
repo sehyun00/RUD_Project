@@ -22,7 +22,7 @@ const Header = () => {
                         <source src={happyCatVideo} type="video/mp4"/>
                         Your browser does not support the video tag.
                     </video>
-                    <h3>팀명</h3>
+                    <h3>Superant</h3>
                 </div>
                 {
                     location.pathname !== '/login' && (

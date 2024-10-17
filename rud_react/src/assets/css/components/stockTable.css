@@ -1,13 +1,16 @@
 /* stockTable.css */
 
 .table-container {
-    width: 90%;
+    display: flex;
+    width: 100%;
     overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤 가능 */
-    margin-top: 20px; /* 상단 여백 추가 */
+    padding: 10% 10%;
+
 }
 
 .custom-table {
-    width: 100%;
+    width: 70%;
+    justify-content: center; /* 중앙 정렬 */
     border-collapse: collapse; /* 테두리 겹치는 것 방지 */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }

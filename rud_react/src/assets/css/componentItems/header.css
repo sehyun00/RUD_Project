@@ -1,18 +1,26 @@
 .header {
-    background-color: #0080ff; /* 배경색 */
-    padding-right: 20px; /* 상하 패딩 */
-    
+    background-color: #181a20; /* 배경색 */
+    padding: 10px 20px; /* 위 아래 패딩과 오른쪽 패딩 */
+    margin-bottom: 0;
+    color: #FFFFFF;
+    /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); 그림자 강도 및 크기 조정 */
+    position: fixed; /* 고정 위치 설정 */
+    top: 0; /* 상단 정렬 */
+    left: 0; /* 좌측 정렬 */
+    right: 0; /* 우측 정렬 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
 }
 
 .header-container {
     display: flex; /* Flexbox 사용 */
     justify-content: space-between; /* 양쪽 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
+    height: 60px; /* 고정 높이 설정 */
 }
 
 .left {
     display: flex; /* Flexbox 사용 */
-    gap: 20px; /* 요소 간 간격 */
+    gap: 10px; /* 요소 간 간격 */
 }
 
 .right {
@@ -22,8 +30,7 @@
 
 .logo-video {
     max-width: 50px; /* 최대 크기 설정 */
-    width: 100%; /* 부모 요소에 맞게 조정 */
+    width: auto; /* 비율 유지 */
     height: auto; /* 비율 유지 */
     object-fit: cover; /* 비디오 비율을 유지하며 잘라냄 */
-    margin-right: 10px; /* 팀명과의 간격 */
 }
