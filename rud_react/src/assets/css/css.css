@@ -16,14 +16,17 @@ body {
 .card {
     width: 450px; /* 카드 크기 */
     padding: 40px;
-    background-color: rgb(247, 251, 255);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* border: 1.5px solid #2b3139; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background-color: #181a20; /* 카드 배경색 변경 */
     border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
+    color: #FFFFFF; /* 카드 내 텍스트 색상 */
 }
 
 h1 {
     margin-bottom: 20px;
     text-align: center;
+    color: #FFFFFF; /* 텍스트 색상 변경 */
 }
 
 .form {
@@ -38,6 +41,7 @@ h1 {
 label {
     margin-bottom: 5px;
     font-weight: bold;
+    color: #FFFFFF; /* 텍스트 색상 변경 */
 }
 
 input[type="email"],
@@ -47,13 +51,15 @@ input[type="password"] {
     border-radius: 10px !important; /* squircle 효과를 위한 둥근 모서리 */
     width: 100%;
     overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
+    color: #FFFFFF; /* 입력 텍스트 색상 변경 */
+    background-color: #181a20; /* 입력 배경색 변경 */
 }
 
 button {
     padding: 10px;
     background-color: #007bff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    color: #fff;
+    color: #FFFFFF; /* 버튼 텍스트 색상 변경 */
     border: none;
     border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
     cursor: pointer;
