@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Login.css'; // CSS 파일을 import합니다.
+import '../css/Login.css'; // CSS 파일을 import합니다.
 
 const Login = () => {
     const [email, setEmail] = useState('');

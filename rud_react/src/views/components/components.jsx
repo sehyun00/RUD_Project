@@ -9,14 +9,13 @@ import PageTable from './sections/table.jsx';
 
 // sections for this page
 
-
 const Components = () => {
     return (
         <div id="main-wrapper">
-            <Header />
+            <Header/>
             <div className="page-wrapper">
                 <div className="container-fluid">
-                    <PageTable />
+                    <PageTable/>
                 </div>
             </div>
         </div>
@@ -24,7 +23,7 @@ const Components = () => {
 };
 
 Components.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.object
 };
 
 export default Components;
