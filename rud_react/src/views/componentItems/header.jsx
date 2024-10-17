@@ -1,0 +1,33 @@
+// feature
+import React from "react";
+import { Container } from 'reactstrap';
+
+// css
+import '../../assets/css/componentItems/header.css';
+
+// image
+import happyCatVideo from '../../assets/images/happycat.mp4'; // 비디오 파일 경로
+
+// component
+const Header = () => {
+    return (
+        <div className="header">
+            <Container className="header-container">
+                <div className="left">
+                    <video autoPlay loop muted className="logo-video">
+                        <source src={happyCatVideo} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    <h3>팀명</h3>
+                </div>
+                <div className="right">
+                    <h5>메뉴1</h5>
+                    <h5>메뉴2</h5>
+                    <h5>메뉴3</h5>
+                </div>
+            </Container>
+        </div>
+    );
+};
+
+export default Header;

@@ -1,0 +1,12 @@
+/* Home.css */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
+    justify-content: flex-start; /* 위쪽 정렬 */
+    padding: 20%; /* 여백 추가 */
+}
+
+.header {
+    margin-bottom: 20px; /* Header와 StockTable 사이 여백 */
+}
