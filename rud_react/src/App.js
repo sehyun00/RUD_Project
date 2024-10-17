@@ -8,12 +8,14 @@ import "./App.css";
 // 컴포넌트
 import Home from './views/home';
 import Login from './views/login';
+import Header from "./views/componentItems/header";
 
 // 페이지
 function App() {
     return (
         <BrowserRouter>
             <div className='App'>
+                <Header/>
                 <Routes>
                     <Route path='/home' element={<Home/>}/>
                     <Route path='/login' element={<Login/>}/>
