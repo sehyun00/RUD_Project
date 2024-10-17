@@ -1,9 +1,8 @@
 // feature
 import React, {useState} from 'react';
-import {Container, Row, Col, Table} from 'reactstrap';
 
-// css
-import '../assets/css/login.css';
+// scss
+import '../assets/css/login.scss';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

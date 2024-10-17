@@ -5,6 +5,14 @@ html, body {
     overflow: hidden; 
 }
 
+.full-screen {
+    height: 100vh; /* 전체 화면 높이를 차지하게 설정 */
+    display: flex; /* Flexbox 사용 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: center; /* 수직 중앙 정렬 */
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

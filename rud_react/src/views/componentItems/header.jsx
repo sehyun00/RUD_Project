@@ -3,8 +3,8 @@ import React from "react";
 import {Container} from 'reactstrap';
 import {useLocation} from 'react-router-dom'; // useLocation 훅 추가
 
-// css
-import '../../assets/css/componentItems/header.css';
+// scss
+import '../../assets/css/componentItems/header.scss';
 
 // image
 import happyCatVideo from '../../assets/images/happycat.mp4'; // 비디오 파일 경로

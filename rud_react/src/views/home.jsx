@@ -1,7 +1,9 @@
 // features
 import React from "react";
 import PropTypes from 'prop-types';
-import '../assets/css/home.css';
+
+// scss
+import '../assets/css/home.scss';
 
 // components
 import StockTable from "./components/stockTable";
