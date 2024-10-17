@@ -11,7 +11,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="container">
+        <div className="id_container">
             <div className="card"> {/* 로그인 박스를 감싸는 div 추가 */}
                 <h1>Welcome to Superant</h1>
                 <form onSubmit={handleSubmit} className="form">
