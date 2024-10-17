@@ -12,7 +12,7 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
+        <div className="id_container">
             <h2>로그인</h2>
             <form onSubmit={handleSubmit} className="login-form">
                 <div className="form-group">
