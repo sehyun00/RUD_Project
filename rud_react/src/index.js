@@ -1,17 +1,17 @@
 import React from 'react';
-import './assets/scss/style.scss';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Components from './views/components/components.jsx';
-import Login from './views/components/login.jsx';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
 root.render(
-    <Router>
-        <Routes>
-            <Route path="/" element={<Login />}/> {/* 기본 페이지를 로그인 페이지로 변경 */}
-            <Route path="/home" element={<Components />}/>
-        </Routes>
-    </Router>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
