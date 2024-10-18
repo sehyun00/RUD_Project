@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../assets/css/signup.scss';
+import '../assets/css/login.scss';
 
 
 const Signup = () => {
@@ -7,7 +8,6 @@ const Signup = () => {
         username: '',
         email: '',
         password: '',
-        passwordcheck: ''
     });
 
     const handleChange = (e) => {
@@ -53,15 +53,6 @@ const Signup = () => {
                         placeholder="비밀번호"
                         className="signup-input"
                         value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="passwordcheck"
-                        name="passwordcheck"
-                        placeholder="비밀번호 확인"
-                        className="signup-input"
-                        value={formData.passwordcheck}
                         onChange={handleChange}
                         required
                     />

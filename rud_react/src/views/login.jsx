@@ -1,8 +1,9 @@
-// feature
 import React, {useState} from 'react';
-
-// scss
 import '../assets/css/login.scss';
+
+// images
+import ios from '../assets/images/ios.png';
+import google from '../assets/images/logogoogle.png';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -15,30 +16,40 @@ const LoginPage = () => {
 
     return (
         <div className="id_container">
-            <div className="card">
-                <h1>Welcome to Superant</h1>
-                <form onSubmit={handleSubmit} className="form">
-                    <div className="input-group">
-                        <label htmlFor="email">e-mail</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required="required"/>
+            <div>
+                <div className="card">
+                    <h1 className="login-title">Superant</h1>
+                    <form onSubmit={handleSubmit} className="form">
+                        <div className="input-group">
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="이메일"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required="required"/>
+                        </div>
+                        <div className="input-group">
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="비밀번호"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required="required"/>
+                        </div>
+                        <button type="submit">로그인</button>
+                    </form>
+
+                    <div className="divider">
+                        <span>or</span>
                     </div>
-                    <div className="input-group">
-                        <label htmlFor="password">password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required="required"/>
+                    <div className='google-ios'>
+                        <button type="button" className='google'><img src={google}/>Continue with Google</button>
+                        <button type="button" className='apple'><img src={ios}/>Continue with Apple</button>
                     </div>
-                    <button type="submit">Log in</button>
-                </form>
-                <a href="/signup" className="signup-link">sign up</a>
+                </div>
+                <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
             </div>
         </div>
     );
