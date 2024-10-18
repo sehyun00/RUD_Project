@@ -1,0 +1,9 @@
+사용시 순서 지키셈
+가상환경 3.7 생성 후 실행
+pipenv 설치하고 pipenv 버전 3.7로 지정
+pororo 설치하고
+그다음에 opencv, mataplot 등등 설치
+근데 이제 easyocr이 설치가 안될텐데
+컴퓨터에 c++이 없어서 그럼
+그래서 visual studio 설치하고
+rustc를 설치해야 easyocr을 설치할 수 있음
