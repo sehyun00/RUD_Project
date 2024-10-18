@@ -1,10 +1,14 @@
 // feature
 import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import { Container } from 'reactstrap';
+import { Container, Table, Button } from 'reactstrap';
+
+// scss
 import '../../assets/css/components/imageUpload.scss';
 
-const ImageUpload = ({ onSave }) => { // onSave prop 추가
+const ImageUpload = ({ onSave }) => {
+
+    // function
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
 
@@ -34,16 +38,16 @@ const ImageUpload = ({ onSave }) => { // onSave prop 추가
     };
 
     const handleSaveClick = () => {
-        // 파일 저장 로직이 필요하다면 여기에 추가
         onSave(); // 부모 컴포넌트의 onSave 호출
     };
 
+    // component
     return (
         <Container className="converter-container">
             <div className="files-container">
                 <div className="files-container-box">
                     <div className="data-table-wrapper">
-                        <table className="data-table2 dt-files">
+                        <Table className="data-table2 dt-files" striped>
                             <thead>
                                 <tr>
                                     <th>번호</th>
@@ -51,29 +55,27 @@ const ImageUpload = ({ onSave }) => { // onSave prop 추가
                                     <th>작업</th>
                                 </tr>
                             </thead>
-                            <tbody className="dt-body">
+                            <tbody>
                                 {files.length === 0 ? (
                                     <tr>
                                         <td colSpan="3" className="text-center">업로드된 파일이 없습니다.</td>
                                     </tr>
                                 ) : (
                                     files.map((file, index) => (
-                                        <tr className="dt-row" key={index}>
-                                            <td className="dt-col">{index + 1}</td>
-                                            <td className="dt-col">
-                                                <span>{file.name}</span>
-                                            </td>
-                                            <td className="dt-col text-right">
-                                                <button className="btn-close" onClick={() => removeFile(index)}>X</button>
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{file.name}</td>
+                                            <td className="text-right">
+                                                <Button className="btn-close" onClick={() => removeFile(index)}>X</Button>
                                             </td>
                                         </tr>
                                     ))
                                 )}
                                 <tr>
-                                    <td colSpan="2" className="text-right">
-                                        <button className="btn btn-sm btn-light" onClick={handleAddFileClick}>
+                                    <td className="text-right">
+                                        <Button color="light" size="sm" onClick={handleAddFileClick}>
                                             파일 추가
-                                        </button>
+                                        </Button>
                                         <input 
                                             type="file" 
                                             id="pc-upload-add" 
@@ -85,14 +87,15 @@ const ImageUpload = ({ onSave }) => { // onSave prop 추가
                                             onChange={handleFileInputChange} 
                                         />
                                     </td>
+                                    <td/>
                                     <td className="text-right">
                                         {files.length > 0 && (
-                                            <button className="btn btn-primary" onClick={handleSaveClick}>저장하기</button>
+                                            <Button color="primary" onClick={handleSaveClick}>저장하기</Button>
                                         )}
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </Table>
                     </div>
                 </div>
             </div>
@@ -101,7 +104,7 @@ const ImageUpload = ({ onSave }) => { // onSave prop 추가
 };
 
 ImageUpload.propTypes = {
-    onSave: PropTypes.func.isRequired, // prop 타입 정의
+    onSave: PropTypes.func.isRequired,
 };
 
 export default ImageUpload;

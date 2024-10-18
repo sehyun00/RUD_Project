@@ -1,0 +1,75 @@
+.converter-container {
+    display: flex;
+    flex-direction: column; // 세로 정렬
+    align-items: center; // 수평 중앙 정렬
+    justify-content: flex-start; // 상단 정렬
+    width: 80%;
+    max-height: 100vh; // 최대 높이 설정 (헤더 높이 제외)
+    margin: auto;
+    padding: 20px; // 상단 여백 추가
+    overflow-y: auto; // 스크롤 활성화
+
+    .files-container {
+        width: 100%;
+        flex-grow: 1; // 공간을 최대한 차지하도록 설정
+        .data-table-wrapper {
+            margin-top: 20px; // 여백 조정
+
+            .data-table2 {
+                width: 100%;
+                border-collapse: collapse;
+
+                thead {
+                    background-color: #f8f9fa;
+                }
+
+                th, td {
+                    padding: 10px;
+                    text-align: center;
+                    border: none; // 경계 제거
+                }
+
+                .dt-row {
+                    // 행 사이의 간격을 추가할 수 있습니다.
+                    &:not(:last-child) {
+                        border-bottom: 1px solid #ccc; // 행 사이에만 경계 추가 (원하는 경우)
+                    }
+                }
+
+                .btn-close {
+                    background: none;
+                    border: none;
+                    color: red;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .file-tools {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .btn-holder1 {
+                display: flex;
+                align-items: center;
+
+                .btn {
+                    margin-right: 10px;
+                }
+            }
+
+            .convert-button {
+                .btn {
+                    background-color: #007bff; // Bootstrap 기본 색상
+                    color: white;
+
+                    &:hover {
+                        background-color: #0056b3; // Hover 색상
+                    }
+                }
+            }
+        }
+    }
+}

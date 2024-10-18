@@ -1,7 +1,14 @@
+.app-container {
+  min-height: 100vh; /* 최소 높이 설정 */
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 정렬 */
+  align-items: stretch; /* 수평 정렬 */
+}
+
 html, body {
   height: 100%;
   margin: 0;
-  overflow: auto; /* 스크롤 활성화 */
+  overflow: hidden; /* body에서 스크롤 비활성화 */
 }
 
 .full-screen {
@@ -9,43 +16,4 @@ html, body {
   display: flex; /* Flexbox 사용 */
   flex-direction: column; /* 세로 정렬 */
   align-items: center; /* 수평 중앙 정렬 */
-}
-
-.App-header {
-  background-color: #282c34;
-  width: 100%; /* 너비 100%로 설정 */
-  position: sticky; /* 스크롤 시 고정 */
-  top: 0; /* 상단에 고정 */
-  z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
-}
-
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
