@@ -19,7 +19,7 @@ function App() {
     
     // view
     return (
-        <div className={isLoginPage ? "full-screen" : ""}>
+        <div className={isLoginPage}>
             <Header isLoginPage={isLoginPage} /> {/* prop 전달 */}
             <Routes>
                 <Route path='/home' element={<Home />} />

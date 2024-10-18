@@ -1,3 +1,6 @@
+import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
 from flask import Flask, request, jsonify
 import cv2
 from abc import ABC, abstractmethod
@@ -10,9 +13,6 @@ from easyocr import Reader
 import warnings
 from typing import List
 import numpy as np
-import os
-
-os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)

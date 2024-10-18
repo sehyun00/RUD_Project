@@ -1,40 +1,51 @@
 .converter-container {
     display: flex;
     flex-direction: column;
-    align-items: center; // 수평 중앙 정렬
-    justify-content: flex-start; // 수직 정렬을 시작으로 설정
+    align-items: center;
+    justify-content: center;
     width: 80%;
-    max-height: 100vh; // 최대 높이 설정 (헤더 높이 제외)
-    margin: auto;
-    padding: 20px; // 상단 여백 추가
+    height: auto; // 전체 높이에 맞춤
+    margin: auto; // 중앙 정렬
+    margin-top: 5%;
+    margin-bottom: 5%;
+    overflow: visible;
+
+    .converter-wrapper {
+        width: 100%; // 너비를 100%로 설정하여 부모 요소에 맞춤
+        margin-bottom: 20px;
+    }
+
+    .file-source-caption {
+        text-align: center;
+        margin-bottom: 10px;
+    }
 
     .files-container {
         width: 100%;
-        flex-grow: 1; // 공간을 최대한 차지하도록 설정
         .data-table-wrapper {
-            margin-top: 20px; // 여백 조정
+            margin-top: 20px;
 
             .data-table2 {
                 width: 100%;
-                border-collapse: collapse;
-
+                border-collapse: collapse; // 경계가 겹치게 설정
+            
                 thead {
                     background-color: #f8f9fa;
                 }
-
+            
                 th, td {
                     padding: 10px;
                     text-align: center;
                     border: none; // 경계 제거
                 }
-
+            
                 .dt-row {
-                    // 행 사이의 간격을 추가할 수 있습니다.
+                    // 행 사이의 간격을 추가하고 싶다면 여기에 margin을 추가할 수 있습니다.
                     &:not(:last-child) {
                         border-bottom: 1px solid #ccc; // 행 사이에만 경계 추가 (원하는 경우)
                     }
                 }
-
+            
                 .btn-close {
                     background: none;
                     border: none;
@@ -42,6 +53,8 @@
                     cursor: pointer;
                 }
             }
+            
+            
         }
 
         .file-tools {

@@ -1,51 +1,28 @@
 from flask import Flask, request, jsonify
 import cv2
-from abc import ABC, abstractmethod
+import os
 from pororo import Pororo
-from pororo.pororo import SUPPORTED_TASKS
-from utils.image_util import plt_imshow, put_text
-from utils.image_convert import convert_coord, crop
-from utils.pre_processing import load_with_filter, roi_filter
+from flask_cors import CORS
 import warnings
-import numpy as np
+import time
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
+CORS(app)  # CORS 설정 추가
 
+# 이미지 저장 디렉토리 설정
+IMAGE_DIR = 'images'
+os.makedirs(IMAGE_DIR, exist_ok=True)
 
-class BaseOcr(ABC):
-    def __init__(self):
-        self.img_path = None
-        self.ocr_result = {}
+class PororoOcr:
+    def __init__(self, model='brainocr', lang='ko'):
+        self.ocr = Pororo(task='ocr', lang=lang, model=model)
 
-    def get_ocr_result(self):
-        return self.ocr_result
-
-    def get_img_path(self):
-        return self.img_path
-
-    @abstractmethod
-    def run_ocr(self, img, debug: bool = False):
-        pass
-
-
-class PororoOcr(BaseOcr):
-    def __init__(self, model: str = "brainocr", lang: str = "ko", **kwargs):
-        super().__init__()
-        self._ocr = Pororo(task="ocr", lang=lang, model=model, **kwargs)
-
-    def run_ocr(self, img, debug: bool = False):
-        self.img_path = img
-        self.ocr_result = self._ocr(img, detail=True)
-
-        if self.ocr_result['description']:
-            ocr_text = self.ocr_result["description"]
-        else:
-            ocr_text = "No text detected."
-
-        return ocr_text
-
+    def run_ocr(self, img):
+        result = self.ocr(img, detail=True)
+        return result['description'] if result['description'] else "No text detected."
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -53,20 +30,37 @@ def upload_file():
         return jsonify({'error': '파일이 없습니다'}), 400
 
     file = request.files['file']
+    print("Received file:", file.filename)  # 추가된 로그
 
     if file.filename == '':
         return jsonify({'error': '파일이 선택되지 않았습니다'}), 400
 
-    # 이미지 파일을 OpenCV 포맷으로 변환
-    in_memory_file = np.frombuffer(file.read(), np.uint8)
-    img = cv2.imdecode(in_memory_file, cv2.IMREAD_COLOR)
+    # 파일 경로 설정
+    file_path = os.path.join(IMAGE_DIR, file.filename)
+    print(f"Saving file to: {file_path}")  # 추가된 로그
+
+    # 이미지 파일 저장
+    file.save(file_path)
+
+    # 이미지 읽기
+    img = cv2.imread(file_path)
+
+    # time.sleep(10)
+    if img is None:
+        os.remove(file_path)
+        return jsonify({'error': '이미지 디코딩 실패'}), 400
 
     # OCR 실행
     ocr_model = PororoOcr()
     ocr_text = ocr_model.run_ocr(img)
 
-    return jsonify({'text': ocr_text}), 200
+    # 응답 보내기
+    response = jsonify({'text': ocr_text})
+    response.headers.add('Access-Control-Allow-Origin', '*')  # CORS 설정
 
+    #파일 삭제
+    os.remove(file_path)
+    return response, 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

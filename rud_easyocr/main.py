@@ -1,3 +1,6 @@
+import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
 import cv2
 from abc import ABC, abstractmethod
 from pororo import Pororo
@@ -8,8 +11,6 @@ from utils.pre_processing import load_with_filter, roi_filter
 from easyocr import Reader
 import warnings
 from typing import List
-import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 warnings.filterwarnings('ignore')
 

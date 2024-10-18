@@ -1,30 +1,16 @@
-// feature
 import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Container, Table, Button } from 'reactstrap';
-
-// scss
+import axios from 'axios';
 import '../../assets/css/components/imageUpload.scss';
 
 const ImageUpload = ({ onSave }) => {
-
-    // function
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
 
-    const handleImageChange = (file) => {
-        if (file) {
-            const newFile = {
-                name: file.name,
-                url: URL.createObjectURL(file),
-            };
-            setFiles((prevFiles) => [...prevFiles, newFile]);
-        }
-    };
-
     const handleFileInputChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        selectedFiles.forEach(file => handleImageChange(file));
+        setFiles(selectedFiles); // 파일 객체를 직접 추가
     };
 
     const removeFile = (index) => {
@@ -37,11 +23,32 @@ const ImageUpload = ({ onSave }) => {
         }
     };
 
-    const handleSaveClick = () => {
-        onSave(); // 부모 컴포넌트의 onSave 호출
+    const handleSaveClick = async () => {
+        if (files.length === 0) {
+            alert("업로드할 파일이 없습니다.");
+            return;
+        }
+
+        const formData = new FormData();
+        files.forEach(file => {
+            console.log("Appending file:", file.name);  // 추가된 로그
+            formData.append('file', file); // 파일 객체를 직접 추가
+        });
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('Upload Success:', response.data);
+            onSave(); // 부모 컴포넌트의 onSave 호출
+        } catch (error) {
+            console.error('Upload Error:', error);
+            alert("파일 업로드 실패: " + (error.response ? error.response.data.error : "서버 오류"));
+        }
     };
 
-    // component
     return (
         <Container className="converter-container">
             <div className="files-container">
