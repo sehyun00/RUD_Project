@@ -1,4 +1,3 @@
-from flask import Flask, request, jsonify
 import cv2
 from abc import ABC, abstractmethod
 from pororo import Pororo
@@ -6,9 +5,11 @@ from pororo.pororo import SUPPORTED_TASKS
 from utils.image_util import plt_imshow, put_text
 from utils.image_convert import convert_coord, crop
 from utils.pre_processing import load_with_filter, roi_filter
-# from easyocr import Reader
+from easyocr import Reader
 import warnings
-import numpy as np
+from typing import List
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 warnings.filterwarnings('ignore')
 
@@ -83,71 +84,71 @@ class PororoOcr(BaseOcr):
         return SUPPORTED_TASKS["ocr"].get_available_models()
 
 # https://www.jaided.ai/easyocr/documentation/
-# class EasyOcr(BaseOcr):
-#     def __init__(self, lang: list[str] = ["ko", "en"], gpu=False, **kwargs):
-#         super().__init__()
-#         self._ocr = Reader(lang_list=lang, gpu=gpu, **kwargs).readtext
-#
-#     def run_ocr(self, img_path: str, debug: bool = False):
-#         self.img_path = img_path
-#         self.ocr_result = self._ocr(img_path, detail=1)
-#
-#         if len(self.ocr_result) != 0:
-#             ocr_text = list(map(lambda result: result[1], self.ocr_result))
-#         else:
-#             ocr_text = "No text detected."
-#
-#         if debug:
-#             self.show_img_with_ocr(None, 1, 0, [0, 1])
-#
-#         return ocr_text
+class EasyOcr(BaseOcr):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+        super().__init__()
+        self._ocr = Reader(lang_list=lang, gpu=gpu, **kwargs).readtext
 
-# class EasyPororoOcr(BaseOcr):
-#     def __init__(self, lang: list[str] = ["ko", "en"], gpu=False, **kwargs):
-#         super().__init__()
-#         self._detector = Reader(lang_list=lang, gpu=gpu, **kwargs).detect
-#         self.detect_result = None
-#
-#     def create_result(self, points):
-#         roi = crop(self.img, points)
-#         result = self._ocr(roi_filter(roi))
-#         text = " ".join(result)
-#
-#         return [points, text]
-#
-#     def run_ocr(self, img_path: str, debug: bool = False, **kwargs):
-#         self.img_path = img_path
-#         self.img = cv2.imread(img_path) if isinstance(img_path, str) \
-#             else self.img_path
-#         self._ocr = Pororo(task="ocr", lang="ko", model="brainocr", **kwargs)
-#
-#         self.detect_result = self._detector(self.img, slope_ths=0.3, height_ths=1)
-#         if debug:
-#             print(self.detect_result)
-#
-#         horizontal_list, free_list = self.detect_result
-#
-#         rois = [convert_coord(point) for point in horizontal_list[0]] + free_list[0]
-#
-#         self.ocr_result = list(filter(
-#             lambda result: len(result[1]) > 0,
-#             [self.create_result(roi) for roi in rois]
-#         ))
-#
-#         if len(self.ocr_result) != 0:
-#             ocr_text = list(map(lambda result: result[1], self.ocr_result))
-#         else:
-#             ocr_text = "No text detected."
-#
-#         if debug:
-#             self.show_img_with_ocr(None, 1, 0, [0, 1])
-#
-#         return ocr_text
+    def run_ocr(self, img_path: str, debug: bool = False):
+        self.img_path = img_path
+        self.ocr_result = self._ocr(img_path, detail=1)
+
+        if len(self.ocr_result) != 0:
+            ocr_text = list(map(lambda result: result[1], self.ocr_result))
+        else:
+            ocr_text = "No text detected."
+
+        if debug:
+            self.show_img_with_ocr(None, 1, 0, [0, 1])
+
+        return ocr_text
+
+class EasyPororoOcr(BaseOcr):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+        super().__init__()
+        self._detector = Reader(lang_list=lang, gpu=gpu, **kwargs).detect
+        self.detect_result = None
+
+    def create_result(self, points):
+        roi = crop(self.img, points)
+        result = self._ocr(roi_filter(roi))
+        text = " ".join(result)
+
+        return [points, text]
+
+    def run_ocr(self, img_path: str, debug: bool = False, **kwargs):
+        self.img_path = img_path
+        self.img = cv2.imread(img_path) if isinstance(img_path, str) \
+            else self.img_path
+        self._ocr = Pororo(task="ocr", lang="ko", model="brainocr", **kwargs)
+
+        self.detect_result = self._detector(self.img, slope_ths=0.3, height_ths=1)
+        if debug:
+            print(self.detect_result)
+
+        horizontal_list, free_list = self.detect_result
+
+        rois = [convert_coord(point) for point in horizontal_list[0]] + free_list[0]
+
+        self.ocr_result = list(filter(
+            lambda result: len(result[1]) > 0,
+            [self.create_result(roi) for roi in rois]
+        ))
+
+        if len(self.ocr_result) != 0:
+            ocr_text = list(map(lambda result: result[1], self.ocr_result))
+        else:
+            ocr_text = "No text detected."
+
+        if debug:
+            self.show_img_with_ocr(None, 1, 0, [0, 1])
+
+        return ocr_text
 
 if __name__ == "__main__":
-    m_ocr = PororoOcr()
+    # m_ocr = PororoOcr()
     # e_ocr = EasyOcr()
-    # m_ocr = EasyPororoOcr()
+    m_ocr = EasyPororoOcr()
     image_path = input("Enter image path: ")
 
     image = load_with_filter(image_path)
