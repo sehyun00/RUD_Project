@@ -19,13 +19,14 @@ const Home = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>홈 페이지</h1>
-            {isImageUploadVisible ? (
-                <ImageUpload onSave={handleSave} /> // prop으로 핸들러 전달
-            ) : (
-                <StockTable /> // ImageUpload가 숨겨지면 StockTable 표시
-            )}
+        <div className="converter-container"> {/* 스타일 적용된 컨테이너 */}
+            <div className="files-container"> {/* 파일 컨테이너 */}
+                {isImageUploadVisible ? (
+                    <ImageUpload onSave={handleSave} /> // prop으로 핸들러 전달
+                ) : (
+                    <StockTable /> // ImageUpload가 숨겨지면 StockTable 표시
+                )}
+            </div>
         </div>
     );
 };
