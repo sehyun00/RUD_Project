@@ -1,22 +1,24 @@
-
 html, body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden; 
+  height: 100%;
+  margin: 0;
+  overflow: auto; /* 스크롤 활성화 */
 }
 
 .full-screen {
-    height: 100vh; /* 전체 화면 높이를 차지하게 설정 */
-    display: flex; /* Flexbox 사용 */
-    flex-direction: column; /* 세로 정렬 */
-    align-items: center; /* 수평 중앙 정렬 */
-    justify-content: center; /* 수직 중앙 정렬 */
+  min-height: 100vh; /* 최소 높이 설정 */
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center; /* 수평 중앙 정렬 */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App-header {
+  background-color: #282c34;
+  width: 100%; /* 너비 100%로 설정 */
+  position: sticky; /* 스크롤 시 고정 */
+  top: 0; /* 상단에 고정 */
+  z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

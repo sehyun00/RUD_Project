@@ -1,7 +1,7 @@
 // feature
 import React from "react";
-import {Container} from 'reactstrap';
-import {useLocation} from 'react-router-dom'; // useLocation 훅 추가
+import { Container } from 'reactstrap';
+import { useLocation } from 'react-router-dom'; // useLocation 훅 추가
 
 // scss
 import '../../assets/css/componentItems/header.scss';
@@ -16,10 +16,9 @@ const Header = () => {
     return (
         <div className="header">
             <Container className="header-container">
-
                 <div className="left">
-                    <video autoPlay="autoPlay" loop="loop" muted="muted" className="logo-video">
-                        <source src={happyCatVideo} type="video/mp4"/>
+                    <video autoPlay loop muted className="logo-video">
+                        <source src={happyCatVideo} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <h3>Superant</h3>
