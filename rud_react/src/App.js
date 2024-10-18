@@ -8,6 +8,9 @@ import "./App.css";
 // components
 import Home from './views/home';
 import Login from './views/login';
+import SignUp from "./views/signup";
+
+// component-items
 import Header from "./views/componentItems/header";
 
 function App() {
@@ -17,13 +20,12 @@ function App() {
     // view
     return (
         <div
-            className={isLoginPage
-                ? "full-screen"
-                : ""}>
+            className={isLoginPage ? "full-screen" : ""}>
             <Header/>
             <Routes>
                 <Route path='/home' element={<Home />}/>
                 <Route path='/login' element={<Login />}/>
+                <Route path="/signup" element={<SignUp/>}/>
             </Routes>
         </div>
     );

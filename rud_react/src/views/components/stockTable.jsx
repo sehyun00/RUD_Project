@@ -109,4 +109,5 @@ const StockTable = () => {
 StockTable.propTypes = {
   classes: PropTypes.object
 };
+
 export default StockTable;
