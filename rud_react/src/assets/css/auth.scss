@@ -1,0 +1,120 @@
+/* auth.scss */
+
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center; /* 중앙 정렬 */
+    height: 100vh; /* 화면 높이의 100% */
+    padding-right: 15%; 
+    background-color: #181a20; /* 배경색 */
+    width: 100%;
+}
+
+/* 카드 스타일 */
+.auth-card {
+    width: 400px; /* 카드 크기 */
+    padding: 60px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    background-color: #181a20; /* 카드 배경색 변경 */
+    border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
+    color: #FFFFFF; /* 카드 내 텍스트 색상 */
+
+    .auth-title {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #FFFFFF; /* 텍스트 색상 변경 */
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+
+        .input-group {
+            margin-bottom: 15px;
+
+            input[type="email"],
+            input[type="password"],
+            input[type="text"] {
+                padding: 10px;
+                border: 1.5px solid #535962;
+                border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
+                width: 100%;
+                overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
+                color: #FFFFFF; /* 입력 텍스트 색상 변경 */
+                background-color: #181a20; /* 입력 배경색 변경 */
+            }
+        }
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #0ECB81;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:hover {
+            background-color: #0a965e;
+        }
+
+        &.google, &.apple {
+            margin-bottom: 10px;
+            border: 1.5px solid #535962;
+            background-color: #181a20;
+
+            img {
+                height: 20px ;
+            }
+        }
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        width: 100%;
+
+        &::before,
+        &::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #535962; /* 구분선 색상 */
+        }
+
+        span {
+            margin: 0 10px;
+            color: #fff; /* 'or' 텍스트 색상 */
+        }
+    }
+
+    .signup-link-container {
+        display: flex;
+        justify-content: center; /* 중앙 정렬 */
+        margin-top: 20px; /* 카드와 링크 간의 간격 */
+    }
+
+    .signup-link {
+        display: block; /* 블록 요소로 설정하여 전체 너비 사용 */
+        margin-top: 20px; /* 버튼과의 간격 */
+        text-align: center; /* 가운데 정렬 */
+        color: #0a965e; /* 링크 색상 */
+        font-size: 14px; /* 글씨 크기 */
+        text-decoration: none; /* 기본 밑줄 제거 */
+
+        &:hover {
+            text-decoration: underline; /* hover 시 밑줄 추가 */
+        }
+    }
+}
