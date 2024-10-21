@@ -1,4 +1,3 @@
-// features
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 
@@ -11,7 +10,7 @@ import ImageUpload from "./components/imageUpload";
 
 // page
 const Home = () => {
-    const [isImageUploadVisible, setImageUploadVisible] = useState(true); // 상태 추가
+    const [isImageUploadVisible, setImageUploadVisible] = useState(true); // 초기값을 true로 설정
 
     // 저장하기 버튼 클릭 핸들러
     const handleSave = () => {

@@ -11,6 +11,15 @@
     transition: color 0.3s;
 }
 
+.header a {
+    color: inherit; /* 부모 요소의 색상을 상속받음 */
+    text-decoration: none; /* 기본 링크 밑줄 제거 */
+}
+
+.header a:visited {
+    color: inherit; /* 클릭 후 색상을 부모의 색상으로 유지 */
+}
+
 .header-container {
     display: flex;
     justify-content: space-between;
