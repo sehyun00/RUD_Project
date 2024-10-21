@@ -1,6 +1,6 @@
 // feature
 import React from "react";
-import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 // css
 import "./App.css";
@@ -19,8 +19,8 @@ function App() {
     
     // view
     return (
-        <div className={isLoginPage}>
-            <Header isLoginPage={isLoginPage} /> {/* prop 전달 */}
+        <div className={isLoginPage ? "full-screen" : ""}>
+            {!isLoginPage && <Header />} {/* 로그인 페이지가 아닐 때만 Header 표시 */}
             <Routes>
                 <Route path='/home' element={<Home />} />
                 <Route path='/login' element={<Login />} />
@@ -30,11 +30,12 @@ function App() {
     );
 }
 
-
 function AppWrapper() {
-    return (<BrowserRouter>
-        <App/>
-    </BrowserRouter>);
+    return (
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    );
 }
 
 export default AppWrapper;
