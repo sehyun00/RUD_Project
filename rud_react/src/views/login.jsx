@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/css/login.scss';
+import '../assets/css/auth.scss'; // 변경된 경로
 import ios from '../assets/images/ios.png';
 import google from '../assets/images/logogoogle.png';
 
@@ -17,10 +17,10 @@ const Login = () => {
     };
 
     return (
-        <div className="id_container">
+        <div className="auth-container">
             <div>
-                <div className="card">
-                    <h1 className="login-title">Superant</h1>
+                <div className="auth-card">
+                    <h1 className="auth-title">Superant</h1>
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
                             <input
@@ -52,8 +52,10 @@ const Login = () => {
                         <button type="button" className='google'><img src={google} alt="google"/>Continue with Google</button>
                         <button type="button" className='apple'><img src={ios} alt="ios"/>Continue with Apple</button>
                     </div>
+                    <div className="signup-link-container">
+                        <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
+                    </div>
                 </div>
-                <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
             </div>
         </div>
     );

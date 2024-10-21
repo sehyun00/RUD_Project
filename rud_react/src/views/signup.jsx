@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import '../assets/css/signup.scss';
-
+import '../assets/css/auth.scss'; // 변경된 경로
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -25,46 +24,54 @@ const Signup = () => {
     };
 
     return (
-        <div className="signup-body">
-            <div className="signup-container">
-                <h2 className="signup-title">회원가입</h2>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="사용자 이름"
-                        className="signup-input"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="이메일"
-                        className="signup-input"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="비밀번호"
-                        className="signup-input"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="passwordcheck"
-                        name="passwordcheck"
-                        placeholder="비밀번호 확인"
-                        className="signup-input"
-                        value={formData.passwordcheck}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="auth-container">
+            <div className="auth-card">
+                <h2 className="auth-title">회원가입</h2>
+                <form onSubmit={handleSubmit} className="form">
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="사용자 이름"
+                            className="signup-input"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="이메일"
+                            className="signup-input"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="비밀번호"
+                            className="signup-input"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="password"
+                            name="passwordcheck"
+                            placeholder="비밀번호 확인"
+                            className="signup-input"
+                            value={formData.passwordcheck}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                     <button type="submit" className="signup-button">가입하기</button>
                 </form>
                 <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>
