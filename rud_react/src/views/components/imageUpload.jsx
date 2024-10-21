@@ -1,7 +1,10 @@
+// feature
 import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Container, Table, Button } from 'reactstrap';
 import axios from 'axios';
+
+// scss
 import '../../assets/css/components/imageUpload.scss';
 
 const ImageUpload = ({ onSave }) => {
@@ -10,7 +13,7 @@ const ImageUpload = ({ onSave }) => {
 
     const handleFileInputChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        setFiles(selectedFiles); // 파일 객체를 직접 추가
+        setFiles(selectedFiles);
     };
 
     const removeFile = (index) => {
@@ -18,9 +21,7 @@ const ImageUpload = ({ onSave }) => {
     };
 
     const handleAddFileClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
+        fileInputRef.current?.click();
     };
 
     const handleSaveClick = async () => {
@@ -30,19 +31,14 @@ const ImageUpload = ({ onSave }) => {
         }
 
         const formData = new FormData();
-        files.forEach(file => {
-            console.log("Appending file:", file.name);  // 추가된 로그
-            formData.append('file', file); // 파일 객체를 직접 추가
-        });
+        files.forEach(file => formData.append('file', file));
 
         try {
             const response = await axios.post('http://192.168.34.18:5000/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Upload Success:', response.data);
-            onSave(); // 부모 컴포넌트의 onSave 호출
+            onSave();
         } catch (error) {
             console.error('Upload Error:', error);
             alert("파일 업로드 실패: " + (error.response ? error.response.data.error : "서버 오류"));
@@ -80,7 +76,7 @@ const ImageUpload = ({ onSave }) => {
                                 )}
                                 <tr>
                                     <td className="text-right">
-                                        <Button color="light" size="sm" onClick={handleAddFileClick}>
+                                        <Button className="btn-custom" onClick={handleAddFileClick}>
                                             파일 추가
                                         </Button>
                                         <input 
@@ -94,10 +90,10 @@ const ImageUpload = ({ onSave }) => {
                                             onChange={handleFileInputChange} 
                                         />
                                     </td>
-                                    <td/>
+                                    <td />
                                     <td className="text-right">
                                         {files.length > 0 && (
-                                            <Button color="primary" onClick={handleSaveClick}>저장하기</Button>
+                                            <Button className="btn-custom" onClick={handleSaveClick}>저장하기</Button>
                                         )}
                                     </td>
                                 </tr>
