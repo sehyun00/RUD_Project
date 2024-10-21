@@ -56,7 +56,7 @@ def upload_file():
 
     # 응답 보내기
     response = jsonify({'text': ocr_text})
-    response.headers.add('Access-Control-Allow-Origin', '*')  # CORS 설정
+    response.headers.add('Access-Control-Allow-Origin', '*')  # CORS 설정 
 
     #파일 삭제
     os.remove(file_path)

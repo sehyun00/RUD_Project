@@ -13,6 +13,7 @@ const initialData = [
     { id: 3, name: "TSLA", price: 700.00, quantity: 20, targetRatio: 90 },
     { id: 4, name: "AMZN", price: 3400.00, quantity: 15, targetRatio: 70 },
     { id: 5, name: "MSFT", price: 290.00, quantity: 12, targetRatio: 60 },
+    { id: 6, name: "MSFT", price: 290.00, quantity: 12, targetRatio: 60 },
 ];
 
 // 각 종목의 데이터 행을 표시하는 컴포넌트
