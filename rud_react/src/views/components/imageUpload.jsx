@@ -36,7 +36,7 @@ const ImageUpload = ({ onSave }) => {
         });
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/upload', formData, {
+            const response = await axios.post('http://192.168.34.18:5000/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
