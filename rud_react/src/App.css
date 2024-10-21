@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     overflow: auto; 
+    background-color: #181a20; /* 배경색 */
 }
 
 .full-screen {
@@ -24,16 +25,6 @@ html, body {
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
 .App-link {
   color: #61dafb;
