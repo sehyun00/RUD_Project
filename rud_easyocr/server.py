@@ -59,7 +59,7 @@ class BaseOcr(ABC):
             cv2.line(roi_img, bottomLeft, topLeft, color, 2)
             roi_img = put_text(roi_img, text, topLeft[0], topLeft[1] - 20, color=color)
 
-        # plt_imshow(["Original", "ROI"], [img, roi_img], figsize=(16, 10))
+        plt_imshow(["Original", "ROI"], [img, roi_img], figsize=(16, 10))
 
     @abstractmethod
     def run_ocr(self, img_path: str, debug: bool = False):
@@ -181,8 +181,8 @@ def extract_stock_data(data):
     # 국내 주식 데이터 추출 (첫 번째 "일간 수익금"부터 "해외주식"까지)
     for i in range(first_index, end_index):
         if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
-            # 실수 + 주만 살림
-            if not re.match(r'^\d+(\.\d+)?$', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]):
+            # 실수 + 주만 살림 ex)1234원, $1234
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^\d+(\.\d+)?$', data[i]):
                 cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
 
@@ -191,8 +191,8 @@ def extract_stock_data(data):
     end_index = data.index("개인정보 처리방침")
     for i in range(start_index, end_index):
         if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
-            # 실수 + 주만 살림
-            if not re.match(r'^\d+(\.\d+)?$', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]):
+            # 실수 + 주만 살림 ex)1234원, $1234
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
                 cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
 
