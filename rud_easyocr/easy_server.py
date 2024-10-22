@@ -11,12 +11,21 @@ import warnings
 from typing import List
 import numpy as np
 import os
+import re
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 warnings.filterwarnings('ignore')
-
 app = Flask(__name__)
 
+# 이미지 저장 경로
+IMAGE_FOLDER = 'images'
+if not os.path.exists(IMAGE_FOLDER):
+    os.makedirs(IMAGE_FOLDER)
+
+# 이미지 저장 경로
+IMAGE_FOLDER = 'images'
+if not os.path.exists(IMAGE_FOLDER):
+    os.makedirs(IMAGE_FOLDER)
 
 class BaseOcr(ABC):
     def __init__(self):
@@ -82,6 +91,12 @@ class EasyPororoOcr(BaseOcr):
         text = " ".join(result)
         return [points, text]
 
+    # 반환 리스트에서 특정 단어 사이만 추출
+    def extract_between_keywords(self, text, start_keyword, end_keyword):
+        pattern = re.compile(rf'{start_keyword}(.*?){end_keyword}', re.DOTALL)
+        matches = pattern.findall(text)
+        return matches
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -93,15 +108,50 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
-    # 이미지 파일을 OpenCV 포맷으로 변환
-    in_memory_file = np.frombuffer(file.read(), np.uint8)
-    img = cv2.imdecode(in_memory_file, cv2.IMREAD_COLOR)
+    # 파일 저장 경로 설정
+    image_path = os.path.join(IMAGE_FOLDER, file.filename)
+    try:
+        # 이미지 파일을 /images 폴더에 저장
+        file.save(image_path)
 
-    # OCR 실행
-    m_ocr = EasyPororoOcr()
-    ocr_text = m_ocr.run_ocr(img)
+        # 이미지 파일을 OpenCV 포맷으로 변환
+        img = cv2.imread(image_path)
 
-    return jsonify({'text': ocr_text}), 200
+        # OCR 실행
+        m_ocr = EasyPororoOcr()
+        ocr_texts = m_ocr.run_ocr(img)
+
+        if ocr_texts == "No text detected.":
+            return jsonify({'error': 'No text detected from image'}), 400
+
+        # 전체 텍스트 결합
+        full_text = " ".join(ocr_texts)
+
+        # "일간 수익금"부터 "해외주식"까지의 값 추출
+        domestic_section = m_ocr.extract_between_keywords(full_text, "일간 수익금", "해외주식")
+        foreign_section_start = full_text.split("해외주식", 1)[-1]
+        foreign_section = m_ocr.extract_between_keywords(foreign_section_start, "일간 수익금", "개인정보 처리방침")
+
+        # 국내주식 데이터 가공
+        domestic_data = re.split(r'\s+', domestic_section[0].strip()) if domestic_section else []
+        # 해외주식 데이터 가공
+        foreign_data = re.split(r'\s+', foreign_section[0].strip()) if foreign_section else []
+
+        # 최종 응답 데이터 구성
+        response_data = {
+            '국내주식': domestic_data,
+            '해외주식': foreign_data
+        }
+
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    # finally:
+    #     # 이미지 삭제
+    #     if os.path.exists(image_path):
+    #         os.remove(image_path)
 
 
 if __name__ == "__main__":
