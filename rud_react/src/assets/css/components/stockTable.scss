@@ -7,43 +7,45 @@
     margin-top: 5%; // 여백 조정
 }
 
-.custom-table {
+.table-wrapper {
+    border: 1px solid #2B3139;
+    border-radius: 10px;
+    overflow: hidden; /* 경계선이 깔끔하게 보이도록 */
+    padding: 5px;
+}
+
+.custom-table-overseas,
+.custom-table-domestic {
     width: 100%; // 전체 너비
     border-collapse: collapse;
-    border-radius: 8px; // 둥글게
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // 그림자 추가
     overflow: hidden; // 경계선 깔끔하게
-    margin: 20px 0; // 여백 조정
+    margin: 0px 0; // 여백 조정
 
     th {
         text-align: center;
         padding: 12px; // 패딩 조정
         font-size: 14px;
-        background-color: #777777; // 밝은 배경색
-        color: #343a40; // 어두운 글자 색
-        border-bottom: 2px solid #dee2e6;
-
-        &:first-child {
-            border-top-left-radius: 8px; // 왼쪽 상단 모서리 둥글게
-        }
-
-        &:last-child {
-            border-top-right-radius: 8px; // 오른쪽 상단 모서리 둥글게
-        }
+        background-color: #181a20; // 밝은 배경색
+        color: #EAECEF;
+        border-bottom: 2px solid #2B3139;
     }
 
     td {
         text-align: center;
         padding: 10px; // 패딩 조정
         font-size: 14px;
-        background-color: #777777; // 흰색 배경
-        border-bottom: 1px solid #dee2e6; // 경계선 추가
-        transition: background-color 0.3s;
-
-        &:hover {
-            background-color: #f1f1f1; // 호버 시 배경색 변경
-        }
+        background-color: transparent;
+        border-top: 1px solid #2B3139; // 경계선 추가
+        color: #EAECEF;
     }
+
+    tr:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.table-spacing {
+    height: 20px; // 원하는 간격 조정
 }
 
 .input-cell {
@@ -51,7 +53,7 @@
 }
 
 .input-style {
-    width: 100%;
+    width: 60%;
     text-align: center;
     height: 36px;
     box-sizing: border-box;
@@ -71,3 +73,4 @@
 .text-center {
     text-align: center;
 }
+
