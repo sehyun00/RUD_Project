@@ -1,0 +1,36 @@
+.header {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px 20px;
+    margin-bottom: 0;
+    color: white; /* 모든 페이지에서 흰색 글자 색상 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: color 0.3s;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.left {
+    display: flex;
+    gap: 10px;
+}
+
+.right {
+    display: flex;
+    gap: 20px;
+}
+
+.logo-video {
+    max-width: 50px;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
