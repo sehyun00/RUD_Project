@@ -96,7 +96,7 @@ class PororoOcr(BaseOcr):
 
 # https://www.jaided.ai/easyocr/documentation/
 class EasyOcr(BaseOcr):
-    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=True, **kwargs):
         super().__init__()
         self._ocr = Reader(lang_list=lang, gpu=gpu, **kwargs).readtext
 
@@ -116,7 +116,7 @@ class EasyOcr(BaseOcr):
 
 
 class EasyPororoOcr(BaseOcr):
-    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=True, **kwargs):
         super().__init__()
         self._detector = Reader(lang_list=lang, gpu=gpu, **kwargs).detect
         self.detect_result = None
@@ -243,4 +243,4 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
