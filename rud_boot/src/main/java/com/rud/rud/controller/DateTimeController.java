@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 public class DateTimeController {
-
+//시발들어가라
     @GetMapping("/datetime")
     public Map<String, String> getCurrentDateTime() {
         LocalDateTime now = LocalDateTime.now();

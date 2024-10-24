@@ -16,6 +16,7 @@ CORS(app)  # CORS 설정 추가
 IMAGE_DIR = 'images'
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
+
 class PororoOcr:
     def __init__(self, model='brainocr', lang='ko'):
         self.ocr = Pororo(task='ocr', lang=lang, model=model)
@@ -23,6 +24,7 @@ class PororoOcr:
     def run_ocr(self, img):
         result = self.ocr(img, detail=True)
         return result['description'] if result['description'] else "No text detected."
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -56,11 +58,12 @@ def upload_file():
 
     # 응답 보내기
     response = jsonify({'text': ocr_text})
-    response.headers.add('Access-Control-Allow-Origin', '*')  # CORS 설정 
+    response.headers.add('Access-Control-Allow-Origin', '*')  # CORS 설정
 
-    #파일 삭제
+    # 파일 삭제
     os.remove(file_path)
     return response, 200
 
+
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='localhost', port=5000)
