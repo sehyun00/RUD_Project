@@ -1,6 +1,10 @@
 import React from "react";
 import { Container } from 'reactstrap';
+<<<<<<< HEAD
 import { useLocation } from 'react-router-dom';
+=======
+import { useLocation, Link } from 'react-router-dom';
+>>>>>>> 560fc468d239ac9da74978501b964146485ae17c
 import '../../assets/css/componentItems/header.scss';
 import happyCatVideo from '../../assets/images/happycat.mp4';
 
@@ -16,7 +20,13 @@ const Header = () => {
                         <source src={happyCatVideo} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
+<<<<<<< HEAD
                     <h3>Superant</h3>
+=======
+                    <Link to="/home">
+                        <h3>Superant</h3>
+                    </Link>
+>>>>>>> 560fc468d239ac9da74978501b964146485ae17c
                 </div>
                 {!isLoginPage && ( // 로그인 페이지가 아닐 때만 메뉴 표시
                     <div className="right">

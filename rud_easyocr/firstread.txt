@@ -1,9 +1,26 @@
 사용시 순서 지키셈
-가상환경 3.7 생성 후 실행
-pipenv 설치하고 pipenv 버전 3.7로 지정
-pororo 설치하고
-그다음에 opencv, mataplot 등등 설치
-근데 이제 easyocr이 설치가 안될텐데
+1. 가상환경(conda) 파이썬 3.7 생성 후 실행
+
+2. pipenv 설치하고 pipenv 버전 3.7로 지정
+-> pip install pipenv
+-> pipenv --python 3.7
+
+3. pororo 설치하고
+
+4. 그다음에 opencv, mataplot 등등 설치
+-> pip install opencv-python~=4.8.0.74
+-> pip install wget
+-> pip3 install torch torchvision torchaudio
+-> pip install matplotlib
+
+5. 이제 easyocr 설치
+-> 아나콘다 프롬프트에서
+-> conda install easyocr
+
+5-1. 만약 안된다면
 컴퓨터에 c++이 없어서 그럼
 그래서 visual studio 설치하고
 rustc를 설치해야 easyocr을 설치할 수 있음
+
+6. 플라스크 설치
+-> pip install flask
