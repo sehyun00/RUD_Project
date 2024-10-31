@@ -19,56 +19,22 @@ broker = mojito.KoreaInvestment(
     api_key=key,
     api_secret=secret,
     acc_no=acc_no,
-    # exchange='나스닥'
+    exchange='나스닥'
 )
-# 토큰 출력
-# print(broker)
 
-# 코스피, 코스닥 종목 정보 파일 생성
-# 하루 한번씩 생성해야할듯요
-# symbols = broker.fetch_symbols()
-# symbols
-
-# 특정 종목 코드를 이용해 시세 확인
-# resp = broker.fetch_price("005930")
-# # print(resp)  # 전체
-# print("Open:  ", resp['output']['stck_oprc'])   # 시작가
-# # print("High : ", resp['output']['stck_hgpr'])    # 고가
-# # print("Low  : ", resp['output']['stck_lwpr'])     # 저가
-# print("Close: ", resp['output']['stck_prpr'])    # 종가
-
-# 일봉 데이터 조회
-resp = broker.fetch_ohlcv(
-    symbol="005930",
+ohlcv = broker.fetch_ohlcv(
+    symbol="AAPL",
     timeframe='D',
     adj_price=True
 )
-# pprint.pprint(resp)
 
-# 판다스 표로 출력
-df = pd.DataFrame(resp['output2'])
-dt = pd.to_datetime(df['stck_bsop_date'], format="%Y%m%d")
+pprint.pprint(ohlcv)
+df = pd.DataFrame(ohlcv['output2'])
+dt = pd.to_datetime(df['xymd'], format="%Y%m%d")
 df.set_index(dt, inplace=True)
-df = df[['stck_oprc', 'stck_hgpr', 'stck_lwpr', 'stck_clpr']]
+df = df[['open', 'high', 'low', 'clos']]
+
+# df = df[['stck_oprc', 'stck_hgpr', 'stck_lwpr', 'stck_clpr']]
 df.columns = ['open', 'high', 'low', 'close']
 df.index.name = "date"
-
 print(df)
-
-
-# resp = broker.fetch_price("TSLA")
-# print(resp)
-# print("last:  ", resp['output']['last'])   # 시가
-
-# ohlcv = broker.fetch_ohlcv(
-#     symbol="TSLA",
-#     timeframe='D',
-#     adj_price=True
-# )
-# pprint.pprint(ohlcv)
-# print("Open:  ", ohlcv['output']['open'])    # 시가
-# print("High : ", ohlcv['output']['high'])    # 고가
-# print("Low  : ", ohlcv['output']['low'])    # 저가
-# print("Close: ", ohlcv['output']['clos'])    # 종가
-# print("Close: ", ohlcv['output']['tvol'])    # 거래량
-# print("Close: ", ohlcv['output']['tamt'])    # 거래대금
