@@ -1,10 +1,12 @@
 .table-container {
     display: flex;
-    justify-content: center; // 중앙 정렬
-    align-items: flex-start; // 위쪽 정렬
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
     height: auto;
     margin-top: 5%; // 여백 조정
+    
 }
 
 .table-wrapper {
@@ -12,6 +14,7 @@
     border-radius: 10px;
     overflow: hidden; /* 경계선이 깔끔하게 보이도록 */
     padding: 5px;
+    margin-bottom: 30px;
 }
 
 .custom-table-overseas,
@@ -46,6 +49,13 @@
 
 .table-spacing {
     height: 20px; // 원하는 간격 조정
+    padding: 10px;
+    padding-bottom: 30px;
+
+    span {
+        font-weight: 700;
+        font-size: larger;
+    }
 }
 
 .input-cell {

@@ -80,78 +80,85 @@ const StockTable = () => {
     return (
         <div className="table-container">
             <div className="table-wrapper">
-            <div className="table-spacing" /> {/* 간격을 위한 div 추가 */}
-                <span>해외</span>
-                    <Table className="custom-table-overseas">
-                        <thead>
-                            <tr>
-                                <th rowSpan="2" className="text-center">종목명</th>
-                                <th rowSpan="2" className="text-center">주가</th>
-                                <th colSpan="3" className="text-center">현재</th>
-                                <th rowSpan="2" className="text-center">희망비중</th>
-                                <th colSpan="3" className="text-center">리밸런싱</th>
-                                <th rowSpan="2" className="text-center">수량조절</th>
-                            </tr>
-                            <tr>
-                                <th>수량</th>
-                                <th>잔고 ($)</th>
-                                <th>비중 (%)</th>
-                                <th>비중 (%)</th>
-                                <th>희망투자금 ($)</th>
-                                <th>희망수량</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((item) => (
-                                <DataRow
-                                    key={item.id}
-                                    item={item}
-                                    totalAssets={totalAssets}
-                                    totalTargetRatio={totalTargetRatio}
-                                    onQuantityChange={handleQuantityChange}
-                                    onTargetRatioChange={handleTargetRatioChange}
-                                />
-                            ))}
-                        </tbody>
-                    </Table>
 
-            <div className="table-spacing" /> {/* 간격을 위한 div 추가 */}
-                <span>국내</span>
-                    
-                    <Table className="custom-table-domestic">
-                        <thead>
-                            <tr>
-                                <th rowSpan="2" className="text-center">종목명</th>
-                                <th rowSpan="2" className="text-center">주가</th>
-                                <th colSpan="3" className="text-center">현재</th>
-                                <th rowSpan="2" className="text-center">희망비중</th>
-                                <th colSpan="3" className="text-center">리밸런싱</th>
-                                <th rowSpan="2" className="text-center">수량조절</th>
-                            </tr>
-                            <tr>
-                                <th>수량</th>
-                                <th>잔고 (₩)</th>
-                                <th>비중 (%)</th>
-                                <th>비중 (%)</th>
-                                <th>희망투자금 (₩)</th>
-                                <th>희망수량</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {domesticData.map((item) => (
-                                <DataRow
-                                    key={item.id}
-                                    item={item}
-                                    totalAssets={totalAssets}
-                                    totalTargetRatio={totalTargetRatio}
-                                    onQuantityChange={handleQuantityChange}
-                                    onTargetRatioChange={handleTargetRatioChange}
-                                />
-                            ))}
-                        </tbody>
-                    </Table>
+                <div className="table-spacing">
+                    <span>해외</span>
+                </div>
+
+                <Table className="custom-table-overseas">
+                    <thead>
+                        <tr>
+                            <th rowSpan="2" className="text-center">종목명</th>
+                            <th rowSpan="2" className="text-center">주가</th>
+                            <th colSpan="3" className="text-center">현재</th>
+                            <th rowSpan="2" className="text-center">희망비중</th>
+                            <th colSpan="3" className="text-center">리밸런싱</th>
+                            <th rowSpan="2" className="text-center">수량조절</th>
+                        </tr>
+                        <tr>
+                            <th>수량</th>
+                            <th>잔고 ($)</th>
+                            <th>비중 (%)</th>
+                            <th>비중 (%)</th>
+                            <th>희망투자금 ($)</th>
+                            <th>희망수량</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item) => (
+                            <DataRow
+                                key={item.id}
+                                item={item}
+                                totalAssets={totalAssets}
+                                totalTargetRatio={totalTargetRatio}
+                                onQuantityChange={handleQuantityChange}
+                                onTargetRatioChange={handleTargetRatioChange}
+                            />
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
+
+            <div className="table-wrapper">
+                <div className="table-spacing">
+                    <span>국내</span>
+                </div>
+
+                <Table className="custom-table-domestic">
+                    <thead>
+                        <tr>
+                            <th rowSpan="2" className="text-center">종목명</th>
+                            <th rowSpan="2" className="text-center">주가</th>
+                            <th colSpan="3" className="text-center">현재</th>
+                            <th rowSpan="2" className="text-center">희망비중</th>
+                            <th colSpan="3" className="text-center">리밸런싱</th>
+                            <th rowSpan="2" className="text-center">수량조절</th>
+                        </tr>
+                        <tr>
+                            <th>수량</th>
+                            <th>잔고 (₩)</th>
+                            <th>비중 (%)</th>
+                            <th>비중 (%)</th>
+                            <th>희망투자금 (₩)</th>
+                            <th>희망수량</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {domesticData.map((item) => (
+                            <DataRow
+                                key={item.id}
+                                item={item}
+                                totalAssets={totalAssets}
+                                totalTargetRatio={totalTargetRatio}
+                                onQuantityChange={handleQuantityChange}
+                                onTargetRatioChange={handleTargetRatioChange}
+                            />
+                        ))}
+                    </tbody>
+                </Table>
             </div>
         </div>
+
     );
 };
 
