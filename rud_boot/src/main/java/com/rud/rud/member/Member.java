@@ -16,13 +16,20 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private String userId;
 
     @Column(unique = true)
-    private String username;
+    private String name;
 
     private String password;
 
-    @Column(unique = true)
     private String email;
+
+    private String phoneNumber;
+
+    @Column(unique = true)
+    private boolean personalInfoConsent;
+
+    @Column(unique = true)
+    private  boolean dataAnalysisConsent;
 }
