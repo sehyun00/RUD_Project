@@ -6,6 +6,7 @@ html, body {
     background-color: #181a20; /* 배경색 */
 }
 
+
 .full-screen {
     height: 100vh; /* 전체 화면 높이를 차지하게 설정 */
     display: flex; /* Flexbox 사용 */

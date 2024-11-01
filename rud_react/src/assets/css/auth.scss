@@ -44,7 +44,7 @@
             input[type="password"],
             input[type="text"] {
                 padding: 10px;
-                border: 1.5px solid #535962;
+                border: 1.5px solid #2B3139;
                 border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
                 width: 100%;
                 overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
@@ -70,11 +70,12 @@
 
         &.google, &.apple {
             margin-bottom: 10px;
-            border: 1.5px solid #535962;
+            border: 1.5px solid #2B3139;
             background-color: #181a20;
 
             img {
                 height: 20px ;
+                float: left;
             }
         }
     }
@@ -90,7 +91,7 @@
             content: '';
             flex: 1;
             height: 1px;
-            background-color: #535962; /* 구분선 색상 */
+            background-color: #2B3139; /* 구분선 색상 */
         }
 
         span {

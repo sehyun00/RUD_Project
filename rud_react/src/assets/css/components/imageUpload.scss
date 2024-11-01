@@ -23,7 +23,7 @@
                 thead {
                     background-color: #535962;
                 }
-
+                
                 th, td {
                     padding: 10px;
                     text-align: center;
@@ -53,7 +53,7 @@
 }
 
 .btn-custom {
-    background-color: #007bff;
+    background-color: #0ECB81;
     color: white;
     border: none;
     border-radius: 12px;
@@ -64,12 +64,12 @@
     box-shadow: 0 2px 4px rgba(0, 123, 255, 0.5);
 
     &:hover {
-        background-color: #0056b3;
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.6);
+        background-color: #0a965e;
+        box-shadow: 0 4px 8px rgba(7, 133, 61, 0.6);
     }
 
     &:active {
         transform: scale(0.95);
-        box-shadow: 0 2px 4px rgba(0, 123, 255, 0.4);
+        box-shadow: 0 2px 4px rgba(6, 92, 59, 0.4);
     }
 }
