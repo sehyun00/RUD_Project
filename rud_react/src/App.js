@@ -12,6 +12,7 @@ import SignUp from "./views/signup";
 
 // component-items
 import Header from "./views/componentItems/header";
+import Log from "./views/components/log";
 
 function App() {
     
@@ -23,6 +24,7 @@ function App() {
                 <Route path='/home' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/log" element={<Log/>} />
             </Routes>
         </div>
     );
