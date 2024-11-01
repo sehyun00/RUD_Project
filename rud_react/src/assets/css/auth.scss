@@ -40,16 +40,17 @@
         .input-group {
             margin-bottom: 15px;
 
-            input[type="email"],
-            input[type="password"],
-            input[type="text"] {
+            input {
                 padding: 10px;
                 border: 1.5px solid #2B3139;
-                border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
+                border-radius: 10px; /* 둥근 모서리 */
                 width: 100%;
-                overflow: hidden; /* 경계를 벗어나는 콘텐츠를 숨김 */
-                color: #FFFFFF; /* 입력 텍스트 색상 변경 */
-                background-color: #181a20; /* 입력 배경색 변경 */
+                color: #FFFFFF; /* 입력 텍스트 색상 */
+                background-color: #181a20; /* 입력 배경색 */
+
+                &::placeholder {
+                    color: #B0B0B0; /* 플레이스홀더 색상 */
+                }
             }
         }
     }
