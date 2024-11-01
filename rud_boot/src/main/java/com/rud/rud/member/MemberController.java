@@ -14,31 +14,37 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/user")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/signup")
-    public String signup(MemberCreateForm userCreateForm) {
+    @GetMapping("/login")
+    public String login() {
+
+        return "test1";
+    }
+
+
+    @GetMapping("/user/signup")
+    public String signup(MemberCreateForm memberCreateForm) {
         return "signup_form";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
 
-        if (!memberCreateForm.getPassword1().equals(memberCreateForm.getPassword2())) {
-            bindingResult.rejectValue("password2", "passwordInCorrect",
+        if (!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())) {
+            bindingResult.rejectValue("checkPassword", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
 
         memberService.create(
                 memberCreateForm.getUserId(),
-                memberCreateForm.getPassword1(),
+                memberCreateForm.getPassword(),
                 memberCreateForm.getName(),
                 memberCreateForm.getEmail(),
                 memberCreateForm.getPhoneNumber(),
@@ -46,6 +52,6 @@ public class MemberController {
                 memberCreateForm.isPersonalInfoConsent()
                 );
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

@@ -18,10 +18,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
 
-    @Column(unique = true)
     private String name;
 
     private String password;
+
 
     private String email;
 
