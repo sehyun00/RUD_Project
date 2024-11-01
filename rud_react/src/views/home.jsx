@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+// features
+=======
+>>>>>>> 560fc468d239ac9da74978501b964146485ae17c
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 
@@ -10,7 +14,11 @@ import ImageUpload from "./components/imageUpload";
 
 // page
 const Home = () => {
+<<<<<<< HEAD
+    const [isImageUploadVisible, setImageUploadVisible] = useState(true); // 상태 추가
+=======
     const [isImageUploadVisible, setImageUploadVisible] = useState(true); // 초기값을 true로 설정
+>>>>>>> 560fc468d239ac9da74978501b964146485ae17c
 
     // 저장하기 버튼 클릭 핸들러
     const handleSave = () => {
