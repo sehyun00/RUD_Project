@@ -37,45 +37,48 @@
 
         .header-right {
             display: flex;
-            gap: 40px;
             font-size: 18px;
-            padding: 10px;
 
-            h5 {
+            .button {
+                padding: 10px 15px;
+                border-radius: 8px;
+
                 &:hover {
-                    color: #0ECB81; // 호버 시 색상 변경
+                    background-color: #18317c;
+                    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
                 }
+
             }
 
-            .menu-item {
-                position: relative; // 드롭다운 위치를 위한 상대 위치 설정
-                cursor: pointer;
+            // .menu-item {
+            //     position: relative; // 드롭다운 위치를 위한 상대 위치 설정
+            //     cursor: pointer;
 
-                .dropdown-menu {
-                    position: absolute;
-                    top: 100%; // 메뉴 아래에 위치
-                    left: 0;
-                    background-color: #1E2329; // 배경색
-                    border: 1px solid #2B3139;
-                    border-radius: 10px;
-                    z-index: 2000; // 드롭다운이 다른 요소 위에 오도록 설정
-                    display: flex;
-                    flex-direction: column;
-                    min-width: 200px; // 메뉴1의 너비에 맞추기 위한 최소 너비 설정
+            //     .dropdown-menu {
+            //         position: absolute;
+            //         top: 100%; // 메뉴 아래에 위치
+            //         left: 0;
+            //         background-color: #1E2329; // 배경색
+            //         border: 1px solid #2B3139;
+            //         border-radius: 10px;
+            //         z-index: 2000; // 드롭다운이 다른 요소 위에 오도록 설정
+            //         display: flex;
+            //         flex-direction: column;
+            //         min-width: 200px; // 메뉴1의 너비에 맞추기 위한 최소 너비 설정
     
-                    a {
-                        padding: 8px 16px;
-                        color: #EAECEF; // 서브 메뉴 글자 색상
-                        text-decoration: none;
-                        display: block; // 링크를 블록으로 만들어 클릭 영역 확대
+            //         a {
+            //             padding: 8px 16px;
+            //             color: #EAECEF; // 서브 메뉴 글자 색상
+            //             text-decoration: none;
+            //             display: block; // 링크를 블록으로 만들어 클릭 영역 확대
     
-                        &:hover {
-                            background-color: rgba(0,0,0,0.5); // 서브 메뉴 호버 색상
-                            border-radius: 10px;
-                        }
-                    }
-                }
-            }
+            //             &:hover {
+            //                 background-color: rgba(0,0,0,0.5); // 서브 메뉴 호버 색상
+            //                 border-radius: 10px;
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }
