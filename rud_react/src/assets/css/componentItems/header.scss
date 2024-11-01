@@ -10,38 +10,19 @@
     z-index: 1000;
     transition: color 0.3s;
 
-<<<<<<< HEAD
     h3{
         font-size: 28px;
         padding: 10px;
     }
-=======
-<<<<<<< HEAD
-=======
-.header a {
-    color: inherit; /* 부모 요소의 색상을 상속받음 */
-    text-decoration: none; /* 기본 링크 밑줄 제거 */
-}
->>>>>>> origin/back)Member_DB
 
     a {
         color: inherit; /* 부모 요소의 색상을 상속받음 */
         text-decoration: none; /* 기본 링크 밑줄 제거 */
 
-<<<<<<< HEAD
         &:visited {
             color: inherit; /* 클릭 후 색상을 부모의 색상으로 유지 */
         }
     }
-=======
->>>>>>> 560fc468d239ac9da74978501b964146485ae17c
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-}
->>>>>>> origin/back)Member_DB
 
     .header-container {
         display: flex;
