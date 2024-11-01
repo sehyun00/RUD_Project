@@ -57,7 +57,7 @@
     button {
         width: 100%;
         padding: 10px;
-        background-color: #0ECB81;
+        background-color: #213A96;
         color: white;
         border: none;
         border-radius: 10px;
@@ -65,7 +65,7 @@
         font-size: 16px;
 
         &:hover {
-            background-color: #0a965e;
+            background-color: #758ad8;
         }
 
         &.google, &.apple {
@@ -110,11 +110,12 @@
         display: block; /* 블록 요소로 설정하여 전체 너비 사용 */
         margin-top: 20px; /* 버튼과의 간격 */
         text-align: center; /* 가운데 정렬 */
-        color: #0a965e; /* 링크 색상 */
+        color: #ffffff; /* 링크 색상 */
         font-size: 14px; /* 글씨 크기 */
         text-decoration: none; /* 기본 밑줄 제거 */
 
         &:hover {
+            color: #758ad8;
             text-decoration: underline; /* hover 시 밑줄 추가 */
         }
     }
