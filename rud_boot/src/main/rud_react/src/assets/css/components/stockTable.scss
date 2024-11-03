@@ -1,0 +1,86 @@
+.table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    margin-top: 5%; // 여백 조정
+    
+}
+
+.table-wrapper {
+    border: 1px solid #2B3139;
+    border-radius: 10px;
+    overflow: hidden; /* 경계선이 깔끔하게 보이도록 */
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.custom-table-overseas,
+.custom-table-domestic {
+    width: 100%; // 전체 너비
+    border-collapse: collapse;
+    overflow: hidden; // 경계선 깔끔하게
+    margin: 0px 0; // 여백 조정
+
+    th {
+        text-align: center;
+        padding: 12px; // 패딩 조정
+        font-size: 14px;
+        background-color: #181a20; // 밝은 배경색
+        color: #EAECEF;
+        border-bottom: 2px solid #2B3139;
+    }
+
+    td {
+        text-align: center;
+        padding: 10px; // 패딩 조정
+        font-size: 14px;
+        background-color: transparent;
+        border-top: 1px solid #2B3139; // 경계선 추가
+        color: #EAECEF;
+    }
+
+    tr:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.table-spacing {
+    height: 20px; // 원하는 간격 조정
+    padding: 10px;
+    padding-bottom: 30px;
+
+    span {
+        font-weight: 700;
+        font-size: larger;
+    }
+}
+
+.input-cell {
+    width: 10%; // 너비 조정
+}
+
+.input-style {
+    width: 60%;
+    text-align: center;
+    height: 36px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da; // 경계선 색상 변경
+    border-radius: 4px;
+    padding: 4px;
+    transition: border-color 0.3s;
+    background-color: #f0f0f0; // 밝은 배경색
+
+    &:focus {
+        border-color: #80bdff; // 포커스 시 경계선 색상
+        outline: none;
+        background-color: #ffffff; // 포커스 시 배경색 변경
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
