@@ -28,7 +28,4 @@ public class MemberService {
         return member;
     }
 
-    public Member checkMember(String userId, String password){
-
-    }
 }

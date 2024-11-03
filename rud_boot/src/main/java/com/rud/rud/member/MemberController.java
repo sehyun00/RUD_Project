@@ -18,9 +18,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/login")
+    @GetMapping("/superant/login")
     public String login() {
-
         return "login_form";
     }
 
@@ -52,6 +51,6 @@ public class MemberController {
                 memberCreateForm.isPersonalInfoConsent()
                 );
 
-        return "redirect:/login";
+        return "redirect:/superant/login";
     }
 }
