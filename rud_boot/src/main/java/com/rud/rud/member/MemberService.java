@@ -27,4 +27,8 @@ public class MemberService {
         this.memberRepository.save(member);
         return member;
     }
+
+    public Member checkMember(String userId, String password){
+
+    }
 }

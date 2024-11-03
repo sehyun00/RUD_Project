@@ -21,16 +21,16 @@ public class MemberController {
     @GetMapping("/login")
     public String login() {
 
-        return "test1";
+        return "login_form";
     }
 
 
-    @GetMapping("/user/signup")
+    @GetMapping("/superant/signup")
     public String signup(MemberCreateForm memberCreateForm) {
         return "signup_form";
     }
 
-    @PostMapping("/user/signup")
+    @PostMapping("/superant/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
