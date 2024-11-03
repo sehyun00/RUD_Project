@@ -6,29 +6,28 @@ import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/superant/login")
-    public String login() {
-        return "login_form";
-    }
+//    @GetMapping("/superant/login")
+//    public String login(@RequestBody LoginRequest loginRequest) {
+//        boolean validated = memberService.validateMember(loginRequest);
+//        return validated ? "success": "fail";
+//    }
 
 
     @GetMapping("/superant/signup")
     public String signup(MemberCreateForm memberCreateForm) {
-        return "signup_form";
+        return "signup";
     }
-
+     // 이거 고장
     @PostMapping("/superant/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -41,7 +40,7 @@ public class MemberController {
             return "signup_form";
         }
 
-        memberService.create(
+        this.memberService.create(
                 memberCreateForm.getUserId(),
                 memberCreateForm.getPassword(),
                 memberCreateForm.getName(),

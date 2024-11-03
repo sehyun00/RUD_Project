@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,8 @@ import lombok.Setter;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
+    @Size(min = 8, max = 20)
     private String userId;
 
     private String name;
@@ -26,9 +28,7 @@ public class Member {
 
     private String phoneNumber;
 
-    @Column(unique = true)
     private boolean personalInfoConsent;
 
-    @Column(unique = true)
     private  boolean dataAnalysisConsent;
 }
