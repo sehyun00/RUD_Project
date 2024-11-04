@@ -32,27 +32,23 @@ public class MemberController {
     @PostMapping("/superant/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) throws BadRequestException {
 
-        System.out.println("1");
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> {
-                System.out.println("에러: " + error.getDefaultMessage());
-            });
-            return "signup";
+        // 아이디 중복성 체크
+        if (memberService.exitsByUserId(memberCreateForm.getUserId())) {
+            System.out.println("1");
+            bindingResult.rejectValue("userId", "exitsUserId",
+                    "이미 아이디가 존재합니다");
+            return "signup"; // 유효성 검사 오류가 발생하면 즉시 반환
         }
 
-        //비밀번호 불일치 체크
+        // 비밀번호 불일치 체크
         if (!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())) {
-            System.out.println("3");
+            System.out.println("2");
             bindingResult.rejectValue("checkPassword", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup";
+            return "signup"; // 유효성 검사 오류가 발생하면 즉시 반환
         }
-        
-        //아이디 중복성 체크
-        if (memberService.exitsByUserId(memberCreateForm.getUserId())) {
-            System.out.println("4");
-            throw new BadRequestException("이미 사용중인 아이디입니다.");
-        }
+
+        // 유효성 검사 오류가 없으면 회원 생성
         this.memberService.create(
                 memberCreateForm.getUserId(),
                 memberCreateForm.getPassword(),
@@ -61,7 +57,7 @@ public class MemberController {
                 memberCreateForm.getPhoneNumber(),
                 memberCreateForm.isDataAnalysisConsent(),
                 memberCreateForm.isPersonalInfoConsent()
-                );
+        );
 
         return "redirect:/superant/login";
     }

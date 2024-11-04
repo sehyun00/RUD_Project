@@ -15,7 +15,6 @@ public class Member {
 
     @Id
     @Column(unique = true)
-    @Size(min = 8, max = 20)
     private String userId;
 
     private String name;
