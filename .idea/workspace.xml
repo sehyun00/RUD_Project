@@ -7,9 +7,12 @@
     <list default="true" id="ae8eca40-fd55-4a18-a1b3-d11e23e98e7c" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberController.java" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rud_boot/src/main/rud_react/src/views/signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/rud_react/src/views/signup.jsx" afterDir="false" />
+=======
+>>>>>>> 6b17c465f7c798c22e1f7d2427ab79766f3f2dbf
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,7 +247,11 @@
       <workItem from="1730624164895" duration="4405000" />
       <workItem from="1730680073095" duration="7691000" />
       <workItem from="1730692162483" duration="326000" />
+<<<<<<< HEAD
       <workItem from="1730692814175" duration="15289000" />
+=======
+      <workItem from="1730692814175" duration="13691000" />
+>>>>>>> 6b17c465f7c798c22e1f7d2427ab79766f3f2dbf
     </task>
     <servers />
   </component>
