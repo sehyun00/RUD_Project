@@ -1,0 +1,9 @@
+1. 가상환경 파이썬 3.12
+conda create -n stock
+
+2. pip 설치
+pip install tensorflow
+pip install keras
+pip install numpy       
+pip install pandas 
+pip install scikit-learn
