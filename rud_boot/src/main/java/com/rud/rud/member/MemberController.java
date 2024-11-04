@@ -29,7 +29,7 @@ public class MemberController {
             return "login"; // 로그인 페이지로 반환
         }
         System.out.println("로그인 성공");
-        return "success"; // 로그인 성공 시 처리
+        return "redirect:/rud"; // 로그인 성공 시 처리
     }
     
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ

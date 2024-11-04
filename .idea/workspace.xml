@@ -7,13 +7,6 @@
     <list default="true" id="ae8eca40-fd55-4a18-a1b3-d11e23e98e7c" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/member/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/css/main.4275ed95.css" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/css/main.4275ed95.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/453.daa0c244.chunk.js" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/453.daa0c244.chunk.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/main.6700b6b5.js" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/main.6700b6b5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/main.6700b6b5.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/main.6700b6b5.js.LICENSE.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,7 +241,7 @@
       <workItem from="1730624164895" duration="4405000" />
       <workItem from="1730680073095" duration="7691000" />
       <workItem from="1730692162483" duration="326000" />
-      <workItem from="1730692814175" duration="13000000" />
+      <workItem from="1730692814175" duration="13691000" />
     </task>
     <servers />
   </component>
