@@ -47,6 +47,7 @@ const Signup = () => {
                     name: formData.username,
                     email: formData.email,
                     password: formData.password,
+                    checkPassword: formData.checkPassword,
                     phoneNumber: formData.phoneNumber,
                     dataAnalysisConsent: formData.dataAnalysisConsent,
                     personalInfoConsent: formData.personalInfoConsent
