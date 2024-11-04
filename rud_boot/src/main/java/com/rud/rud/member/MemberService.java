@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -14,6 +15,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Transactional
     public Member create(String userId, String name, String password, String email, String phoneNumber, boolean personalInfoConsent, boolean dataAnalysisConsent){
         Member member = new Member();
         member.setUserId(userId);
@@ -25,6 +28,11 @@ public class MemberService {
         member.setDataAnalysisConsent(dataAnalysisConsent);
         this.memberRepository.save(member);
         return member;
+    }
+
+    @Transactional
+    public boolean exitsByUserId(String userId){
+        return memberRepository.existsByUserId(userId);
     }
 
 }
