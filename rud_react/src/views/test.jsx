@@ -40,10 +40,26 @@ const Test = () => {
                 </div>
                 <div className="table-header-container">
                     <div className="table-header-wrapper">
-                        <div className="table-header">
-                            <p>ddd</p>
-                            <p>ssss</p>
-                        </div>
+                        <table className="table-header">
+                            <thead>
+                                <tr>
+                                    <th rowSpan="2" className="text-center">종목명</th>
+                                    <th rowSpan="2" className="text-center">주가</th>
+                                    <th colSpan="3" className="text-center2">현재</th>
+                                    <th rowSpan="2" className="text-center">희망비중</th>
+                                    <th colSpan="3" className="text-center2">리밸런싱</th>
+                                    <th rowSpan="2" className="text-center">수량조절</th>
+                                </tr>
+                                <tr>
+                                    <th>수량</th>
+                                    <th>잔고 ($)</th>
+                                    <th>비중 (%)</th>
+                                    <th>비중 (%)</th>
+                                    <th>희망투자금 ($)</th>
+                                    <th>희망수량</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
                 <div className="table-body-container">

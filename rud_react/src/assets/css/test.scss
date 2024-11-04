@@ -40,7 +40,7 @@
                 .table-switch {
                     display: flex;
                     justify-content: space-around;
-                    width: 10%;
+                    width: 12%;
                     padding: 4px 8px;
 
                     .table-choice {
@@ -50,15 +50,18 @@
 
                         .span {
                             padding: 4px 8px;
+                            color: #3254ce;
                         }
 
                         &:hover {
                             background-color: #181a20;
+                            color: #8eaaff;
                         }
 
                         &.active {
                             background-color: #213A96;
                             color: #EAECEF;
+                            font-weight: 600;
 
                             &:hover {
                                 background-color: #15255e;
@@ -88,12 +91,26 @@
                 padding: 8px;
 
                 .table-header {
-                    display: flex;
-                    justify-content: space-around;
-                    width: 100%;
-                    padding: 4px 8px;
+                    width: 100%; // 테이블 너비
+                    border-collapse: collapse; // 테두리 병합
+
+                    .text-center2 {
+                        border-bottom: 1px solid #7c7c7c;
+                    }
+
+                    th {
+                        padding: 10px;
+                        background-color: #181A20;
+                        color: #EAECEF; // 텍스트 색상
+                        text-align: center; // 가운데 정렬
+                    }
+
+                    th.text-center {
+                        vertical-align: middle; // 수직 정렬
+                    }
                 }
-                }
+
+            }
         }
 
         .table-body-container {
@@ -105,9 +122,7 @@
             height: auto;
             margin-top: 10px;
 
-            .table-body-wrapper {
-                    
-                }
+            .table-body-wrapper {}
         }
     }
 
