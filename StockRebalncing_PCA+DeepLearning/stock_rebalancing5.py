@@ -16,16 +16,20 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense
 import tensorflow as tf
+from tensorflow.keras.callbacks import TensorBoard
+import os
 
 # GPU 설정
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
     try:
-        # 메모리 증가 방식으로 GPU 메모리 할당
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"사용 가능한 GPU: {gpus}")
     except RuntimeError as e:
         print(e)
+else:
+    print("사용 가능한 GPU가 없습니다.")
 
 # 데이터 로드
 def load_data(file_path):
@@ -58,7 +62,12 @@ def create_model(input_dim):
 
 # 모델 학습
 def train_model(model, X_train, y_train, X_val, y_val, epochs=200, batch_size=32):
-    model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=epochs, batch_size=batch_size)
+    # TensorBoard 콜백 설정
+    log_dir = os.path.join("logs", "fit", "model")
+    tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+    model.fit(X_train, y_train, validation_data=(X_val, y_val),
+              epochs=epochs, batch_size=batch_size, callbacks=[tensorboard_callback])
 
 # 모델 평가 및 예측
 def evaluate_and_predict(models, X_val):
@@ -79,13 +88,8 @@ def calculate_rebalance_ratio(predictions):
 
 # 결과를 CSV로 저장
 def save_to_csv(stock_names, rebalance_ratios, filename='rebalance_data.csv'):
-    # 데이터프레임 생성
     df = pd.DataFrame({'주식명': stock_names, '리밸런싱비율': rebalance_ratios})
-
-    # 주식명으로 그룹화하여 리밸런싱 비율 합산
     df_grouped = df.groupby('주식명', as_index=False).sum()
-
-    # CSV 파일로 저장
     df_grouped.to_csv(filename, index=False)
     print(f"리밸런싱 비율이 {filename} 파일로 저장되었습니다.")
 
@@ -106,14 +110,9 @@ def main(file_path):
         train_model(model, X_train, y_train, X_val, y_val)
 
     predictions = evaluate_and_predict(models, X_val)
-
-    # 리밸런싱 비율을 확률로 계산
     rebalance_ratios = calculate_rebalance_ratio(predictions)
 
-    # 유효한 인덱스에 대한 주식명만 사용
     stock_names = data['주식명'].values[indices_val]
-
-    # CSV 파일 저장
     save_to_csv(stock_names, rebalance_ratios)
 
 # 실행

@@ -1,9 +1,24 @@
-1. 가상환경 파이썬 3.12
+1. 가상환경 파이썬 
 conda create -n stock
 
 2. pip 설치
 pip install tensorflow
 pip install keras
 pip install numpy       
+pip install pandas 
+pip install scikit-learn
+
+gpu 환경 설정==================================================================
+
+1. 가상환경 파이썬 3.9
+conda create -n stock python=3.9
+
+2. cuda&cudnn 설치
+conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
+
+3. pip 설치
+C:\Users\니컴이름\anaconda3\envs\stock\python.exe -m pip install --upgrade pip
+pip install "tensorflow<2.11" 
+pip install numpy<2
 pip install pandas 
 pip install scikit-learn

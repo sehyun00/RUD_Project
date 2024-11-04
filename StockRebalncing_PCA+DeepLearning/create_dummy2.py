@@ -9,7 +9,7 @@ stock_names = ['cony', 'cure', 'schd', 'magx', 'tech', 'health',
                'metals', 'construction', 'travel', 'software', 'ecommerce', 
                'semiconductors', 'healthtech', 'cloud']
 
-def generate_dummy_data(num_samples=2000):
+def generate_dummy_data(num_samples=20000):
     # 랜덤 시드 설정
     np.random.seed(42)
     
