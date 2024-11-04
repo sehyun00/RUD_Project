@@ -1,11 +1,8 @@
 package com.rud.rud.member;
 
-import com.rud.rud.member.MemberCreateForm;
-import com.rud.rud.member.MemberService;
 import jakarta.validation.Valid;
 
 import org.apache.coyote.BadRequestException;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,24 +10,36 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/superant")
 public class MemberController {
 
     private final MemberService memberService;
 
-//    @GetMapping("/superant/login")
-//    public String login(@RequestBody LoginRequest loginRequest) {
-//        boolean validated = memberService.validateMember(loginRequest);
-//        return validated ? "success": "fail";
-//    }
-
-
-    @GetMapping("/superant/signup")
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    @PostMapping("/login")
+    public String login(@RequestParam String userId, @RequestParam String password) {
+        if (!memberService.validateUserId(userId, password)) {
+            // 로그인 실패 시 처리
+            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
+            return "login"; // 로그인 페이지로 반환
+        }
+        System.out.println("로그인 성공");
+        return "success"; // 로그인 성공 시 처리
+    }
+    
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    @GetMapping("/signup")
     public String signup(MemberCreateForm memberCreateForm) {
         return "signup";
     }
-
-    @PostMapping("/superant/signup")
-    public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) throws BadRequestException {
+    
+    @PostMapping("/signup")
+    public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
 
         // 아이디 중복성 체크
         if (memberService.exitsByUserId(memberCreateForm.getUserId())) {
@@ -59,6 +68,6 @@ public class MemberController {
                 memberCreateForm.isPersonalInfoConsent()
         );
 
-        return "redirect:/superant/login";
+        return "redirect:/login";
     }
 }
