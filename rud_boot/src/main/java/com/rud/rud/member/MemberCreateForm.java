@@ -24,7 +24,6 @@ public class MemberCreateForm {
     @Email
     private String email;
 
-    @Size(min = 3, max = 25)
     @NotEmpty(message = "사용자 이름은 필수항목입니다.")
     private String name;
 

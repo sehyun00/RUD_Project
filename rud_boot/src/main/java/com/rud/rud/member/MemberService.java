@@ -10,13 +10,12 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    @Transactional
     public Member create(String userId, String name, String password, String email, String phoneNumber, boolean personalInfoConsent, boolean dataAnalysisConsent){
         Member member = new Member();
         member.setUserId(userId);
@@ -30,7 +29,6 @@ public class MemberService {
         return member;
     }
 
-    @Transactional
     public boolean exitsByUserId(String userId){
         return memberRepository.existsByUserId(userId);
     }
