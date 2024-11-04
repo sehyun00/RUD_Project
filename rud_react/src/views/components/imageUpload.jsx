@@ -34,7 +34,7 @@ const ImageUpload = ({ onSave }) => {
         files.forEach(file => formData.append('file', file));
 
         try {
-            const response = await axios.post('https://c082-210-119-32-187.ngrok-free.app/upload', formData, {
+            const response = await axios.post('https://d1fc-61-34-253-238.ngrok-free.app/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Upload Success:', response.data);
