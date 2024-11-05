@@ -1,7 +1,5 @@
 import React, {useState} from "react";
-import PropTypes from 'prop-types';
-
-// scss
+import PropTypes from 'prop-types'
 import '../assets/css/test.scss';
 
 // components
@@ -11,10 +9,11 @@ import TestKR from "./testKR";
 // page
 const Test = () => {
 
-    const [activeButton, setActiveButton] = useState(null);
+    const [activeButton, setActiveButton] = useState("국내");
     const handleButtonClick = (buttonName) => {
         setActiveButton(buttonName);
     };
+
     return (
         <div className="test-container">
             <div className="contents-container">
@@ -38,22 +37,18 @@ const Test = () => {
                         </div>
                     </div>
                 </div>
-                <div className="table-header-container">
-                    <div className="table-header-wrapper">
-                        <div className="table-header">
-                            <p>ddd</p>
-                            <p>ssss</p>
-                        </div>
+                <div className="table-container">
+                    <div className="table-wrapper">
+                        {
+                            activeButton === '국내'
+                                ? <TestKR/>
+                                : <TestEN/>
+                        }
                     </div>
                 </div>
-                <div className="table-body-container">
-                    <div className="table-body-wrapper">
-
-                    </div>
-                </div>
+                <TestEN/>
             </div>
-            <TestEN/>
-            <TestKR/>
+
         </div>
     );
 };
