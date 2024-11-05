@@ -13,31 +13,31 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() // H2 콘솔 접근 허용
-                        .anyRequest().permitAll()) // 모든 요청 허용
-                .csrf((csrf) -> csrf
-                        .disable()) // CSRF 보호 비활성화
-                .headers((headers) -> headers
+                        .requestMatchers("/login").permitAll() // 로그인 요청 허용
+                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
+                .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                .formLogin((formLogin) -> formLogin
-                        .loginPage("/superant/login")
-                        .defaultSuccessUrl("/superant/rud"))
-                .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/superant/logout"))
-                        .logoutSuccessUrl("/superant/login")
-                        .invalidateHttpSession(true))
-        ;
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login") // 커스텀 로그인 페이지
+                        .defaultSuccessUrl("/home") // 로그인 성공 후 이동할 페이지
+                        .permitAll()) // 모든 사용자에게 허용
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃 요청 매처
+                        .logoutSuccessUrl("/login") // 로그아웃 성공 후 이동할 페이지
+                        .invalidateHttpSession(true)); // 세션 무효화
         return http.build();
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // 비밀번호 암호화에 사용할 PasswordEncoder
     }
 }
-

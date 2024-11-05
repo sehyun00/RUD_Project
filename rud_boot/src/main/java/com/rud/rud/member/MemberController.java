@@ -2,7 +2,10 @@ package com.rud.rud.member;
 
 import jakarta.validation.Valid;
 
+import lombok.Getter;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,37 +19,43 @@ public class MemberController {
     private final MemberService memberService;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    @PostMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String password) {
-        if (!memberService.validateUserId(userId, password)) {
-            // 로그인 실패 시 처리
-            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
-            return "login"; // 로그인 페이지로 반환
-        }
-        System.out.println("로그인 성공");
-        return "redirect:/rud"; // 로그인 성공 시 처리
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        String userId = loginRequest.getUserId();
+        String password = loginRequest.getPassword();
+
+        System.out.println("로그인 시도: userId = " + userId);
+
+        if (!memberService.validateUserId(userId, password)) {
+            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
+        }
+
+        System.out.println("로그인 성공");
+        return ResponseEntity.ok("로그인 성공");
+    }
+
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
+
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody MemberCreateForm memberCreateForm, BindingResult bindingResult) {
+    public void signup(@Valid @RequestBody MemberCreateForm memberCreateForm) {
 
         // 아이디 중복성 체크
         if (memberService.exitsByUserId(memberCreateForm.getUserId())) {
             System.out.println("1");
-            bindingResult.rejectValue("userId", "exitsUserId",
-                    "이미 아이디가 존재합니다");
-            return "signup"; // 유효성 검사 오류가 발생하면 즉시 반환
         }
         System.out.println(memberCreateForm.getPassword());
         System.out.println(memberCreateForm.getCheckPassword());
         // 비밀번호 불일치 체크
         if (!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())) {
             System.out.println("2");
-            bindingResult.rejectValue("checkPassword", "passwordInCorrect",
-                    "2개의 패스워드가 일치하지 않습니다.");
-            return "signup"; // 유효성 검사 오류가 발생하면 즉시 반환
         }
         System.out.println(memberCreateForm.getPassword());
         // 유효성 검사 오류가 없으면 회원 생성
@@ -59,7 +68,5 @@ public class MemberController {
                 memberCreateForm.isDataAnalysisConsent(),
                 memberCreateForm.isPersonalInfoConsent()
         );
-
-        return "redirect:/login";
     }
 }
