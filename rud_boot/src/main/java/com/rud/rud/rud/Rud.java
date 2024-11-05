@@ -14,7 +14,7 @@ public class Rud {
     @Id
     private Date rebalancingDate; //rud일자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private Member userId; //유저 아이디
 

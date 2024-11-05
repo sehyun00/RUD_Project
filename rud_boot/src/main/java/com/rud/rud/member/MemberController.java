@@ -6,40 +6,55 @@ import lombok.Getter;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.swing.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/superant")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MemberController {
 
     private final MemberService memberService;
+//    private final AuthenticationManager authenticationManager;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public void login() {
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String userId = loginRequest.getUserId();
-        String password = loginRequest.getPassword();
+//    @PostMapping("/login")
+//    public void login(@RequestParam String userId, @RequestParam String password) {
+//        if (memberService.validateUserId(userId, password) == false) {
+//            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
+//        }
+//        System.out.println("로그인 성공");
+//    }
 
-        System.out.println("로그인 시도: userId = " + userId);
-
-        if (!memberService.validateUserId(userId, password)) {
-            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
-        }
-
-        System.out.println("로그인 성공");
-        return ResponseEntity.ok("로그인 성공");
-    }
-
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestParam String userId, @RequestParam String password) {
+//        System.out.println("1");
+//        try {
+////             Spring Security의 AuthenticationManager를 사용하여 인증
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(userId, password));
+//
+//            // 인증 성공 시 적절한 응답 반환
+//            return ResponseEntity.ok("로그인 성공");
+//        } catch (AuthenticationException e) {
+//            System.out.println("2");
+//            // 인증 실패 시 에러 메시지 반환
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
+//        }
+//    }
+//
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
