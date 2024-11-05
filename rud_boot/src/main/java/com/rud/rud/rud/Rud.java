@@ -1,37 +1,33 @@
 package com.rud.rud.rud;
 
 import com.rud.rud.member.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
 @Entity
 public class Rud {
     @Id
-    private Date rebalancingDate;
+    private Date rebalancingDate; //rud일자
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private Member userId;
+    private Member userId; //유저 아이디
 
-    private String won;
+    private String won; //원화
 
-    private String dollar;
+    private String dollar; //달러
 
-    private String stockName;
+    private String stockName; //주식명
 
-    private double nos;
+    private double nos; //수량
 
-    private double marketOrder;
+    private double marketOrder; //주식가격
 
-    private double expertPer;
+    private double expertPer; //희망비중
 
 }

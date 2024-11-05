@@ -24,6 +24,13 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/superant/login")
+                        .defaultSuccessUrl("/superant/rud"))
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/superant/logout"))
+                        .logoutSuccessUrl("/superant/login")
+                        .invalidateHttpSession(true))
         ;
         return http.build();
     }

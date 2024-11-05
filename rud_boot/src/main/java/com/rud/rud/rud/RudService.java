@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.sql.Date;
 
 @RequiredArgsConstructor
 @Service
@@ -14,7 +14,7 @@ public class RudService {
     private final RudRepository rudRepository;
 
     @Transactional
-    public Rud create(Date rebalancongDate, Member userId, String name, String won, String dollar, String stockName, double nos, double marketOrder, double expertPer){
+    public Rud create(Date rebalancongDate, Member userId, String won, String dollar, String stockName, double nos, double marketOrder, double expertPer){
         Rud rud = new Rud();
         rud.setRebalancingDate(rebalancongDate);
         rud.setUserId(userId);
