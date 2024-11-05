@@ -4,7 +4,7 @@ import { Table } from "reactstrap";
 import "../../assets/css/components/stockTable.scss";
 
 // 더미 데이터 정의 - 해외
-const initialData = [
+const initialOverseasData = [
     { id: 1, name: "AAPL", price: 150.00, quantity: 10, targetRatio: 100 },
     { id: 2, name: "GOOGL", price: 2800.00, quantity: 5, targetRatio: 80 },
     { id: 3, name: "TSLA", price: 700.00, quantity: 20, targetRatio: 90 },
@@ -63,7 +63,7 @@ const DataRow = ({ item, totalAssets, totalTargetRatio, onQuantityChange, onTarg
 };
 
 const StockTable = () => {
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useState(initialOverseasData);
     const [domesticData, setDomesticData] = useState(initialDomesticData); // 국내 데이터 추가
 
     const handleQuantityChange = (id, newQuantity) => {

@@ -1,0 +1,183 @@
+.test-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; // 상단 정렬
+    overflow-y: auto; // 세로 스크롤 활성화
+    padding: 20px; // 내부 여백
+    color: #EAECEF;
+
+    .contents-container {
+        width: 1300px;
+        margin: 50px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: auto; // 전체 화면 높이
+        overflow-y: auto;
+        padding: 20px; // 내부 여백
+
+        .switch-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            margin-top: 5%;
+
+            .table-switch-wrapper {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                border-color: transparent;
+                border-radius: 10px;
+                background-color: #1f2540;
+                padding: 8px;
+
+                .table-switch {
+                    display: flex;
+                    justify-content: space-around;
+                    width: 12%;
+                    padding: 4px 8px;
+
+                    .table-choice {
+                        border-color: transparent;
+                        border-radius: 10px;
+                        padding: 4px 8px;
+
+                        .span {
+                            padding: 4px 8px;
+                            color: #3254ce;
+                        }
+
+                        &:hover {
+                            background-color: #181a20;
+                            color: #8eaaff;
+                        }
+
+                        &.active {
+                            background-color: #3254ce;
+                            color: #EAECEF;
+                            font-weight: 600;
+
+                            &:hover {
+                                background-color: #15255e;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+
+            .table-wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start; // 내용물이 상단 정렬되도록 수정
+                width: 100%;
+                background-color: transparent;
+                padding: 8px;
+                max-height: 600px; // 고정된 높이 설정, 필요에 따라 조정
+                overflow-y: auto; // 세로 스크롤 활성화
+                overflow: hidden;
+                /* 경계선이 깔끔하게 보이도록 */
+
+                .custom-table {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%; // 전체 너비
+                    border-collapse: collapse;
+                    margin: 0; // 여백 조정
+                    overflow: auto;
+
+                    thead {
+
+                        th {
+                            text-align: center;
+                            padding: 10px 8px; // 패딩 조정
+                            font-size: 14px;
+                            background-color: #181a20; // 밝은 배경색
+                            color: #EAECEF;
+                            border-bottom: 2px solid #2B3139;
+                        }
+                        .th {
+                            width: 7%;
+                        }
+                    }
+
+                    tbody {
+                        overflow: auto;
+                        height: auto; // 높이 설정을 제거하여 자동 조정
+                        background-color: #1f25404b;
+                        border: solid #2B3139;
+                        border-width: 0 0 2px;
+
+                        &::-webkit-scrollbar {
+                            display: flex;
+                            width: 5px;
+                            height: 5px;
+                            border-radius: 6px;
+                            background-color: transparent;
+                        }
+                        &::-webkit-scrollbar-thumb {
+                            background: #8eaaff86;
+                            border-radius: 6px;
+                        }
+
+                        td {
+                            width: 5%;
+                            text-align: center;
+                            padding: 10px 0; // 패딩 조정
+                            font-size: 14px;
+                            background-color: transparent;
+                            border-top: 1px solid #2B3139; // 경계선 추가
+                            color: #EAECEF;
+
+                            input {
+                                width: 60%;
+                                text-align: center;
+                                height: 36px;
+                                box-sizing: border-box;
+                                border: 1px solid #2B3139; // 경계선 색상 변경
+                                border-radius: 8px;
+                                padding-left: 10px;
+                                transition: border-color 0.3s;
+                                color: #EAECEF;
+                                background-color: transparent; // 밝은 배경색
+
+                                &::-webkit-inner-spin-button,
+                                &::-webkit-outer-spin-button {
+                                    height: 30px;
+                                }
+                                
+
+                                &:hover {
+                                    background-color: #292c33;
+                                }
+
+                                &:focus {
+                                    border-color:1px solid #80bdff; // 포커스 시 경계선 색상
+                                    outline: none;
+                                    background-color: #181A20; // 포커스 시 배경색 변경
+                                }
+                            }
+                        }
+                    }
+
+                    tr:hover {
+                        background-color: rgba(0, 0, 0, 0.5);
+                    }
+                }
+            }
+        }
+    }
+}
