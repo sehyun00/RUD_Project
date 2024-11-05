@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ae8eca40-fd55-4a18-a1b3-d11e23e98e7c" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/Rud.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/Rud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudService.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +104,7 @@
     "git-widget-placeholder": "back)make__rud__DB",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/workspace/sb",
+    "last_opened_file_path": "C:/Users/user/projects",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -243,7 +241,8 @@
       <workItem from="1730624164895" duration="4405000" />
       <workItem from="1730680073095" duration="7691000" />
       <workItem from="1730692162483" duration="326000" />
-      <workItem from="1730692814175" duration="17870000" />
+      <workItem from="1730692814175" duration="18220000" />
+      <workItem from="1730766857842" duration="25000" />
     </task>
     <servers />
   </component>
