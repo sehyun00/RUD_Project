@@ -6,7 +6,7 @@ import ios from '../assets/images/ios.png';
 import google from '../assets/images/logogoogle.png';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const Login = () => {
         
         try {
             const response = await axios.post('/superant/login', { // 백엔드 로그인 API 경로
-                email,
+                id,
                 password
             });
             
@@ -41,11 +41,11 @@ const Login = () => {
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
                             <input
-                                type="email"
-                                id="email"
-                                placeholder="이메일을 입력하세요"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="id"
+                                id="id"
+                                placeholder="아이디를 입력하세요"
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
                                 required="required"
                             />
                         </div>
