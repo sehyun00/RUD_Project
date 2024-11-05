@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
 import {Table} from "reactstrap";
-import '../assets/css/test.scss';
+import '../../assets/css/stockTable.scss';
 
 // 더미 데이터 정의 - 해외
 const initialOverseasData = [

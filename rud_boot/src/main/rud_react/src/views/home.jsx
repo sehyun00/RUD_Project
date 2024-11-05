@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
-
-// scss
 import '../assets/css/home.scss';
 
 // components
@@ -17,14 +15,19 @@ const Home = () => {
         setImageUploadVisible(false); // ImageUpload 숨기기
     };
 
+    // 이미지 재업로드 핸들러
+    const handleReloadImageUpload = () => {
+        setImageUploadVisible(true); // ImageUpload 보이기
+    };
+
     return (
-        <div className="converter-container"> {/* 스타일 적용된 컨테이너 */}
-            <div className="files-container"> {/* 파일 컨테이너 */}
-                {isImageUploadVisible ? (
-                    <ImageUpload onSave={handleSave} /> // prop으로 핸들러 전달
-                ) : (
-                    <StockTable /> // ImageUpload가 숨겨지면 StockTable 표시
-                )}
+        <div className="converter-container">
+            <div className="files-container">
+                {
+                    isImageUploadVisible
+                        ? (<ImageUpload onSave={handleSave} />) // prop으로 핸들러 전달
+                        : (<StockTable Reload={handleReloadImageUpload} />) // ImageUpload가 숨겨지면 StockTable 표시
+                }
             </div>
         </div>
     );
