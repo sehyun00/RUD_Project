@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import PropTypes from 'prop-types';
 import '../../assets/css/stockTable.scss';
 
@@ -7,7 +7,7 @@ import TestEN from "./testEN";
 import TestKR from "./testKR";
 
 // page
-const StockTable = ({ Reload }) => {
+const StockTable = ({Reload, stockData}) => {
     const [activeButton, setActiveButton] = useState("국내");
 
     const handleButtonClick = (clickButton) => {
@@ -27,18 +27,21 @@ const StockTable = ({ Reload }) => {
                     <div className="table-switch-wrapper">
                         <div className="table-switch">
                             <div
-                                className={`table-choice ${activeButton === '국내' ? 'active' : ''}`}
+                                className={`table-choice ${activeButton === '국내'
+                                    ? 'active'
+                                    : ''}`}
                                 onClick={() => handleButtonClick('국내')}>
                                 <span>국내</span>
                             </div>
                             <div
-                                className={`table-choice ${activeButton === '해외' ? 'active' : ''}`}
+                                className={`table-choice ${activeButton === '해외'
+                                    ? 'active'
+                                    : ''}`}
                                 onClick={() => handleButtonClick('해외')}>
                                 <span>해외</span>
                             </div>
-                            <div
-                                className="image-reload"
-                                onClick={handleReloadClick}> {/* 이미지 재업로드 핸들러 호출 */}
+                            <div className="image-reload" onClick={handleReloadClick}>
+                                {/* 이미지 재업로드 핸들러 호출 */}
                                 <span>이미지 재업로드</span>
                             </div>
                         </div>
@@ -46,7 +49,13 @@ const StockTable = ({ Reload }) => {
                 </div>
                 <div className="table-container">
                     <div className="table-wrapper">
-                        {activeButton === '국내' ? <TestKR /> : <TestEN />}
+                        {
+                            activeButton === '국내'
+                                ? <TestKR data={stockData
+                                            ?.국장}/>
+                                : <TestEN data={stockData
+                                            ?.해외장}/>
+                        }
                     </div>
                 </div>
             </div>
