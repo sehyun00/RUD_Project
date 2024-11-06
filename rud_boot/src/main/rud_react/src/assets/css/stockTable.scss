@@ -105,7 +105,6 @@
                 width: auto;
                 background-color: transparent;
                 padding: 5px;
-                max-height: 600px; // 고정된 높이 설정, 필요에 따라 조정
                 overflow-y: auto; // 세로 스크롤 활성화
                 overflow: hidden;
                 /* 경계선이 깔끔하게 보이도록 */
@@ -139,6 +138,7 @@
                         background-color: #1f25404b;
                         border: solid #2B3139;
                         border-width: 0 0 2px;
+                        max-height: 450px;
 
                         &::-webkit-scrollbar {
                             display: flex;
