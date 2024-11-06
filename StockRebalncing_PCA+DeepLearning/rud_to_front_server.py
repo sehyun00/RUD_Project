@@ -55,3 +55,5 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True, host='localhost', port=5004)
+
+#ex) http://localhost:5004/?stock_names=telecom,utility
