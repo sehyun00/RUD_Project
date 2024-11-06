@@ -8,7 +8,7 @@ import ImageUpload from "./components/imageUpload";
 
 // page
 const Home = () => {
-    const [isImageUploadVisible, setImageUploadVisible] = useState(true);
+    const [isImageUploadVisible, setImageUploadVisible] = useState(false);
     const [stockData, setStockData] = useState(null); // 주식 데이터를 저장할 상태 추가
 
     const handleSave = (data) => {

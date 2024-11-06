@@ -8,9 +8,9 @@
     color: #EAECEF;
 
     .contents-container {
-        width: 1300px;
-        margin: 50px 0;
-        display: flex;
+        width: auto;
+        margin: auto;
+        display: block;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
@@ -95,16 +95,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 100%;
+            width: auto;
             height: auto;
 
             .table-wrapper {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start; // 내용물이 상단 정렬되도록 수정
-                width: 100%;
+                width: auto;
                 background-color: transparent;
-                padding: 8px;
+                padding: 5px;
                 max-height: 600px; // 고정된 높이 설정, 필요에 따라 조정
                 overflow-y: auto; // 세로 스크롤 활성화
                 overflow: hidden;
@@ -113,7 +113,7 @@
                 .custom-table {
                     display: flex;
                     flex-direction: column;
-                    width: 100%; // 전체 너비
+                    width: auto; // 전체 너비
                     border-collapse: collapse;
                     margin: 0; // 여백 조정
                     overflow: auto;
@@ -129,7 +129,7 @@
                             border-bottom: 2px solid #2B3139;
                         }
                         .th {
-                            width: 7%;
+                            width: 140px;
                         }
                     }
 
@@ -153,7 +153,7 @@
                         }
 
                         td {
-                            width: 5%;
+                            width: 140px;
                             text-align: center;
                             padding: 10px 0; // 패딩 조정
                             font-size: 14px;
@@ -162,16 +162,19 @@
                             color: #EAECEF;
 
                             input {
-                                width: 60%;
+                                width: 80%;
                                 text-align: center;
                                 height: 36px;
                                 box-sizing: border-box;
                                 border: 1px solid #2B3139; // 경계선 색상 변경
                                 border-radius: 8px;
-                                padding-left: 10px;
                                 transition: border-color 0.3s;
                                 color: #EAECEF;
                                 background-color: transparent; // 밝은 배경색
+
+                                .numer {
+                                    padding-left: 10px;
+                                }
 
                                 &::-webkit-inner-spin-button,
                                 &::-webkit-outer-spin-button {
