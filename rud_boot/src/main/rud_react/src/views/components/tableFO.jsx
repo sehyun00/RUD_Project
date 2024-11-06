@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { Table } from "reactstrap";
 import '../../assets/css/stockTable.scss';
 
-const TableFO = ({ data, totalBalance }) => {
+const TableFO = ({ data, totalBalance, handleChange, desiredWeights, handleWeightChange }) => {
     const [stockData, setStockData] = useState(data);
 
-    const handleChange = (index, field, value) => {
-        const newStockData = [...stockData];
-        newStockData[index][field] = value;
-        setStockData(newStockData);
-    };
+    useEffect(() => {
+        setStockData(data);
+    }, [data]);
 
     // 잔고 계산
     const calculateBalances = () => {
@@ -63,11 +61,20 @@ const TableFO = ({ data, totalBalance }) => {
                                 />
                             </td>
                             <td>{item.balance}</td>
-                            <td>{totalBalance > 0 ? `${((currentBalance / totalBalance) * 100).toFixed(2)}%` : '0.00%'}</td> {/* 현재 비중 표시 */}
-                            <td>{/* 희망비중 */}</td>
+                            <td>{totalBalance > 0 ? `${((currentBalance / totalBalance) * 100).toFixed(2)}%` : '0.00%'}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={desiredWeights[index]}
+                                    onChange={(e) => handleWeightChange(index, e.target.value)}
+                                />
+                            </td>
                             <td>{/* 리밸런싱 비중 */}</td>
                             <td>{/* 희망투자금 */}</td>
                             <td>{/* 희망수량 */}</td>
+                            <td>{/* 조절할 수량 */}</td>
                         </tr>
                     );
                 })}
@@ -79,6 +86,7 @@ const TableFO = ({ data, totalBalance }) => {
 TableFO.propTypes = {
     data: PropTypes.array.isRequired, // data prop 정의
     totalBalance: PropTypes.number.isRequired, // totalBalance prop 정의
+    handleChange: PropTypes.func.isRequired, // handleChange prop 정의
 };
 
 export default TableFO;
