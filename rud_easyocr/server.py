@@ -204,7 +204,10 @@ def domestic_stock_data(data):
     for i in range(first_index, end_index):
         if data[i] not in exclude_items:
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]) and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
+               not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
+               not re.match(r'^S\d+', data[i]) and \
+               not re.match(r'^\d+(,\d+)*$', data[i]): 
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
@@ -246,7 +249,11 @@ def foreign_stock_data(data):
     for i in range(first_index, end_index):
         if data[i] not in exclude_items:
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]) and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
+            # \은 줄바꿈
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
+               not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
+               not re.match(r'^S\d+', data[i]) and \
+               not re.match(r'^\d+(,\d+)*$', data[i]): 
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
