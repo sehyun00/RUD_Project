@@ -129,7 +129,9 @@ const StockTable = ({Reload}) => {
             minimumFractionDigits: isForeign ? 2 : 0,
             maximumFractionDigits: isForeign ? 2 : 0
         };
-        return new Intl.NumberFormat('ko-KR', options).format(amount);
+        const formattedAmount = new Intl.NumberFormat('ko-KR', options).format(amount);
+        return isForeign ? `$ ${formattedAmount}` : `₩ ${formattedAmount}`;
+    
     };
 
     const calculateCurrentTotalBalance = () => {

@@ -91,7 +91,7 @@ const TableDO = ({
                                         value={item.quantity}
                                         onChange={(e) => handleChange(index, 'quantity', e.target.value)}/>
                                 </td>
-                                <td className="money-expression">₩ {formatCurrency(currentprice)}</td>
+                                <td>{formatCurrency(currentprice)}</td>
                                 <td>{formatCurrency(currentBalance.toFixed(2))} %</td>
                                 <td>
                                     <input
@@ -102,7 +102,7 @@ const TableDO = ({
                                         onChange={(e) => adjustWeights(index, e.target.value)}/>
                                 </td>
                                 <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
-                                <td>₩ {formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
+                                <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td>{quantityControl.toFixed(2)}</td>
                             </tr>

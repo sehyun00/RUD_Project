@@ -41,10 +41,10 @@ const TableFO = ({
                 </tr>
                 <tr>
                     <th className="th">수량</th>
-                    <th className="th">잔고 (₩)</th>
+                    <th className="th">잔고 ($)</th>
                     <th className="th">비중 (%)</th>
                     <th className="th">리밸런싱 비중 (%)</th>
-                    <th className="th">희망투자금 (₩)</th>
+                    <th className="th">희망투자금 ($)</th>
                     <th className="th">희망수량</th>
                 </tr>
             </thead>
@@ -73,7 +73,7 @@ const TableFO = ({
 
                         // 조절 수량
                         const quantityControl = desiredQuantity - item.quantity;
-                        
+
                         return (
                             <tr key={item.id}>
                                 <td>
@@ -82,7 +82,7 @@ const TableFO = ({
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}/>
                                 </td>
-                                <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                <td className="money-expression">$ {formatCurrency(item.price)}</td>
                                 <td>
                                     <input
                                         className="number"
@@ -90,7 +90,7 @@ const TableFO = ({
                                         value={item.quantity}
                                         onChange={(e) => handleChange(index, 'quantity', e.target.value)}/>
                                 </td>
-                                <td className="money-expression">₩ {formatCurrency(currentprice)}</td>
+                                <td> {formatCurrency(currentprice)}</td>
                                 <td>{formatCurrency(currentBalance.toFixed(2))} %</td>
                                 <td>
                                     <input
@@ -101,7 +101,7 @@ const TableFO = ({
                                         onChange={(e) => adjustWeights(index, e.target.value)}/>
                                 </td>
                                 <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
-                                <td>₩ {formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
+                                <td> {formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td>{quantityControl.toFixed(2)}</td>
                             </tr>
