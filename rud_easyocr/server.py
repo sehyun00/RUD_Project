@@ -57,9 +57,11 @@ class BaseOcr(ABC):
             cv2.line(roi_img, topRight, bottomRight, color, 2)
             cv2.line(roi_img, bottomRight, bottomLeft, color, 2)
             cv2.line(roi_img, bottomLeft, topLeft, color, 2)
-            roi_img = put_text(roi_img, text, topLeft[0], topLeft[1] - 20, color=color)
+            roi_img = put_text(
+                roi_img, text, topLeft[0], topLeft[1] - 20, color=color)
 
-        plt_imshow(["Original", "ROI"], [img, roi_img], figsize=(16, 10))
+        # ocr 결과 이미지로 보여줌
+        # plt_imshow(["Original", "ROI"], [img, roi_img], figsize=(16, 10))
 
     @abstractmethod
     def run_ocr(self, img_path: str, debug: bool = False):
@@ -81,7 +83,8 @@ class PororoOcr(BaseOcr):
             ocr_text = "No text detected."
 
         if debug:
-            self.show_img_with_ocr("bounding_poly", "description", "vertices", ["x", "y"])
+            self.show_img_with_ocr(
+                "bounding_poly", "description", "vertices", ["x", "y"])
 
         return ocr_text
 
@@ -96,7 +99,7 @@ class PororoOcr(BaseOcr):
 
 # https://www.jaided.ai/easyocr/documentation/
 class EasyOcr(BaseOcr):
-    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=True, **kwargs):
         super().__init__()
         self._ocr = Reader(lang_list=lang, gpu=gpu, **kwargs).readtext
 
@@ -116,7 +119,7 @@ class EasyOcr(BaseOcr):
 
 
 class EasyPororoOcr(BaseOcr):
-    def __init__(self, lang: List[str] = ["ko", "en"], gpu=False, **kwargs):
+    def __init__(self, lang: List[str] = ["ko", "en"], gpu=True, **kwargs):
         super().__init__()
         self._detector = Reader(lang_list=lang, gpu=gpu, **kwargs).detect
         self.detect_result = None
@@ -134,13 +137,15 @@ class EasyPororoOcr(BaseOcr):
             else self.img_path
         self._ocr = Pororo(task="ocr", lang="ko", model="brainocr", **kwargs)
 
-        self.detect_result = self._detector(self.img, slope_ths=0.3, height_ths=1)
+        self.detect_result = self._detector(
+            self.img, slope_ths=0.3, height_ths=1)
         if debug:
             print(self.detect_result)
 
         horizontal_list, free_list = self.detect_result
 
-        rois = [convert_coord(point) for point in horizontal_list[0]] + free_list[0]
+        rois = [convert_coord(point)
+                for point in horizontal_list[0]] + free_list[0]
 
         self.ocr_result = list(filter(
             lambda result: len(result[1]) > 0,
@@ -165,38 +170,88 @@ class EasyPororoOcr(BaseOcr):
 
 
 # 특정 데이터 추출 함수
-def extract_stock_data(data):
+# 국장 찾는 메소드
+# 시작 인덱스는 국내주식 뒤의 일간 수익금
+# 끝 인덱스는 국내주식 뒤의 개인정보 처리방침 or 해외주식
+def domestic_stock_data(data):
     domestic_stocks = []
-    foreign_stocks = []
 
+    # 국내주식 찾기
+    dome_index = data.index("국내주식") + 1
     # 첫 번째 "일간 수익금" 찾기
-    first_index = data.index("일간 수익금") + 1
-    # 두 번째 "일간 수익금" 찾기
-    second_index = data.index("일간 수익금", first_index) + 1
-    # "해외주식" 찾기
-    end_index = data.index("해외주식")
+    first_index = data.index("일간 수익금", dome_index) + 1
 
-    #국장 끝나는 시간의 경우 추가해야함
+    # "국내주식" 뒤의 "개인정보 처리방침" 찾기
+    try:
+        end_index_privacy = data.index("개인정보 처리방침", dome_index)
+    except ValueError:
+        end_index_privacy = len(data)  # 없을 경우 전체 길이로 설정
 
-    # 국내 주식 데이터 추출 (첫 번째 "일간 수익금"부터 "해외주식"까지)
+    # "국내주식" 뒤의 "해외주식" 찾기
+    try:
+        end_index_fore = data.index("해외주식", dome_index)
+    except ValueError:
+        end_index_fore = len(data)  # 없을 경우 전체 길이로 설정
+
+    # 종료 인덱스는 두 인덱스 중 더 작은 것을 선택
+    end_index = min(end_index_privacy, end_index_fore)
+
+    # 제외할 항목 리스트
+    exclude_items = ["종목명", "일간 수익률", "일간 수익금",
+                     "의견", "내 투자", "관심", "최근 본", "실시간"]
+
+    # 국내주식 데이터 추출 (국내주식 바로 뒤의 "일간 수익금"부터 종료 인덱스까지)
     for i in range(first_index, end_index):
-        if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
+        if data[i] not in exclude_items:
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^\d+(\.\d+)?$', data[i]):
-                cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]) and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
+                cleaned_stock_name = re.sub(
+                    r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
 
-    # 해외 주식 데이터 추출 (두 번째 "일간 수익금" 이후부터 "개인정보 처리방침")
-    start_index = second_index
-    end_index = data.index("개인정보 처리방침")
-    for i in range(start_index, end_index):
-        if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
+    return {"국장": domestic_stocks}
+
+
+# 해외장 찾는 메소드
+# 시작 인덱스는 해외주식 뒤의 일간 수익금
+# 끝 인덱스는 해외주식 뒤의 개인정보 처리방침 or 국내주식
+def foreign_stock_data(data):
+    foreign_stocks = []
+
+    # 해외주식 찾기
+    fore_index = data.index("해외주식") + 1
+    # 첫 번째 "일간 수익금" 찾기
+    first_index = data.index("일간 수익금", fore_index) + 1
+
+    # "해외주식" 뒤의 "개인정보 처리방침" 찾기
+    try:
+        end_index_privacy = data.index("개인정보 처리방침", fore_index)
+    except ValueError:
+        end_index_privacy = len(data)  # 없을 경우 전체 길이로 설정
+
+    # "해외주식" 뒤의 "국내주식" 찾기
+    try:
+        end_index_domestic = data.index("국내주식", fore_index)
+    except ValueError:
+        end_index_domestic = len(data)  # 없을 경우 전체 길이로 설정
+
+    # 종료 인덱스는 두 인덱스 중 더 작은 것을 선택
+    end_index = min(end_index_privacy, end_index_domestic)
+
+    # 제외할 항목 리스트
+    exclude_items = ["종목명", "일간 수익률", "일간 수익금",
+                     "의견", "내 투자", "관심", "최근 본", "실시간"]
+
+    # 해외 주식 데이터 추출 (해외주식 바로 뒤의 "일간 수익금"부터 종료 인덱스까지)
+    for i in range(first_index, end_index):
+        if data[i] not in exclude_items:
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
-                cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i]) and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
+                cleaned_stock_name = re.sub(
+                    r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
 
-    return {"국장": domestic_stocks, "해외장": foreign_stocks}
+    return {"해외장": foreign_stocks}
 
 
 # 플라스크 서버
@@ -227,11 +282,16 @@ def upload_file():
             return jsonify({'error': 'No text detected from image'}), 400
 
         # 국장 해외장 리스트에 넣기
-        response_data = extract_stock_data(ocr_texts)
+        response_data = domestic_stock_data(ocr_texts)
+        response_data.update(foreign_stock_data(ocr_texts))
+        response = jsonify(response_data)
+        # CORS 설정(이거 있어야 리액트에서 받을 수 있음)
+        response.headers.add('Access-Control-Allow-Origin', '*')
 
+        # ocr 전체 결과, 국장 & 해외장 추출 결과
         print('EasyPororoOCR:', ocr_texts)
         print('dome && fore:', response_data)
-        return jsonify(response_data), 200
+        return response_data, 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
