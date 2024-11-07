@@ -1,10 +1,34 @@
-import React, { useState } from "react"; // useState 추가
+import React from "react"; 
 import PropTypes from 'prop-types';
 import { Table } from "reactstrap";
 import '../../assets/css/stockTable.scss';
+import { toFormData } from "axios";
 
-const TableDO = ({ data, totalBalance, handleChange, desiredWeights, handleWeightChange }) => {
-    
+const TableDO = ({
+    data,
+    totalBalance,
+    handleChange,
+    desiredWeights,
+    handleWeightChange,
+    totalDesiredWeight,
+    currentTotalBalance,
+}) => {
+
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('ko-KR', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }).format(amount);
+    };    
+
+    const adjustWeights = (index, value) => {
+        const newDesiredWeights = [...desiredWeights];
+        newDesiredWeights[index] = Math.min(100, Math.max(0, value)); // 범위 제한
+
+        handleWeightChange(index, newDesiredWeights[index]);
+    };
+
     return (
         <Table className="custom-table">
             <thead>
@@ -20,63 +44,84 @@ const TableDO = ({ data, totalBalance, handleChange, desiredWeights, handleWeigh
                     <th className="th">수량</th>
                     <th className="th">잔고 (₩)</th>
                     <th className="th">비중 (%)</th>
-                    <th className="th">비중 (%)</th>
+                    <th className="th">리밸런싱 비중 (%)</th>
                     <th className="th">희망투자금 (₩)</th>
                     <th className="th">희망수량</th>
                 </tr>
             </thead>
             <tbody>
-                {data.map((item, index) => {
-                    const currentBalance = item.price * item.quantity; // 현재 잔고
-                    return (
-                        <tr key={item.id}>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={item.name}
-                                    onChange={(e) => handleChange(index, 'name', e.target.value)}
-                                />
-                            </td>
-                            <td>{item.price}</td>
-                            <td>
-                                <input
-                                    className="number"
-                                    type="number"
-                                    value={item.quantity}
-                                    onChange={(e) => handleChange(index, 'quantity', e.target.value)}
-                                />
-                            </td>
-                            <td>{currentBalance}</td>
-                            <td>{
-                                totalBalance > 0
-                                    ? `${((currentBalance / (data.reduce((total, currentItem) => total + (currentItem.price * currentItem.quantity), 0) + totalBalance)) * 100).toFixed(2)}%`
-                                    : '0.00%'
-                            }</td>
-                            <td>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    value={desiredWeights[index]}
-                                    onChange={(e) => handleWeightChange(index, e.target.value)}
-                                />
-                            </td>
-                            <td>{/* 리밸런싱 비중 */}</td>
-                            <td>{/* 희망투자금 */}</td>
-                            <td>{/* 희망수량 */}</td>
-                            <td>{/* 조절할 수량 */}</td>
-                        </tr>
-                    );
-                })}
+                {
+                    data.map((item, index) => {
+                        // 현재 잔고
+                        const currentprice = item.price * item.quantity;
+
+                        // 현재 비중 
+                        const currentBalance = currentTotalBalance > 0 ? (currentprice / currentTotalBalance) * 100 : 0;
+                        
+                        // 현재 종목의 희망 비중
+                        const currentDesiredWeight = parseFloat(desiredWeights[index]) || 0; 
+
+                        // 리밸런싱 비중 계산
+                        const rebalanceWeight = totalDesiredWeight > 0
+                            ? (currentDesiredWeight / totalDesiredWeight) * 100
+                            : 0;
+
+                        // 희망 투자금 계산
+                        const desiredInvestment = currentTotalBalance * (rebalanceWeight/100);
+
+                        // 희망 수량 계산
+                        const desiredQuantity = desiredInvestment / item.price;
+
+                        // 조절 수량
+                        const quantityControl = desiredQuantity - item.quantity;
+
+                        return (
+                            <tr key={item.id}>
+                                <td>
+                                    <input
+                                        type="text"
+                                        value={item.name}
+                                        onChange={(e) => handleChange(index, 'name', e.target.value)}/>
+                                </td>
+                                <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                <td>
+                                    <input
+                                        className="number"
+                                        type="number"
+                                        value={item.quantity}
+                                        onChange={(e) => handleChange(index, 'quantity', e.target.value)}/>
+                                </td>
+                                <td className="money-expression">₩ {formatCurrency(currentprice)}</td>
+                                <td>{formatCurrency(currentBalance.toFixed(2))} %</td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={desiredWeights[index]}
+                                        onChange={(e) => adjustWeights(index, e.target.value)}/>
+                                </td>
+                                <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
+                                <td>₩ {formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
+                                <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
+                                <td>{quantityControl.toFixed(2)}</td>
+                            </tr>
+                        );
+                    })
+                }
             </tbody>
         </Table>
     );
 };
 
 TableDO.propTypes = {
-    data: PropTypes.array.isRequired, // data prop 정의
-    totalBalance: PropTypes.number.isRequired, // totalBalance prop 정의
-    handleChange: PropTypes.func.isRequired, // handleChange prop 정의
+    data: PropTypes.array.isRequired,
+    totalBalance: PropTypes.number.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    desiredWeights: PropTypes.array.isRequired,
+    handleWeightChange: PropTypes.func.isRequired,
+    foreignDesiredWeights: PropTypes.array.isRequired,
+    totalDesiredWeight: PropTypes.number.isRequired, // totalDesiredWeight 추가
 };
 
 export default TableDO;
