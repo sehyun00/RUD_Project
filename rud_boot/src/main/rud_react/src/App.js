@@ -9,6 +9,7 @@ import "./App.css";
 import Home from './views/home';
 import Login from './views/login';
 import SignUp from "./views/signup";
+import UploadTEST from "./views/components/uploadTEST"
 
 // component-items
 import Header from "./views/componentItems/header";
@@ -25,6 +26,7 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/log" element={<Log/>} />
+                <Route path="/uploadTEST" element={<UploadTEST/>} />
             </Routes>
         </div>
     );
