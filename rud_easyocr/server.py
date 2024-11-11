@@ -207,7 +207,7 @@ def domestic_stock_data(data):
             if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
                not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
                not re.match(r'^S\d+', data[i]) and \
-               not re.match(r'^\d+(,\d+)*$', data[i]): 
+               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]): 
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
@@ -253,7 +253,7 @@ def foreign_stock_data(data):
             if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
                not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
                not re.match(r'^S\d+', data[i]) and \
-               not re.match(r'^\d+(,\d+)*$', data[i]): 
+               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]): 
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
@@ -261,9 +261,53 @@ def foreign_stock_data(data):
     return {"해외장": foreign_stocks}
 
 
+# 내 자산 총액, 한화, 달러 찾는 메소드
+def find_wallet(data):
+    wallet = {}
+
+    # 제외할 항목 리스트
+    exclude_items = ["자산", "거래 내역", "주문 내역",
+                     "판매 수익", "배당 내역", "이자 내역",
+                     "계좌 관리", "내 투자", "내투자",
+                     "관심", "최근 본", "최근본", "실시간", "의견"]
+
+    # 총 자산 찾기, 제외항목 제외
+    for line in data:
+        if line.startswith("토스증권") and not any(excluded in line for excluded in exclude_items):
+            # "토스증권" 다음의 숫자를 총자산으로 설정
+            total_assets = re.search(r'\d+(,\d+)*\s*[원$%]', line)
+            wallet["총자산"] = total_assets.group(0) if total_assets else "없음"
+            break
+    else:
+        wallet["총자산"] = "없음"
+
+    # 한화 & 달러 찾기, 제외항목 제외
+    for line in data:
+        if line.strip().endswith("달러") and not any(excluded in line for excluded in exclude_items):
+            # 한화 찾기
+            previous_line = data[data.index(line) - 1] if data.index(line) > 0 else ""
+            if re.search(r'\d+(,\d+)*\s*[원$%]', previous_line):
+                wallet["한화"] = re.search(r'(\d{1,3}(,\d{3})*)\s*원', previous_line).group(0)
+            else:
+                wallet["한화"] = "없음"
+
+            # 달러 찾기
+            if re.search(r'\$\d{1,3}(,\d{3})*(\.\d+)?', line):
+                wallet["달러"] = re.search(r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', line).group(0)
+            else:
+                wallet["달러"] = "없음"
+            break
+    else:
+        wallet["한화"] = "없음"
+        wallet["달러"] = "없음"
+
+    return wallet
+
+
 # 플라스크 서버
+# 종목, 수량 추출
 @app.route('/upload', methods=['POST'])
-def upload_file():
+def get_stock():
     # 파일 오류
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
@@ -309,5 +353,52 @@ def upload_file():
             os.remove(image_path)
 
 
+# 내 계좌 추출
+@app.route('/wallet', methods=['POST'])
+def get_wallet():
+    # 파일 오류
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # 파일 저장 경로 설정
+    image_path = os.path.join(IMAGE_FOLDER, file.filename)
+
+    try:
+        # 이미지 파일을 /images 폴더에 저장
+        file.save(image_path)
+
+        # 경로에서 이미지 불러와서 ocr 실행
+        m_ocr = EasyPororoOcr()
+        image = load_with_filter(image_path)
+        ocr_texts = m_ocr.run_ocr(image, debug=True)
+
+        # 텍스트 추출 실패
+        if ocr_texts == "No text detected.":
+            return jsonify({'error': 'No text detected from image'}), 400
+        print('EasyPororoOCR:', ocr_texts)
+        # 이미지에서 자산 추출
+        response_data = find_wallet(ocr_texts)
+        response = jsonify(response_data)
+        # CORS 설정(이거 있어야 리액트에서 받을 수 있음)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+        # ocr 전체 결과, 자산 추출 결과
+        print('EasyPororoOCR:', ocr_texts)
+        print('dome && fore:', response_data)
+        return response_data, 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    finally:
+        # 이미지 삭제
+        if os.path.exists(image_path):
+            os.remove(image_path)
+            
+            
 if __name__ == "__main__":
     app.run(debug=True)
