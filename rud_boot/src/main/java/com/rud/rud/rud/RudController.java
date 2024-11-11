@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/superant/rud")
+@RequestMapping("/superant")
 public class RudController {
 
     @Autowired
@@ -30,8 +31,8 @@ public class RudController {
         return "rud_form";
     }
 
-    @PostMapping
-    public void saveRud(@Valid @RequestBody List<RudData> rudDataList, Principal principal) {
+    @PostMapping("/rud")
+    public void saveRud(List<Rud> rud, Principal principal) {
         System.out.println("리밸런싱 로그 저장 요청 수신");
 
         String currentUserId = principal.getName(); // 사용자 이름이 userId라고 가정
@@ -39,7 +40,7 @@ public class RudController {
 
         Date rebalancingDate = Date.valueOf("2024-11-11"); // 예시 날짜
 
-        rudService.create(rebalancingDate, userId, rudDataList);
+        rudService.create(rud);
 
     }
 

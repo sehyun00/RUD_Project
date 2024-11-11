@@ -15,14 +15,11 @@ public class RudService {
     private final RudRepository rudRepository;
 
     @Transactional
-    public void create(Date rebalancingDate, Member userId, List<RudData> rudDataList){
-        for (RudData rudData : rudDataList) {
+    public void create(List<Rud> rudList){
+        for (Rud rudData : rudList) {
             Rud rud = new Rud(); // Rud 객체 생성
-            rud.setRebalancingDate(rebalancingDate);
-            rud.setUserId(userId);
             rud.setWon(rudData.getWon());
             rud.setDollar(rudData.getDollar());
-            rud.setStockName(rudData.getStockName());
             rud.setNos(rudData.getNos());
             rud.setMarketOrder(rudData.getMarketOrder());
             rud.setExpertPer(rudData.getExpertPer());
@@ -31,17 +28,22 @@ public class RudService {
         }
     }
 
-    @Transactional
-    public RudData show(Date rebalancongDate, Member userId){
-        RudData rud = new RudData();
-        if(rebalancongDate.equals(rud.getRebalancingDate()) && userId.equals(rud.getUserId())){
-            rud.getWon();
-            rud.getDollar();
-            rud.getStockName();
-            rud.getNos();
-            rud.getMarketOrder();
-            rud.getExpertPer();
-        }
-        return rud;
+    public List<Rud> getRudByUserId(String userId) {
+        return rudRepository.findByRudkeyUserId(userId);
     }
+
+
+//    @Transactional
+//    public RudData show(Date rebalancongDate, Member userId){
+//        RudData rud = new RudData();
+//        if(rebalancongDate.equals(rud.getRebalancingDate()) && userId.equals(rud.getUserId())){
+//            rud.getWon();
+//            rud.getDollar();
+//            rud.getStockName();
+//            rud.getNos();
+//            rud.getMarketOrder();
+//            rud.getExpertPer();
+//        }
+//        return rud;
+//    }
 }
