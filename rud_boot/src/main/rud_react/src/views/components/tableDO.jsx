@@ -2,11 +2,9 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Table } from "reactstrap";
 import '../../assets/css/stockTable.scss';
-import { toFormData } from "axios";
 
 const TableDO = ({
     data,
-    totalBalance,
     handleChange,
     desiredWeights,
     handleWeightChange,
@@ -44,7 +42,7 @@ const TableDO = ({
                     <th className="th">수량</th>
                     <th className="th">잔고 (₩)</th>
                     <th className="th">비중 (%)</th>
-                    <th className="th">리밸런싱 비중 (%)</th>
+                    <th className="th">비중 (%)</th>
                     <th className="th">희망투자금 (₩)</th>
                     <th className="th">희망수량</th>
                 </tr>
@@ -75,6 +73,10 @@ const TableDO = ({
                         // 조절 수량
                         const quantityControl = desiredQuantity - item.quantity;
 
+                        // 조절 수량 스타일 결정
+                        const quantityControlStyle = quantityControl > 0 ? 'text-plus' : 'text-minus'; // 양수는 빨간색, 음수는 파란색
+                        const quantityControlValue = quantityControl > 0 ? `+${quantityControl.toFixed(2)}` : quantityControl.toFixed(2);
+
                         return (
                             <tr key={item.id}>
                                 <td>
@@ -104,7 +106,7 @@ const TableDO = ({
                                 <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
-                                <td>{quantityControl.toFixed(2)}</td>
+                                <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
                             </tr>
                         );
                     })
@@ -121,7 +123,7 @@ TableDO.propTypes = {
     desiredWeights: PropTypes.array.isRequired,
     handleWeightChange: PropTypes.func.isRequired,
     foreignDesiredWeights: PropTypes.array.isRequired,
-    totalDesiredWeight: PropTypes.number.isRequired, // totalDesiredWeight 추가
+    totalDesiredWeight: PropTypes.number.isRequired, 
 };
 
 export default TableDO;

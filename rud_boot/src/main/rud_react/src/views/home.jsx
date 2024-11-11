@@ -26,7 +26,7 @@ const Home = () => {
                 {
                     isImageUploadVisible
                         ? (<ImageUpload onSave={handleSave} />) // prop으로 핸들러 전달
-                        : (<StockTable Reload={handleReloadImageUpload} stockData={stockData} />) // ImageUpload가 숨겨지면 StockTable 표시
+                        : (<StockTable Reload={handleReloadImageUpload} SD={stockData} />) // ImageUpload가 숨겨지면 StockTable 표시
                 }
             </div>
         </div>

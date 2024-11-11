@@ -5,7 +5,6 @@ import '../../assets/css/stockTable.scss';
 
 const TableFO = ({
     data,
-    totalBalance,
     handleChange,
     desiredWeights,
     handleWeightChange,
@@ -43,7 +42,7 @@ const TableFO = ({
                     <th className="th">수량</th>
                     <th className="th">잔고 ($)</th>
                     <th className="th">비중 (%)</th>
-                    <th className="th">리밸런싱 비중 (%)</th>
+                    <th className="th">비중 (%)</th>
                     <th className="th">희망투자금 ($)</th>
                     <th className="th">희망수량</th>
                 </tr>
@@ -74,6 +73,10 @@ const TableFO = ({
                         // 조절 수량
                         const quantityControl = desiredQuantity - item.quantity;
 
+                        // 조절 수량 스타일 결정
+                        const quantityControlStyle = quantityControl > 0 ? 'text-plus' : 'text-minus'; // 양수는 빨간색, 음수는 파란색
+                        const quantityControlValue = quantityControl > 0 ? `+${quantityControl.toFixed(2)}` : quantityControl.toFixed(2);
+
                         return (
                             <tr key={item.id}>
                                 <td>
@@ -103,7 +106,7 @@ const TableFO = ({
                                 <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
                                 <td> {formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
-                                <td>{quantityControl.toFixed(2)}</td>
+                                <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
                             </tr>
                         );
                     })

@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; // 상단 정렬
-    overflow-y: auto; // 세로 스크롤 활성화
+    // justify-content: flex-start; // 상단 정렬
+    // overflow-y: hidden; // 세로 스크롤 활성화
     padding: 20px; // 내부 여백
     color: #EAECEF;
-    height: 100vh;
+    height: auto;
 
     .contents-container {
         width: auto;
@@ -15,8 +15,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        height: 100%; // 전체 화면 높이
-        overflow-y: auto;
+        // height: auto; // 전체 화면 높이
+        // overflow-y: hidden;
         padding: 20px; // 내부 여백
 
         .switch-container {
@@ -105,9 +105,9 @@
                 justify-content: flex-start; // 내용물이 상단 정렬되도록 수정
                 width: auto;
                 background-color: transparent;
-                padding: 5px;
-                overflow-y: auto; // 세로 스크롤 활성화
-                overflow: hidden;
+                // padding: 5px;
+                // overflow-y: auto; // 세로 스크롤 활성화
+                // overflow: hidden;
                 /* 경계선이 깔끔하게 보이도록 */
 
                 .custom-table {
@@ -213,6 +213,12 @@
                                     background-color: #181A20; // 포커스 시 배경색 변경
                                 }
                             }
+                        }
+                        .text-plus {
+                            color: rgb(255, 65, 65);
+                        }
+                        .text-minus {
+                            color: rgb(71, 99, 255);
                         }
                     }
                     tr:hover {

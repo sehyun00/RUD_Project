@@ -8,7 +8,7 @@ import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload}) => {
+const StockTable = ({Reload}, SD) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(1200);
     const [loading, setLoading] = useState(true);
@@ -166,15 +166,8 @@ const StockTable = ({Reload}) => {
     const totalDesiredWeight = desiredWeights["국장"].reduce((total, weight) => total + (parseFloat(weight) || 0), 0) +
                               desiredWeights["해외장"].reduce((total, weight) => total + (parseFloat(weight) || 0), 0);
 
-    const rebalanceWeights = [
-        ...desiredWeights["국장"].map(weight => (parseFloat(weight) / totalDesiredWeight) * 100 || 0),
-        ...desiredWeights["해외장"].map(weight => (parseFloat(weight) / totalDesiredWeight) * 100 || 0)
-    ];
 
     const currentTotalBalance = calculateCurrentTotalBalance(); 
-
-    const [foreignDesiredWeights, setForeignDesiredWeights] = useState(Array(stockData["해외장"].length).fill(0));
-    const [domesticDesiredWeights, setDomesticDesiredWeights] = useState(Array(stockData["국장"].length).fill(0));
 
     if (loading) {
         return <div>환율을 로딩 중...</div>;
