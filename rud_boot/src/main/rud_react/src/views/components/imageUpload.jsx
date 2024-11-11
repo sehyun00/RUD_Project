@@ -29,22 +29,16 @@ const ImageUpload = ({onSave}) => {
             alert("업로드할 파일이 없습니다.");
             return;
         }
-
+    
         const formData = new FormData();
         files.forEach(file => formData.append('file', file));
-
+    
         try {
-            const response = await axios.post(
-                'https://fbbc-61-34-253-238.ngrok-free.app/upload',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
+            const response = await axios.post('https://d03b-61-34-253-238.ngrok-free.app/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
             console.log('Upload Success:', response.data);
-            onSave();
+            onSave(response.data); // 업로드된 데이터를 onSave에 전달
         } catch (error) {
             console.error('Upload Error:', error);
             alert("파일 업로드 실패: " + (
@@ -53,7 +47,7 @@ const ImageUpload = ({onSave}) => {
                     : "서버 오류"
             ));
         }
-    };
+    };    
 
     return (
         <div className="imageupload-container">

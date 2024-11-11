@@ -1,21 +1,22 @@
-.test-container {
+.stock-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; // 상단 정렬
-    overflow-y: auto; // 세로 스크롤 활성화
+    // justify-content: flex-start; // 상단 정렬
+    // overflow-y: hidden; // 세로 스크롤 활성화
     padding: 20px; // 내부 여백
     color: #EAECEF;
+    height: auto;
 
     .contents-container {
-        width: 1300px;
-        margin: 50px 0;
-        display: flex;
+        width: auto;
+        margin: auto;
+        display: block;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        height: auto; // 전체 화면 높이
-        overflow-y: auto;
+        // height: auto; // 전체 화면 높이
+        // overflow-y: hidden;
         padding: 20px; // 내부 여백
 
         .switch-container {
@@ -95,31 +96,30 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 100%;
+            width: auto;
             height: auto;
 
             .table-wrapper {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start; // 내용물이 상단 정렬되도록 수정
-                width: 100%;
+                width: auto;
                 background-color: transparent;
-                padding: 8px;
-                max-height: 600px; // 고정된 높이 설정, 필요에 따라 조정
-                overflow-y: auto; // 세로 스크롤 활성화
-                overflow: hidden;
+                // padding: 5px;
+                // overflow-y: auto; // 세로 스크롤 활성화
+                // overflow: hidden;
                 /* 경계선이 깔끔하게 보이도록 */
 
                 .custom-table {
                     display: flex;
                     flex-direction: column;
-                    width: 100%; // 전체 너비
+                    width: auto; // 전체 너비
                     border-collapse: collapse;
                     margin: 0; // 여백 조정
                     overflow: auto;
 
                     thead {
-
+                        padding-right: 5px;
                         th {
                             text-align: center;
                             padding: 10px 8px; // 패딩 조정
@@ -129,16 +129,19 @@
                             border-bottom: 2px solid #2B3139;
                         }
                         .th {
-                            width: 7%;
+                            width: 140px;
                         }
                     }
 
                     tbody {
+                        display: flex;
+                        flex-direction: column;
                         overflow: auto;
                         height: auto; // 높이 설정을 제거하여 자동 조정
                         background-color: #1f25404b;
                         border: solid #2B3139;
                         border-width: 0 0 2px;
+                        max-height: 450px;
 
                         &::-webkit-scrollbar {
                             display: flex;
@@ -152,8 +155,26 @@
                             border-radius: 6px;
                         }
 
+                        .money-expression {
+                            align-items: center;  
+                            text-align: justify;
+                            padding: 0 35px;
+                            padding-top: 18px;
+
+
+                            &:after{
+                                content: ' ';
+                              display: inline-block;
+                              width: 100%;
+                            }
+                        }
+
+                        tr {
+                            height: 60px;
+                        }
+
                         td {
-                            width: 5%;
+                            width: 140px;
                             text-align: center;
                             padding: 10px 0; // 패딩 조정
                             font-size: 14px;
@@ -162,16 +183,19 @@
                             color: #EAECEF;
 
                             input {
-                                width: 60%;
+                                width: 80%;
                                 text-align: center;
                                 height: 36px;
                                 box-sizing: border-box;
                                 border: 1px solid #2B3139; // 경계선 색상 변경
                                 border-radius: 8px;
-                                padding-left: 10px;
                                 transition: border-color 0.3s;
                                 color: #EAECEF;
                                 background-color: transparent; // 밝은 배경색
+
+                                .numer {
+                                    padding-left: 10px;
+                                }
 
                                 &::-webkit-inner-spin-button,
                                 &::-webkit-outer-spin-button {
@@ -190,8 +214,13 @@
                                 }
                             }
                         }
+                        .text-plus {
+                            color: rgb(255, 65, 65);
+                        }
+                        .text-minus {
+                            color: rgb(71, 99, 255);
+                        }
                     }
-
                     tr:hover {
                         background-color: rgba(0, 0, 0, 0.5);
                     }
