@@ -17,9 +17,12 @@ const Home = () => {
     };
 
     const handleReloadImageUpload = () => {
+        setStockData(null); 
         setImageUploadVisible(true); // ImageUpload 보이기
     };
-
+    
+    console.log('국장:', stockData?.국장);
+    console.log('해외장:', stockData?.해외장);
     return (
         <div className="converter-container">
             <div className="files-container">

@@ -8,10 +8,13 @@ import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload}, SD) => {
+const StockTable = ({Reload, SD}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(1200);
     const [loading, setLoading] = useState(true);
+    
+    console.log('stock 국장:', SD?.국장);
+    console.log('stock 해외장:', SD?.해외장);
 
     const [stockData, setStockData] = useState({
         "국장": [
@@ -79,17 +82,17 @@ const StockTable = ({Reload}, SD) => {
         ],
         "해외장": [
             {
-                id: 1,
+                id: 13,
                 name: "CONY",
                 price: 18.30,
                 quantity: 180
             }, {
-                id: 2,
+                id: 14,
                 name: "CURE",
                 price: 25.23,
                 quantity: 1
             }, {
-                id: 3,
+                id: 15,
                 name: "SCHD",
                 price: 30.84,
                 quantity: 6
@@ -104,6 +107,69 @@ const StockTable = ({Reload}, SD) => {
 
     const [currentData, setCurrentData] = useState(stockData["국장"]);
 
+    useEffect(() => {
+        const fetchStockPrices = async () => {
+            try {
+                const domesticStocks = SD?.국장 || [];
+                const foreignStocks = SD?.해외장 || [];
+    
+                // 국장 데이터에서 종목 이름을 추출
+                const domesticNames = domesticStocks.filter((_, index) => index % 2 === 0);
+                // 해외장 데이터에서 종목 이름을 추출
+                const foreignNames = foreignStocks.filter((_, index) => index % 2 === 0);
+    
+                // 국장 종가 가져오기
+                const domesticPrices = await Promise.all(domesticNames.map(stock => 
+                    fetchStockPrice(stock, '국장')
+                ));
+    
+                // 해외장 종가 가져오기
+                const foreignPrices = await Promise.all(foreignNames.map(stock => 
+                    fetchStockPrice(stock, '해외장')
+                ));
+    
+                // 종가를 stockData에 저장
+                const domesticData = domesticNames.map((name, index) => ({
+                    name,
+                    price: domesticPrices[index] || 0, // 종가가 없을 경우 0으로 설정
+                    quantity: 1 // 기본 수량 설정
+                }));
+    
+                const foreignData = foreignNames.map((name, index) => ({
+                    name,
+                    price: foreignPrices[index] || 0, // 종가가 없을 경우 0으로 설정
+                    quantity: 1 // 기본 수량 설정
+                }));
+    
+                setStockData({
+                    "국장": domesticData,
+                    "해외장": foreignData
+                });
+    
+            } catch (error) {
+                console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchStockPrices();
+    }, [SD]);
+
+    const fetchStockPrice = async (stockName, marketType) => {
+        console.log(stockName, marketType)
+        try {
+            const endpoint = marketType === '국장' ? 
+                `http://localhost:5001/getkos?name=${stockName}` : 
+                `http://localhost:5001/getnas?name=${stockName}`;
+            const response = await axios.get(endpoint);
+            return response.data; // 종가를 반환
+        } catch (error) {
+            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            return null;
+        }
+    };
+    
     useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
@@ -168,6 +234,8 @@ const StockTable = ({Reload}, SD) => {
 
 
     const currentTotalBalance = calculateCurrentTotalBalance(); 
+
+
 
     if (loading) {
         return <div>환율을 로딩 중...</div>;
@@ -242,6 +310,7 @@ const StockTable = ({Reload}, SD) => {
                 </div>
             </div>
         </div>
+        
     );
 };
 
