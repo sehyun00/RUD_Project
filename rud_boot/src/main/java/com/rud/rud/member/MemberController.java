@@ -19,11 +19,11 @@ import javax.swing.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/superant")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class MemberController {
 
     private final MemberService memberService;
-//    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     @GetMapping("/login")
@@ -53,35 +53,32 @@ public class MemberController {
 //            // 인증 실패 시 에러 메시지 반환
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
 //        }
-//    }
-//
+    }
+
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 
     @PostMapping("/signup")
-    public void signup(@Valid @RequestBody MemberCreateForm memberCreateForm) {
+    public void signup(@RequestBody MemberCreateForm memberCreateForm) {
+        System.out.println("123");
 
         // 아이디 중복성 체크
         if (memberService.exitsByUserId(memberCreateForm.getUserId())) {
             System.out.println("1");
-        }
-        System.out.println(memberCreateForm.getPassword());
-        System.out.println(memberCreateForm.getCheckPassword());
-        // 비밀번호 불일치 체크
-        if (!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())) {
+        } else if(!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())){ // 비밀번호 불일치 체크
             System.out.println("2");
+        } else{ // 유효성 검사 오류가 없으면 회원 생성
+            System.out.println("3");
+            this.memberService.create(
+                    memberCreateForm.getUserId(),
+                    memberCreateForm.getPassword(),
+                    memberCreateForm.getName(),
+                    memberCreateForm.getEmail(),
+                    memberCreateForm.getPhoneNumber(),
+                    memberCreateForm.isDataAnalysisConsent(),
+                    memberCreateForm.isPersonalInfoConsent()
+            );
         }
-        System.out.println(memberCreateForm.getPassword());
-        // 유효성 검사 오류가 없으면 회원 생성
-        this.memberService.create(
-                memberCreateForm.getUserId(),
-                memberCreateForm.getPassword(),
-                memberCreateForm.getName(),
-                memberCreateForm.getEmail(),
-                memberCreateForm.getPhoneNumber(),
-                memberCreateForm.isDataAnalysisConsent(),
-                memberCreateForm.isPersonalInfoConsent()
-        );
     }
 }
