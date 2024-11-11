@@ -207,7 +207,7 @@ def domestic_stock_data(data):
             if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
                not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
                not re.match(r'^S\d+', data[i]) and \
-               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]): 
+               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]):
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
@@ -253,7 +253,7 @@ def foreign_stock_data(data):
             if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
                not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
                not re.match(r'^S\d+', data[i]) and \
-               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]): 
+               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]):
                 cleaned_stock_name = re.sub(
                     r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
@@ -261,7 +261,7 @@ def foreign_stock_data(data):
     return {"해외장": foreign_stocks}
 
 
-# 내 자산 총액, 한화, 달러 찾는 메소드
+# 내 자산 총액, 원화, 달러 찾는 메소드
 def find_wallet(data):
     wallet = {}
 
@@ -271,36 +271,64 @@ def find_wallet(data):
                      "계좌 관리", "내 투자", "내투자",
                      "관심", "최근 본", "최근본", "실시간", "의견"]
 
-    # 총 자산 찾기, 제외항목 제외
-    for line in data:
-        print("여기에요", line)
+    found_total_assets = False
+
+    # '토스증권' 항목 찾기
+    # 그 인덱스 뒤에 나오는 숫자 + '원'을 찾음
+    for index, line in enumerate(data):
         if line.startswith("토스증권") and not any(excluded in line for excluded in exclude_items):
-            # "토스증권" 다음의 숫자를 총자산으로 설정
-            
-            total_assets = re.search(r'\d+(,\d+)*\s*[원$%]', line)
-            wallet["총자산"] = total_assets.group(0) if total_assets else "없음"
+            print(f"'토스증권' 항목의 인덱스: {index}")
+            # "토스증권" 이후 항목에서 총 자산 찾기
+            for next_index in range(index + 1, len(data)):
+                total_assets = re.search(
+                    r'(\d{1,3}(,\d{3})*)\s*원', data[next_index])
+                # total assets가 있다면 wallet에 넣어주기
+                if total_assets:
+                    wallet["총자산"] = total_assets.group(0)
+                    found_total_assets = True
+                    break
+            if not found_total_assets:
+                wallet["총자산"] = "없음"
             break
     else:
         wallet["총자산"] = "없음"
 
-    # 한화 & 달러 찾기, 제외항목 제외
-    for line in data:
-        if line.strip().endswith("달러") and not any(excluded in line for excluded in exclude_items):
-            # 한화 찾기
-            previous_line = data[data.index(line) - 1] if data.index(line) > 0 else ""
-            if re.search(r'\d+(,\d+)*\s*[원$%]', previous_line):
-                wallet["한화"] = re.search(r'(\d{1,3}(,\d{3})*)\s*원', previous_line).group(0)
-            else:
-                wallet["한화"] = "없음"
+    # 원화 & 달러 찾기
+    found_hanwa = False
+    found_dollar = False
 
-            # 달러 찾기
-            if re.search(r'\$\d{1,3}(,\d{3})*(\.\d+)?', line):
-                wallet["달러"] = re.search(r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', line).group(0)
+    for index, line in enumerate(data):
+        if line.strip().endswith("달러") and not any(excluded in line for excluded in exclude_items):
+            # 원화 찾기: "달러" 항목의 다음 줄에서 "원"이 포함된 숫자 찾기
+            if index + 1 < len(data):
+                print(f"달러 인덱스:{index}")
+                # next_line : 달러로 끝나는 인덱스
+                next_line = data[index + 1]
+                # 숫자 + 원 있으면 원화 키 안에 데이터로 넣음
+                if re.search(r'\d{1,3}(,\d{3})*\s*원', next_line):
+                    wallet["원화"] = re.search(
+                        r'(\d{1,3}(,\d{3})*)\s*원', next_line).group(0)
+                    found_hanwa = True
+                else:
+                    wallet["원화"] = "없음"
+
+            # 달러 찾기: 원화 항목의 다음 줄에서 "$"로 시작하는 숫자 찾기
+            if index + 2 < len(data):
+                dollar_line = data[index + 2]
+                # $ + 숫자가 있으면 달러 키 안에 데이터로 넣음
+                if re.search(r'\$\d{1,3}(,\d{3})*(\.\d+)?', dollar_line):
+                    wallet["달러"] = re.search(
+                        r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', dollar_line).group(0)
+                    found_dollar = True
+                else:
+                    wallet["달러"] = "없음"
             else:
                 wallet["달러"] = "없음"
             break
-    else:
-        wallet["한화"] = "없음"
+
+    if not found_hanwa:
+        wallet["원화"] = "없음"
+    if not found_dollar:
         wallet["달러"] = "없음"
 
     return wallet
@@ -391,7 +419,7 @@ def get_wallet():
         # ocr 전체 결과, 자산 추출 결과
         print('EasyPororoOCR:', ocr_texts)
         print('dome && fore:', response_data)
-        return response_data, 200
+        return response, 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -400,7 +428,7 @@ def get_wallet():
         # 이미지 삭제
         if os.path.exists(image_path):
             os.remove(image_path)
-            
-            
+
+
 if __name__ == "__main__":
     app.run(debug=True)
