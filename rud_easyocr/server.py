@@ -273,8 +273,10 @@ def find_wallet(data):
 
     # 총 자산 찾기, 제외항목 제외
     for line in data:
+        print("여기에요", line)
         if line.startswith("토스증권") and not any(excluded in line for excluded in exclude_items):
             # "토스증권" 다음의 숫자를 총자산으로 설정
+            
             total_assets = re.search(r'\d+(,\d+)*\s*[원$%]', line)
             wallet["총자산"] = total_assets.group(0) if total_assets else "없음"
             break
