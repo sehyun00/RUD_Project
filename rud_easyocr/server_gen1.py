@@ -315,10 +315,14 @@ def find_wallet(data):
             # 달러 찾기: 원화 항목의 다음 줄에서 "$"로 시작하는 숫자 찾기
             if index + 2 < len(data):
                 dollar_line = data[index + 2]
-                # $ + 숫자가 있으면 달러 키 안에 데이터로 넣음
+                
+                # "S"로 시작하는 경우 "$"로 변경
+                if dollar_line.startswith("S"):
+                    dollar_line = dollar_line.replace("S", "$", 1)  # 첫 번째 "S"를 "$"로 변경
+
+                # "$" + 숫자가 있으면 달러 키 안에 데이터로 넣음
                 if re.search(r'\$\d{1,3}(,\d{3})*(\.\d+)?', dollar_line):
-                    wallet["달러"] = re.search(
-                        r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', dollar_line).group(0)
+                    wallet["달러"] = re.search(r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', dollar_line).group(0)
                     found_dollar = True
                 else:
                     wallet["달러"] = "없음"
