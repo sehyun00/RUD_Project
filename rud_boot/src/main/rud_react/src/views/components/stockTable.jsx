@@ -13,8 +13,8 @@ const StockTable = ({Reload, SD}) => {
     const [exchangeRate, setExchangeRate] = useState(1200);
     const [loading, setLoading] = useState(true);
     
-    console.log('stock 국장:', SD?.국장);
-    console.log('stock 해외장:', SD?.해외장);
+    // console.log('stock 국장:', SD?.국장);
+    // console.log('stock 해외장:', SD?.해외장);
 
     const [stockData, setStockData] = useState({
         "국장": [
@@ -81,22 +81,6 @@ const StockTable = ({Reload, SD}) => {
             }
         ],
         "해외장": [
-            {
-                id: 13,
-                name: "CONY",
-                price: 18.30,
-                quantity: 180
-            }, {
-                id: 14,
-                name: "CURE",
-                price: 25.23,
-                quantity: 1
-            }, {
-                id: 15,
-                name: "SCHD",
-                price: 30.84,
-                quantity: 6
-            }
         ]
     });
 
@@ -113,33 +97,33 @@ const StockTable = ({Reload, SD}) => {
                 const domesticStocks = SD?.국장 || [];
                 const foreignStocks = SD?.해외장 || [];
     
-                // 국장 데이터에서 종목 이름을 추출
-                const domesticNames = domesticStocks.filter((_, index) => index % 2 === 0);
-                // 해외장 데이터에서 종목 이름을 추출
-                const foreignNames = foreignStocks.filter((_, index) => index % 2 === 0);
+                // 국장 데이터에서 종목 이름과 수량을 추출
+                const domesticData = domesticStocks.reduce((acc, curr, index) => {
+                    if (index % 2 === 0) { // 짝수 인덱스에서 종목명
+                        const quantity = domesticStocks[index + 1] || 1; // 다음 인덱스에서 수량 가져오기
+                        acc.push({ id: acc.length + 1, name: curr, quantity: parseInt(quantity), price: 0 });
+                    }
+                    return acc;
+                }, []);
     
-                // 국장 종가 가져오기
-                const domesticPrices = await Promise.all(domesticNames.map(stock => 
-                    fetchStockPrice(stock, '국장')
-                ));
+                // 해외장 데이터에서 종목 이름과 수량을 추출
+                const foreignData = foreignStocks.reduce((acc, curr, index) => {
+                    if (index % 2 === 0) { // 짝수 인덱스에서 종목명
+                        const quantity = foreignStocks[index + 1] || 1; // 다음 인덱스에서 수량 가져오기
+                        acc.push({ id: acc.length + domesticData.length + 1, name: curr, quantity: parseInt(quantity), price: 0 });
+                    }
+                    return acc;
+                }, []);
     
-                // 해외장 종가 가져오기
-                const foreignPrices = await Promise.all(foreignNames.map(stock => 
-                    fetchStockPrice(stock, '해외장')
-                ));
+                // 가격을 가져올 종목 리스트 생성
+                const allStocks = [...domesticData, ...foreignData];
     
-                // 종가를 stockData에 저장
-                const domesticData = domesticNames.map((name, index) => ({
-                    name,
-                    price: domesticPrices[index] || 0, // 종가가 없을 경우 0으로 설정
-                    quantity: 1 // 기본 수량 설정
-                }));
-    
-                const foreignData = foreignNames.map((name, index) => ({
-                    name,
-                    price: foreignPrices[index] || 0, // 종가가 없을 경우 0으로 설정
-                    quantity: 1 // 기본 수량 설정
-                }));
+                // 종가를 순차적으로 가져오기
+                for (const stock of allStocks) {
+                    stock.price = await fetchStockPrice(stock.name);
+                    // console.log(`${stock.name}: ${stock.price}`); // 종목명과 가격 로그
+                    await new Promise(resolve => setTimeout(resolve, 1000)); 
+                }
     
                 setStockData({
                     "국장": domesticData,
@@ -155,15 +139,26 @@ const StockTable = ({Reload, SD}) => {
     
         fetchStockPrices();
     }, [SD]);
-
+    
+    
     const fetchStockPrice = async (stockName, marketType) => {
-        console.log(stockName, marketType)
+        console.log(stockName, marketType); // 요청 전 로그
         try {
             const endpoint = marketType === '국장' ? 
                 `http://localhost:5001/getkos?name=${stockName}` : 
                 `http://localhost:5001/getnas?name=${stockName}`;
+            
             const response = await axios.get(endpoint);
-            return response.data; // 종가를 반환
+    
+            // 응답 데이터 로그
+            console.log(response.data); // 응답 데이터 확인
+    
+            // 종가를 반환하는 부분 수정
+            if (response.data) {
+                return response.data; // 문자열 그대로 반환
+            }
+    
+            return null; // 데이터가 없을 경우 null 반환
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
             return null;
