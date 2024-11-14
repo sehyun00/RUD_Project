@@ -1,37 +1,68 @@
-// feature
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import {Container, Table, Button} from 'reactstrap';
+import { Button } from 'reactstrap';
 import axios from 'axios';
 
 // scss
 import '../../assets/css/components/uploadTEST.scss';
 
-const UploadTEST = ({onSave}) => {
-    const [files, setFiles] = useState([]);
-    const fileInputRef = useRef(null);
+const UploadTEST = ({ onSave }) => {
+    const [files, setFiles] = useState([null, null]); // 두 개의 파일 상태
+    const [fileNames, setFileNames] = useState(["", ""]); // 파일 이름 상태
+    const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 인덱스
+    const fileInputRefs = [useRef(null), useRef(null)]; // 두 개의 ref
 
-    const handleFileInputChange = (event) => {
+    const handleFileInputChange = (index) => (event) => {
         const selectedFiles = Array.from(event.target.files);
-        setFiles(selectedFiles);
+        const newFiles = [...files];
+        const newFileNames = [...fileNames];
+
+        newFiles[index] = selectedFiles[0]; // 해당 인덱스에 파일 저장
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+
+        setFiles(newFiles);
+        setFileNames(newFileNames);
     };
 
-    const removeFile = (index) => {
-        setFiles(files.filter((_, i) => i !== index));
+    const handleAddFileClick = (index) => {
+        fileInputRefs[index].current?.click();
     };
 
-    const handleAddFileClick = () => {
-        fileInputRef.current?.click();
+    const handleDrop = (index) => (event) => {
+        event.preventDefault();
+        const selectedFiles = Array.from(event.dataTransfer.files);
+        const newFiles = [...files];
+        const newFileNames = [...fileNames];
+
+        newFiles[index] = selectedFiles[0]; // 드롭한 파일 저장
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+
+        setFiles(newFiles);
+        setFileNames(newFileNames);
+        setDraggingIndex(null); // 드래그 종료
+    };
+
+    const handleDragOver = (index) => (event) => {
+        event.preventDefault(); // 기본 동작 방지
+        setDraggingIndex(index); // 드래그 중인 인덱스 설정
+    };
+
+    const handleDragLeave = () => {
+        setDraggingIndex(null); // 드래그가 박스를 떠날 때 인덱스 초기화
     };
 
     const handleSaveClick = async () => {
-        if (files.length === 0) {
+        const formData = new FormData();
+        files.forEach(file => {
+            if (file) {
+                formData.append('file', file);
+            }
+        });
+
+        if (files.every(file => file === null)) {
             alert("업로드할 파일이 없습니다.");
             return;
         }
-
-        const formData = new FormData();
-        files.forEach(file => formData.append('file', file));
 
         try {
             const response = await axios.post(
@@ -68,22 +99,62 @@ const UploadTEST = ({onSave}) => {
                     </div>
                 </div>
                 <div className="image-box-container">
-                    <div className="image-box-wrapper">
-                        <div className="image-box">
+                    {/* 첫 번째 이미지 박스 */}
+                    <div className="image-box-wrapper-1">
+                        <div 
+                            className={`image-box-1 ${draggingIndex === 0 ? 'drag-over' : ''}`}
+                            onDrop={handleDrop(0)}
+                            onDragOver={handleDragOver(0)}
+                            onDragLeave={handleDragLeave}
+                        >
+                            {files[0] && (
+                                <img src={URL.createObjectURL(files[0])} alt="미리보기" className="image-1" />
+                            )}
                         </div>
-                        <div className="upload-button">
+                        <div className="upload-button-1" onClick={() => handleAddFileClick(0)}>
+                            <div>
+                                <span>파일 선택</span>
+                            </div>
                         </div>
+                        <input
+                            type="file"
+                            ref={fileInputRefs[0]}
+                            onChange={handleFileInputChange(0)}
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                        />
+                        {fileNames[0] && <div className="file-name">{fileNames[0]}</div>} {/* 파일명 표시 */}
                     </div>
-                    <div className="image-box-wrapper">
-                        <div className="image-box">
+
+                    {/* 두 번째 이미지 박스 */}
+                    <div className="image-box-wrapper-2">
+                        <div 
+                            className={`image-box-2 ${draggingIndex === 1 ? 'drag-over' : ''}`}
+                            onDrop={handleDrop(1)}
+                            onDragOver={handleDragOver(1)}
+                            onDragLeave={handleDragLeave}
+                        >
+                            {files[1] && (
+                                <img src={URL.createObjectURL(files[1])} alt="미리보기" className="image-2" />
+                            )}
                         </div>
-                        <div className="upload-button">
+                        <div className="upload-button-2" onClick={() => handleAddFileClick(1)}>
+                            <div>
+                                <span>파일 선택</span>
+                            </div>
                         </div>
+                        <input
+                            type="file"
+                            ref={fileInputRefs[1]}
+                            onChange={handleFileInputChange(1)}
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                        />
+                        {fileNames[1] && <div className="file-name">{fileNames[1]}</div>} {/* 파일명 표시 */}
                     </div>
                 </div>
                 <div className="confirm-button-container">
-                    <div className="comfirm-button">
-                    </div>
+                    <Button className="comfirm-button" onClick={handleSaveClick}>저장</Button>
                 </div>
             </div>
         </div>

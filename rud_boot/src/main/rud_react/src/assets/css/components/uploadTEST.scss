@@ -36,7 +36,7 @@
                 border-radius: 10px;
                 background-color: #1f2540;
                 padding: 8px;
-            
+
                 .switch-1 {
                     display: flex;
                     justify-content: space-around;
@@ -68,16 +68,19 @@
             width: 95%;
             height: auto;
 
-            .image-box-wrapper {
+            .image-box-wrapper-1,
+            .image-box-wrapper-2 {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
                 padding: 16px;
                 width: 500px;
                 height: 500px;
-                border: 1px solid #fff;
 
-                .image-box {
+                .image-box-1,
+                .image-box-2 {
+                    display: flex;
+                    justify-content: center;
                     align-items: center;
                     padding: 8px;
                     width: 450px;
@@ -85,9 +88,19 @@
                     background-color: #1f254025;
                     border: 5px dotted #8eaaff62;
                     border-radius: 32px;
+                    transition: background-color 0.15s ease; // 배경색 변화에 애니메이션 추가
+
+                    .image-1,
+                    .image-2 {
+                        width: 90%;
+                        height: 90%;
+                    }
                 }
 
-                .upload-button {
+                .upload-button-1,
+                .upload-button-2 {
+                    display: flex;
+                    align-items: center;
                     background-color: #2a48b6;
                     color: #EAECEF;
                     border: none;
@@ -97,11 +110,55 @@
                     width: 100px;
                     height: 50px;
                     font-size: 16px;
+                    font-weight: 600;
                     cursor: pointer;
+
+                    &:hover {
+                        background-color: #213a9680;
+                    }
+
+                    &:active {
+                        transform: scale(0.95);
+                    }
                 }
+
+                .file-name {
+                    margin-top: 20px;
+                    color: #EAECEF;
+                    font-size: 14px;
+                }
+            }
+
+            .image-box-wrapper-1 .image-box-1.drag-over,
+            .image-box-wrapper-2 .image-box-2.drag-over {
+                background-color: rgba(255, 255, 255, 0.2); // 드래그 중일 때 배경색 변경
             }
         }
 
-    }
+        .confirm-button-container {
+            display: flex;
+            justify-content: flex-end;
 
+            .comfirm-button {
+                background-color: #2a48b6;
+                color: #EAECEF;
+                border: none;
+                border-radius: 12px;
+                padding: 10px 15px;
+                width: 100px;
+                height: 50px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #213a9680;
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+        }
+    }
 }
