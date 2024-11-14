@@ -29,10 +29,6 @@ public class MemberService {
         return member;
     }
 
-    public boolean exitsByUserId(String userId){
-        return memberRepository.existsByUserId(userId);
-    }
-
     public Member findByUserId(String userId) {
         Optional<Member> member = memberRepository.findById(userId);
         return member.orElse(null); // 사용자가 존재하지 않으면 null 반환
