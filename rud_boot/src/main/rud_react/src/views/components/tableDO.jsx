@@ -10,6 +10,7 @@ const TableDO = ({
     handleWeightChange,
     totalDesiredWeight,
     currentTotalBalance,
+    addEmptyRow
 }) => {
 
     const formatCurrency = (amount) => {
@@ -111,6 +112,9 @@ const TableDO = ({
                         );
                     })
                 }
+                <tr>
+                    <td className="td10" onClick={addEmptyRow}><h2>종목 추가</h2></td>
+                </tr>
             </tbody>
         </Table>
     );

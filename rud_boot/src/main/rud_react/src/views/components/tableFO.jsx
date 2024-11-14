@@ -10,6 +10,7 @@ const TableFO = ({
     handleWeightChange,
     totalDesiredWeight,
     currentTotalBalance,
+    addEmptyRow
 }) => {
 
     const formatCurrency = (amount) => {
@@ -50,6 +51,7 @@ const TableFO = ({
             <tbody>
                 {
                     data.map((item, index) => {
+                        // console.log(index, item.name, item.quantity, item.price);
                         // 현재 잔고
                         const currentprice = item.price * item.quantity; 
 
@@ -111,6 +113,9 @@ const TableFO = ({
                         );
                     })
                 }
+                <tr>
+                    <td className="td10" onClick={addEmptyRow}><h2>종목 추가</h2></td>
+                </tr>
             </tbody>
         </Table>
     );

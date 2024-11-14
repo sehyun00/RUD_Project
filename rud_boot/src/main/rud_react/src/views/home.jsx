@@ -21,17 +21,13 @@ const Home = () => {
         setImageUploadVisible(true); // ImageUpload 보이기
     };
     
-    console.log('국장:', stockData?.국장);
-    console.log('해외장:', stockData?.해외장);
     return (
-        <div className="converter-container">
-            <div className="files-container">
-                {
-                    isImageUploadVisible
-                        ? (<ImageUpload onSave={handleSave} />) // prop으로 핸들러 전달
-                        : (<StockTable Reload={handleReloadImageUpload} SD={stockData} />) // ImageUpload가 숨겨지면 StockTable 표시
-                }
-            </div>
+        <div className="home-container">
+            {
+                isImageUploadVisible
+                    ? (<ImageUpload onSave={handleSave} />) // prop으로 핸들러 전달
+                    : (<StockTable Reload={handleReloadImageUpload} SD={stockData} />) // ImageUpload가 숨겨지면 StockTable 표시
+            }
         </div>
     );
 };
