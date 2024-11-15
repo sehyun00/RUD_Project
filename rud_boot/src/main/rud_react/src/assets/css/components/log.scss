@@ -10,14 +10,14 @@
 
     .contents-container {
         width: 1300px;
-        margin: auto;
+        margin: 50px auto;
         display: block;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        height: auto; // 전체 화면 높이
+        height: auto;
         overflow-y: auto;
-        padding: 20px; // 내부 여백
+        padding: 20px;
         box-sizing: content-box;
 
         .switch-container {
