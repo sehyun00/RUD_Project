@@ -32,6 +32,8 @@ public class MemberController {
         return "로그인 성공";
     }
 
+
+
     @PostMapping("/signup")
     public void signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         System.out.println("123");
