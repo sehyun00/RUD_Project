@@ -1,13 +1,12 @@
 package com.rud.rud.rud;
 
-import com.rud.rud.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface RudRepository extends JpaRepository<Rud, RudKey> {
-    List<Rud> findByRudkeyUserId(String userId);
+public interface RudRepository extends JpaRepository<Rud, Integer> {
+    // 리밸런싱 기록 찾을 때는 그 사용자와 날짜별로 가져옴
+    Rud findByUserIdAndRudDate(String userId, String rudDate);
+    // 사용자 id로 찾음
+    List<Rud> findByUserId(String userId);
 }
-
