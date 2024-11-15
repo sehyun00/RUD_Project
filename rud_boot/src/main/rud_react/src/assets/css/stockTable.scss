@@ -1,5 +1,5 @@
 .stock-container {
-    width: 1300px;
+    width: auto;
     margin: 10% auto;
     display: block;
     flex-direction: column;
@@ -135,6 +135,14 @@
                 margin: 0; // 여백 조정
                 overflow: auto;
 
+                .option-button {
+                    width: 50px;
+
+                    .check-icon {
+                        width: 40%;
+                    }
+                }
+
                 thead {
                     padding-right: 5px;
                     th {
@@ -227,8 +235,8 @@
                                 }
                             }
                         }
-                        .td10 {
-                            width: 1400px;
+                        .td11 {
+                            width: 1450px;
                             padding-top: 15px;
                         }
                         .text-plus {

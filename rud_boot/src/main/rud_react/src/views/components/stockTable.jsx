@@ -12,16 +12,20 @@ import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // images
 import loadingImage from '../../assets/images/loading-gif.gif'
-    
+import checkicon from '../../assets/images/checkmark.png';
+
 // StockTable 컴포넌트 정의
 const StockTable = ({Reload, SD}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
+    const [stockData, setStockData] = useState({"국장": [], "해외장": []});
+    const [currentData, setCurrentData] = useState(stockData["국장"]);
+
 
     useEffect(() => {
-        const updateTime = () => {
+        const updateTime = () => {  
             const now = new Date();
             setCurrentTime(now.toLocaleString()); // 현재 시간을 문자열로 설정
         };
@@ -32,19 +36,14 @@ const StockTable = ({Reload, SD}) => {
         return() => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
     }, []);
 
-    const [stockData, setStockData] = useState({"국장": [], "해외장": []});
-
     const [desiredWeights, setDesiredWeights] = useState({
         "국장": Array(stockData["국장"].length).fill(0),
         "해외장": Array(stockData["해외장"].length).fill(0)
     });
 
-    const [currentData, setCurrentData] = useState(stockData["국장"]);
-
     const fetchStockPrices = async () => {
         if (loading) 
             return;
-        setLoading(true);
 
         try {
             const domesticStocks = SD
@@ -84,14 +83,13 @@ const StockTable = ({Reload, SD}) => {
             const allStocks = [
                 ...domesticData,
                 ...foreignData
-            ];
+            ];  
 
             // 종가를 순차적으로 가져오기
             for (const stock of allStocks) {
                 stock.price = await fetchStockPrice(stock.name, stock.marketType);
-                // console.log(`${stock.name}: ${stock.price}`);  종목명과 가격 로그
                 await new Promise(resolve => setTimeout(resolve, 500));
-                console.log(stock.name, stock.price)
+                // console.log(`${stock.name}: ${stock.price}`);  종목명과 가격 로그
             }
 
             setStockData({"국장": domesticData, "해외장": foreignData});
@@ -105,10 +103,10 @@ const StockTable = ({Reload, SD}) => {
     const reloadButton = async () => {
         if (window.confirm("재업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
             setLoading(true); // 로딩 시작
-            
+
             // 주식 가격을 다시 가져오는 함수 호출
-            await fetchStockPrices(); 
-            
+            await fetchStockPrices();
+
             setLoading(false); // 로딩 종료
         }
     };
@@ -205,7 +203,7 @@ const StockTable = ({Reload, SD}) => {
         }
 
         setCurrentData(newData);
-    };
+    };  
 
     const handleButtonClick = (clickButton) => {
         setActiveButton(clickButton);
@@ -230,12 +228,14 @@ const StockTable = ({Reload, SD}) => {
 
     const currentTotalBalance = calculateCurrentTotalBalance();
 
-    const addEmptyRow = () => {
+    const addEmptyRow = async () => {
+    
         const newRow = {
             id: currentData.length + 1, // 새로운 ID 생성
             name: '',
             quantity: 0,
-            price: 0
+            price: null,
+            marketType: activeButton
         };
 
         // 현재 활성화된 버튼에 따라 적절한 데이터 상태에 추가
@@ -254,10 +254,40 @@ const StockTable = ({Reload, SD}) => {
         ]);
     };
 
+    // 주식 검색 버튼
+    const searchButton = (item, index) => {
+        const fetchPriceAndUpdate = async () => {
+            const marketType = item.marketType;
+            const stockName = item.name;
+            try {
+                const endpoint = marketType === '국장'
+                    ? `http://localhost:5001/getkos?name=${stockName}`
+                    : `http://localhost:5001/getnas?name=${stockName}`;
+    
+                const response = await axios.get(endpoint);
+                const updatedPrice = response.data; // API 호출로 받은 가격
+                handleChange(index, 'price', updatedPrice); // 가격 업데이트
+            } catch (error) {
+                console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+            }
+        };
+        return (
+            <td className="option-button">
+                {item.price === null && 
+                <img 
+                    src ={checkicon} 
+                    className="check-icon"
+                    onClick={fetchPriceAndUpdate}
+                />
+                }
+            </td>
+        );
+    };
+
     if (loading) {
         return <div>환율을 로딩 중...</div>;
     }
-    
+
     return (
         <div className="stock-container">
             <div className="name-container">
@@ -297,7 +327,7 @@ const StockTable = ({Reload, SD}) => {
                     </div>
                 </div>
             </div>
-            <div className="table-container">
+            <div className="table-container">   
                 <div className="table-wrapper">
                     {
                         activeButton === '국장'
@@ -309,7 +339,8 @@ const StockTable = ({Reload, SD}) => {
                                     handleWeightChange={handleWeightChange}
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
-                                    addEmptyRow={addEmptyRow}/>
+                                    addEmptyRow={addEmptyRow}
+                                    searchButton={searchButton}/>
                             : <TableFO
                                     data={currentData}
                                     totalBalance={calculateCurrentTotalBalance()}
@@ -318,7 +349,8 @@ const StockTable = ({Reload, SD}) => {
                                     handleWeightChange={handleWeightChange}
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
-                                    addEmptyRow={addEmptyRow}/>
+                                    addEmptyRow={addEmptyRow}
+                                    searchButton={searchButton}/>
                     }
                     <table className="custom-table">
                         <thead>
@@ -333,6 +365,7 @@ const StockTable = ({Reload, SD}) => {
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
+                                <th className="option-button"></th>
                             </tr>
                         </thead>
                     </table>
@@ -342,7 +375,7 @@ const StockTable = ({Reload, SD}) => {
     );
 };
 
-// PropTypes로 prop의 타입 정의 
+// PropTypes로 prop의 타입 정의
 StockTable.propTypes = {
     Reload: PropTypes.func.isRequired, // 재업로드 함수
 };
