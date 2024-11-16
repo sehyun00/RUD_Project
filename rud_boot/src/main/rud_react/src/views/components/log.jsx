@@ -1,12 +1,9 @@
-// feature
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import {Table} from 'reactstrap';
-
-// scss
+import { Table } from 'reactstrap';
 import '../../assets/css/components/log.scss';
 
-// dummy
+// 더미 데이터 ...
 const logData = [
     {
         id: 1,
@@ -61,7 +58,7 @@ const logData = [
     }
 ];
 
-// 변동률 계산 함수
+// 변동률 계산 함수 ...
 const calculateChangeRate = (current, previous) => {
     if (previous === 0) 
         return '';
@@ -71,46 +68,41 @@ const calculateChangeRate = (current, previous) => {
         : ''}${changeRate.toFixed(2)}%`;
 };
 
+// CSV 파일 다운로드 함수
+const downloadCSV = (date) => {
+    const csvContent = `data:text/csv;charset=utf-8,${date} 날짜,총자산,종목수\n` +
+        logData.map(row => `${row.date},${row.totalAssets},${row.itemCount}`).join("\n");
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${date}.csv`);
+    document.body.appendChild(link); // Firefox 호환성
+
+    link.click();
+};
+
 // Log 컴포넌트
 const Log = () => {
-    // 정렬 상태 추가 - 최신 날짜 최상단이 기본값
     const [isAscending, setIsAscending] = useState(false);
 
-    // 정렬 함수
+    // 정렬 함수 ...
     const sortedLogData = logData.sort((a, b) => {
         return isAscending
             ? new Date(a.date) - new Date(b.date)
             : new Date(b.date) - new Date(a.date);
     });
 
-    // 날짜 정렬 변경시 변동률 계산 함수
-    const logRows = sortedLogData.map((data, index) => {
-        const previousTotalAssets = (isAscending || index === sortedLogData.length - 1)
-            ? (
-                index > 0
-                    ? sortedLogData[index - 1].totalAssets
-                    : 0
-            ) // 오름차순 또는 첫 번째 데이터
-            : (
-                index < sortedLogData.length - 1
-                    ? sortedLogData[index + 1].totalAssets
-                    : 0
-            ); // 내림차순일 때
-
-        // 변동률 계산
-        const changeRate = data.id === 1
-            ? ''
-            : calculateChangeRate(data.totalAssets, previousTotalAssets);
-
-        return {
-            ...data,
-            changeRate // 변동률을 데이터에 추가
-        };
-    });
-
     // 날짜 클릭 핸들러
     const handleDateClick = () => {
         setIsAscending(!isAscending);
+    };
+
+    // 각 행 클릭 핸들러
+    const handleRowClick = (date) => {
+        if (window.confirm(`${date}.csv 파일을 다운로드 하시겠습니까?`)) {
+            downloadCSV(date);
+        }
     };
 
     return (
@@ -133,9 +125,7 @@ const Log = () => {
                                     <th className="th"></th>
                                     <th className="th"
                                         onClick={handleDateClick}
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}>날짜</th>
+                                        style={{ cursor: 'pointer' }}>날짜</th>
                                     <th className="th">총자산</th>
                                     <th className="th">종목수</th>
                                     <th className="th">전 기록 대비 변동률</th>
@@ -143,15 +133,11 @@ const Log = () => {
                             </thead>
                             <tbody>
                                 {
-                                    logRows.map((row) => (
-                                        <tr key={row.id}>
+                                    sortedLogData.map((row) => (
+                                        <tr key={row.id} onClick={() => handleRowClick(row.date)}>
                                             <td>{row.id}</td>
                                             <td>{row.date}</td>
-                                            <td>{
-                                                    row
-                                                        .totalAssets
-                                                        .toLocaleString()
-                                                }원</td>
+                                            <td>{row.totalAssets.toLocaleString()}원</td>
                                             <td>{row.itemCount}개</td>
                                             <td>{row.changeRate}</td>
                                         </tr>
