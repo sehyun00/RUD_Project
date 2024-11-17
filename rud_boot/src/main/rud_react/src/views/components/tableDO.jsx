@@ -1,4 +1,4 @@
-import React from "react"; 
+import React, {useEffect} from "react"; 
 import PropTypes from 'prop-types';
 import { Table } from "reactstrap";
 import '../../assets/css/stockTable.scss';
@@ -10,6 +10,8 @@ const TableDO = ({
     handleWeightChange,
     totalDesiredWeight,
     currentTotalBalance,
+    addEmptyRow,
+    searchButton,
 }) => {
 
     const formatCurrency = (amount) => {
@@ -26,6 +28,11 @@ const TableDO = ({
 
         handleWeightChange(index, newDesiredWeights[index]);
     };
+      
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
+
 
     return (
         <Table className="custom-table">
@@ -37,6 +44,7 @@ const TableDO = ({
                     <th rowSpan="2" className="th">희망비중</th>
                     <th colSpan="3">리밸런싱</th>
                     <th rowSpan="2" className="th">수량조절</th>
+                    <th rowSpan="2" className="option-button"></th>
                 </tr>
                 <tr>
                     <th className="th">수량</th>
@@ -107,10 +115,14 @@ const TableDO = ({
                                 <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
+                                {searchButton(item, index)}
                             </tr>
                         );
                     })
                 }
+                <tr>
+                    <td className="td11" onClick={addEmptyRow}><h2>종목 추가</h2></td>
+                </tr>
             </tbody>
         </Table>
     );
