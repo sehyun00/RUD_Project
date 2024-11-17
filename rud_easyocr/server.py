@@ -176,13 +176,15 @@ def extract_stock_data(data):
     # "해외주식" 찾기
     end_index = data.index("해외주식")
 
-    #국장 끝나는 시간의 경우 추가해야함
+    # 국장 끝나는 시간의 경우 추가해야함
 
     # 국내 주식 데이터 추출 (첫 번째 "일간 수익금"부터 "해외주식"까지)
     for i in range(first_index, end_index):
         if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^\d+(\.\d+)?$', data[i]):
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]',
+                                                                          data[i]) and not re.match(r'^\d+(\.\d+)?$',
+                                                                                                    data[i]):
                 cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 domestic_stocks.append(cleaned_stock_name)
 
@@ -192,7 +194,9 @@ def extract_stock_data(data):
     for i in range(start_index, end_index):
         if data[i] not in ["종목명", "일간 수익률", "일간 수익금"] and data[i] != "의견":
             # 실수 + 주만 살림 ex)1234원, $1234
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]', data[i])and not re.match(r'^S\d+', data[i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
+            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and not re.search(r'\d+(\.\d+)?\s*[원$%]',
+                                                                          data[i]) and not re.match(r'^S\d+', data[
+                i]) and not re.match(r'^\d+(\.\d+)?$', data[i]):
                 cleaned_stock_name = re.sub(r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
                 foreign_stocks.append(cleaned_stock_name)
 
