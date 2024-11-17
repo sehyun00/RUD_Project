@@ -2,8 +2,10 @@ import mojito
 from flask import Flask, request, jsonify
 import pandas as pd
 import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # 주식명 -> 주식 코드 csv 파일
 df = pd.read_csv('stock_codes_combined.csv')

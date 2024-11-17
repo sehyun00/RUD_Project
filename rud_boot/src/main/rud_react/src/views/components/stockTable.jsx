@@ -280,6 +280,13 @@ const StockTable = ({Reload, SD}) => {
                     onClick={fetchPriceAndUpdate}
                 />
                 }
+                {item.price === '0' && 
+                <img 
+                    src ={checkicon} 
+                    className="check-icon"
+                    onClick={fetchPriceAndUpdate}
+                />
+                }
             </td>
         );
     };
@@ -293,36 +300,32 @@ const StockTable = ({Reload, SD}) => {
             <div className="name-container">
                 <h1>StockTable</h1>
                 <p>{currentTime}</p>
-                <div className="reloading-button">
-                    <div className="reloading" onClick={reloadButton}>
-                        <img
-                            src={loadingImage}
-                            className={loading
-                                ? "loading-animation"
-                                : "loading-static"}
-                            alt="Loading"/>
-                    </div>
-                </div>
             </div>
             <div className="switch-container">
                 <div className="table-switch-wrapper">
                     <div className="table-switch">
-                        <div
-                            className={`table-choice ${activeButton === '국장'
-                                ? 'active'
-                                : ''}`}
-                            onClick={() => handleButtonClick('국장')}>
-                            <span>국내</span>
+                        <div className="switch-right">
+                            <div
+                                className={`table-choice ${activeButton === '국장'
+                                    ? 'active'
+                                    : ''}`}
+                                onClick={() => handleButtonClick('국장')}>
+                                <span>국내</span>
+                            </div>
+                            <div
+                                className={`table-choice ${activeButton === '해외장'
+                                    ? 'active'
+                                    : ''}`}
+                                onClick={() => handleButtonClick('해외장')}>
+                                <span>해외</span>
+                            </div>
+                            <div className="image-reload" onClick={handleReloadClick}>
+                                <span>이미지 재업로드</span>
+                            </div>
                         </div>
-                        <div
-                            className={`table-choice ${activeButton === '해외장'
-                                ? 'active'
-                                : ''}`}
-                            onClick={() => handleButtonClick('해외장')}>
-                            <span>해외</span>
-                        </div>
-                        <div className="image-reload" onClick={handleReloadClick}>
-                            <span>이미지 재업로드</span>
+                        <div className="switch-left">
+                            <div>희망 비중 추천받기</div>
+                            <div>저장하기</div>
                         </div>
                     </div>
                 </div>
