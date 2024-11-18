@@ -105,7 +105,7 @@ def main(file_path):
         pca_features, target, data.index, test_size=0.2, random_state=42
     )
 
-    models = [create_model(input_dim=X_train.shape[1]) for _ in range(20)]
+    models = [create_model(input_dim=X_train.shape[1]) for _ in range(5)]
     for model in models:
         train_model(model, X_train, y_train, X_val, y_val)
 

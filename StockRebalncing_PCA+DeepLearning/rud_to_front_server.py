@@ -36,15 +36,17 @@ def index():
     if stock_names_input:
         # 리밸런싱 비율 검색
         ratios = search_rebalance_ratios(stock_names)
+        # print(ratios)
 
         # 비율을 백분율로 변환
         percentage_ratios = convert_to_percentage(ratios)
-
+        # percentage_ratios = (ratios) * 100
+        # print(percentage_ratios)
         # 결과 출력
         response = {}
         for stock_name, percentage in percentage_ratios.items():
             if percentage > 0:
-                response[stock_name] = f"{percentage:.2f}%"
+                response[stock_name] = f"{percentage:.2f}"
             else:
                 response[stock_name] = "데이터에 없음"
 

@@ -2,12 +2,10 @@ import pandas as pd
 import numpy as np
 
 # 주식명 리스트
-stock_names = ['cony', 'cure', 'schd', 'magx', 'tech', 'health', 
-               'energy', 'finance', 'consumer', 'utility', 'realestate', 
-               'transport', 'auto', 'biotech', 'aerospace', 'retail', 
-               'pharma', 'media', 'telecom', 'food', 'chemicals', 
-               'metals', 'construction', 'travel', 'software', 'ecommerce', 
-               'semiconductors', 'healthtech', 'cloud']
+stock_names = ['드래곤플라이', '디알텍', '삼보산업', '상보', '셀루메드', '소니드',
+               '아이비젼웍스', '압타머사이언스', '인스코비', '한일단조', 'KIB플러그에너지',
+               'SH에너지화학', '삼성전자', 'CONY', 'CURE', 'SCHD', 'AAPL', 'NVDA'
+               ]
 
 def generate_dummy_data(num_samples=20000):
     # 랜덤 시드 설정
