@@ -33,9 +33,4 @@ public class MemberService {
         return memberRepository.existsByUserId(userId);
     }
 
-    public boolean validateUserId(String userId, String password){
-        Optional<Member> member = memberRepository.findById(userId);
-        return member.isPresent() && passwordEncoder.matches(password, member.get().getPassword());
-    }
-
 }
