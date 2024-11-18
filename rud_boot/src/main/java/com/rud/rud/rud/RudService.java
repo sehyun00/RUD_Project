@@ -3,7 +3,6 @@ package com.rud.rud.rud;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class RudService {
     }
 
     // id, date로 rud 조회
-    public Rud getRudByUserIdandDate(String userId, String rudDate) {
+    public Rud getRudByUserIdAndRudDate(String userId, String rudDate) {
         return rudRepository.findByUserIdAndRudDate(userId, rudDate);
     }
 

@@ -1,4 +1,4 @@
-package com.rud.rud.rud;
+package com.rud.rud.wallet;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Entity
-public class Rud {
+public class Wallet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; //autoint, pk
@@ -22,14 +22,9 @@ public class Rud {
     @NotNull
     private String rudDate; // 날짜
 
-    @NotNull
-    private String stockName; //주식명
+    private String won; // 원화 금액
 
-    @NotNull
-    private Double nos; // 주식 수량
-
-    @NotNull
-    private Double marketOrder; // 주식 가격
+    private String dollar; // 달러 금액
 
     @NotNull
     private Double expertPer; // 희망 비중

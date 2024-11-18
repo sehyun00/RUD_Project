@@ -1,4 +1,4 @@
-package com.rud.rud.rud;
+package com.rud.rud.wallet;
 
 import com.rud.rud.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/rud")
-public class RudController {
+@RequestMapping("/wallet")
+public class WalletController {
 
     @Autowired
-    private RudService rudService;
+    private WalletService walletService;
 
     @Autowired
     private MemberService memberService;
 
-    // rud 저장
     @PostMapping("/save")
-    public ResponseEntity<Rud> saveRud(@RequestBody Rud rud) {
-        Rud savedRud = rudService.saveRud(rud);
-        return ResponseEntity.ok(savedRud);
+    public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
+        Wallet savedWallet = walletService.saveWallet(wallet);
+        return ResponseEntity.ok(savedWallet);
     }
+
 }
