@@ -111,6 +111,9 @@ const ImageUpload = ({ onSave }) => {
                             {files[0] && (
                                 <img src={URL.createObjectURL(files[0])} alt="미리보기" className="image-1" />
                             )}
+                            <div>
+                                <span>현금 이미지 올려</span>
+                            </div>
                         </div>
                         <div className="upload-button-1" onClick={() => handleAddFileClick(0)}>
                             <div>
@@ -138,6 +141,9 @@ const ImageUpload = ({ onSave }) => {
                             {files[1] && (
                                 <img src={URL.createObjectURL(files[1])} alt="미리보기" className="image-2" />
                             )}
+                            <div>
+                                <span>종목 이미지 올려</span>
+                            </div>
                         </div>
                         <div className="upload-button-2" onClick={() => handleAddFileClick(1)}>
                             <div>
@@ -156,6 +162,7 @@ const ImageUpload = ({ onSave }) => {
                 </div>
                 <div className="confirm-button-container">
                     <Button className="comfirm-button" onClick={handleSaveClick}>저장</Button>
+                    <Button className="filecheck-button" onClick={handleSaveClick}>검사</Button>
                 </div>
             </div>
         </div>

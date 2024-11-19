@@ -89,6 +89,7 @@
                     border: 5px dotted #8eaaff62;
                     border-radius: 32px;
                     transition: background-color 0.15s ease; // 배경색 변화에 애니메이션 추가
+                    color: #B0B0B0;
 
                     .image-1,
                     .image-2 {
@@ -137,14 +138,18 @@
 
         .confirm-button-container {
             display: flex;
-            justify-content: flex-end;
+            flex-direction: row-reverse;
+            width: 100%;
 
-            .comfirm-button {
+
+            .comfirm-button,
+            .filecheck-button {
                 background-color: #2a48b6;
                 color: #EAECEF;
                 border: none;
                 border-radius: 12px;
                 padding: 10px 15px;
+                margin-left: 40px;
                 width: 100px;
                 height: 50px;
                 font-size: 16px;
