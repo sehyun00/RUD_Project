@@ -35,7 +35,7 @@ const ImageUpload = ({onSave}) => {
     
         try {
             const response = await axios.post(
-                'https://1b83-61-34-253-238.ngrok-free.app/upload',
+                'https://fbbc-61-34-253-238.ngrok-free.app/upload',
                 formData,
                 {
                     headers: {
