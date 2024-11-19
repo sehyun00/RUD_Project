@@ -1,59 +1,46 @@
 package com.rud.rud.rud;
 
-import jakarta.validation.Valid;
+import com.rud.rud.member.MemberService;
+import com.rud.rud.wallet.Wallet;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/superant/rud")
+@RequestMapping("/rud")
 public class RudController {
 
-    private final RudService rudService;
+    @Autowired
+    private RudService rudService;
 
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡOCR 배열 받아서 표로 보여주기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    @Autowired
+    private MemberService memberService;
 
-
-
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그 db에 저장ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    @GetMapping
-    public String rud() {
-        System.out.println();
-        return "rud_form";
+    // rud 저장
+    @PostMapping("/save")
+    public ResponseEntity<Rud> saveRud(@RequestBody Rud rud) {
+        Rud savedRud = rudService.saveRud(rud);
+        return ResponseEntity.ok(savedRud);
     }
 
-    @PostMapping
-    public ResponseEntity<String> saveRud(@Valid @RequestBody Rud rud) {
-        System.out.println("리밸런싱 로그 저장 요청 수신");
-
-        // 서비스 메서드를 호출하여 로그 저장
-        this.rudService.create(
-                rud.getRebalancingDate(),
-                rud.getUserId(),
-                rud.getWon(),
-                rud.getDollar(),
-                rud.getStockName(),
-                rud.getNos(),
-                rud.getMarketOrder(),
-                rud.getExpertPer()
-        );
-
-        return ResponseEntity.ok("리밸런싱 로그가 성공적으로 저장되었습니다.");
-    }
-    
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그 불러오기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    @GetMapping("/log")
-    public String log(){
-        return "log_form";
+    // id + 날짜 조회
+    @PostMapping("/date")
+    public ResponseEntity<Rud> dateRud(@RequestBody String userId, String rudDate) {
+        Rud getrud = rudService.getRudByUserIdAndRudDate(userId, rudDate);
+        return ResponseEntity.ok(getrud);
     }
 
-    @GetMapping("/log/{reblancingDate}")
-    public String loadRudLog(@PathVariable Date reblancingDate) {
-        return "rudLog_form";
+    // id + 종목 조회
+    @PostMapping("/all")
+    public ResponseEntity<List<Rud>> allRud(@RequestBody String userId) {
+        List<Rud> getAll = rudService.getRudByUserId(userId);
+        return ResponseEntity.ok(getAll);
     }
-
-
 }

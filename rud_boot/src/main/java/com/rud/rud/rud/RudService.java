@@ -1,30 +1,31 @@
 package com.rud.rud.rud;
 
-import com.rud.rud.member.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class RudService {
 
+    @Autowired
     private final RudRepository rudRepository;
 
-    @Transactional
-    public Rud create(Date rebalancongDate, Member userId, String won, String dollar, String stockName, double nos, double marketOrder, double expertPer){
-        Rud rud = new Rud();
-        rud.setRebalancingDate(rebalancongDate);
-        rud.setUserId(userId);
-        rud.setWon(won);
-        rud.setDollar(dollar);
-        rud.setStockName(stockName);
-        rud.setNos(nos);
-        rud.setMarketOrder(marketOrder);
-        rud.setExpertPer(expertPer);
-        this.rudRepository.save(rud);
-        return rud;
+    // rud 저장
+    public Rud saveRud(Rud rud) {
+        return rudRepository.save(rud);
     }
+
+    // id, date로 rud 조회
+    public Rud getRudByUserIdAndRudDate(String userId, String rudDate) {
+        return rudRepository.findByUserIdAndRudDate(userId, rudDate);
+    }
+
+    // id로 모든 rud 조회
+    public List<Rud> getRudByUserId(String userId) {
+        return rudRepository.findByUserId(userId);
+    }
+
 }
