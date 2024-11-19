@@ -26,11 +26,13 @@ public class Rud {
     private String stockName; //주식명
 
     @NotNull
-    private Double nos; // 주식 수량
-
-    @NotNull
     private Double marketOrder; // 주식 가격
 
     @NotNull
-    private Double expertPer; // 희망 비중
+    private Double nos; // 주식 수량
+
+    @NotNull
+    private Double expertPer; // 비중
+
+
 }

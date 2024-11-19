@@ -27,5 +27,5 @@ public class Wallet {
     private String dollar; // 달러 금액
 
     @NotNull
-    private Double expertPer; // 희망 비중
+    private Double expertPer; // 비중
 }
