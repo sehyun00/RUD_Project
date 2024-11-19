@@ -34,9 +34,15 @@ const ImageUpload = ({onSave}) => {
         files.forEach(file => formData.append('file', file));
     
         try {
-            const response = await axios.post('https://aa9f-61-34-253-238.ngrok-free.app/upload', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
+            const response = await axios.post(
+                'https://1b83-61-34-253-238.ngrok-free.app/upload',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
             console.log('Upload Success:', response.data);
             onSave(response.data); // 업로드된 데이터를 onSave에 전달
         } catch (error) {
