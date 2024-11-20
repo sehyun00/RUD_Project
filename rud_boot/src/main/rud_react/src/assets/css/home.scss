@@ -1,11 +1,11 @@
 .home-container {
-    margin: 50px auto;
+    margin: auto;
     display: block;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; // 상단 정렬
     height: auto; // 전체 화면 높이
-    overflow-y: auto; // 세로 스크롤 활성화
-    padding: 20px; // 내부 여백
+    // overflow-y: auto; // 세로 스크롤 활성화
+    // padding: 20px; // 내부 여백
     color: #EAECEF;
 }
