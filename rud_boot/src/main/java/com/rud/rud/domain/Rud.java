@@ -1,11 +1,9 @@
-package com.rud.rud.rud;
+package com.rud.rud.domain;
 
-import com.rud.rud.member.Member;
+import com.rud.rud.rud.RudKey;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Date;
 
 @Getter
 @Setter

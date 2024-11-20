@@ -1,5 +1,7 @@
-package com.rud.rud.member;
+package com.rud.rud.service;
 
+import com.rud.rud.domain.Member;
+import com.rud.rud.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,11 @@ public class MemberService {
         this.memberRepository.save(member);
         return member;
     }
+
+//    public boolean isUserIdExists(String userId) {
+//        return memberRepository.findByUserId(userId).isPresent();
+//    }
+
 
     public Member findByUserId(String userId) {
         Optional<Member> member = memberRepository.findById(userId);

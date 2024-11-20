@@ -1,11 +1,11 @@
-package com.rud.rud.rud;
+package com.rud.rud.service;
 
-import com.rud.rud.member.Member;
+import com.rud.rud.domain.Rud;
+import com.rud.rud.repository.RudRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.List;
 
 @RequiredArgsConstructor

@@ -1,12 +1,11 @@
-package com.rud.rud.rud;
+package com.rud.rud.controller;
 
-import com.rud.rud.member.Member;
-import com.rud.rud.member.MemberService;
-import jakarta.validation.Valid;
+import com.rud.rud.domain.Member;
+import com.rud.rud.domain.Rud;
+import com.rud.rud.service.MemberService;
+import com.rud.rud.service.RudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

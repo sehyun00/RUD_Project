@@ -36,6 +36,7 @@ const Signup = () => {
 
         // 비밀번호 확인 체크 추가
         if (formData.password !== formData.checkPassword) {
+            
             alert('비밀번호가 일치하지 않습니다.'); // 비밀번호 불일치 메시지
             return;
         }

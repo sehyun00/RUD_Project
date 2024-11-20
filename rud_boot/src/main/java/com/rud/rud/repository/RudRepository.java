@@ -1,6 +1,7 @@
-package com.rud.rud.rud;
+package com.rud.rud.repository;
 
-import com.rud.rud.member.Member;
+import com.rud.rud.domain.Rud;
+import com.rud.rud.rud.RudKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
