@@ -32,35 +32,33 @@ public class MemberController {
 
 
     @PostMapping("/signup")
-    public void signup(@RequestBody @Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
-        System.out.println("123");
-
-        if(bindingResult.hasErrors()) {
-            System.out.println("오류발생");
+    public ResponseEntity<?> signup(@RequestBody @Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
+        // 아이디 중복 체크
+        if (memberService.isUserIdExists(memberCreateForm.getUserId())) {
+            System.out.println("userIdError");
+            bindingResult.rejectValue("userId", "existUserId", "아이디가 이미 존재합니다!");
         }
-        if (memberCreateForm.getUserId().equals(memberService.existsByUserId(memberCreateForm.getUserId()))) {
-            bindingResult.rejectValue("userId", "userIdExists", "이미 사용 중인 아이디입니다.");
-        }
-
-        // 비밀번호 확인
-        if(!memberCreateForm.getPassword().equals(memberCreateForm.getCheckPassword())){
-            bindingResult.rejectValue("checkPassword", "passwordInCorrect",
-                    "2개의 패스워드가 일치하지 않습니다.");
+        // 에러가 있을 경우
+        if (bindingResult.hasErrors()) {
+            System.out.println("1111");
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        // 에러가 없을 경우 회원가입 처리
-        if (!bindingResult.hasErrors()) {
-            try {
-                memberService.create(memberCreateForm.getUserId(), memberCreateForm.getName(), memberCreateForm.getPassword(),
-                        memberCreateForm.getEmail(), memberCreateForm.getPhoneNumber(), memberCreateForm.isDataAnalysisConsent(), memberCreateForm.isPersonalInfoConsent());
-            } catch (DataIntegrityViolationException e) {
-                e.printStackTrace();
-                bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            } catch (Exception e) {
-                e.printStackTrace();
-                bindingResult.reject("signupFailed", e.getMessage());
-            }
-        }
+        // 회원가입 처리
+        Member member = memberService.create(
+                memberCreateForm.getUserId(),
+                memberCreateForm.getName(),
+                memberCreateForm.getPassword(),
+                memberCreateForm.getEmail(),
+                memberCreateForm.getPhoneNumber(),
+                memberCreateForm.isPersonalInfoConsent(),
+                memberCreateForm.isDataAnalysisConsent()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(member);
     }
 
+//    public boolean isUserIdExists(String userId) {
+//        return memberRepository.findByUserId(userId).isPresent();
+//    }
 }

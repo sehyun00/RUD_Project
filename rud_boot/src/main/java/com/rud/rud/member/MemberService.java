@@ -33,8 +33,7 @@ public class MemberService {
         return member.orElse(null); // 사용자가 존재하지 않으면 null 반환
     }
 
-    // 사용자 ID 존재 여부 확인
-    public boolean existsByUserId(String userId) {
-        return memberRepository.existsById(userId);
+    public boolean isUserIdExists(String userId) {
+        return memberRepository.findById(userId).isPresent();
     }
 }
