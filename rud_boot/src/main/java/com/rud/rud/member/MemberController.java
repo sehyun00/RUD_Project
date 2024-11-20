@@ -27,10 +27,6 @@ public class MemberController {
     private final MemberService memberService;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    @GetMapping("/login")
-    public String login() {
-        return "로그인 성공";
-    }
 
 
 
