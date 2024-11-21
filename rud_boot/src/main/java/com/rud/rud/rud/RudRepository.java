@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RudRepository extends JpaRepository<Rud, Integer> {
     // 리밸런싱 기록 찾을 때는 그 사용자와 날짜별로 가져옴
-    Rud findByUserIdAndRudDate(String userId, String rudDate);
+    List<Rud> findByUserIdAndRudDate(String userId, String rudDate);
     // 사용자 id로 찾음
     List<Rud> findByUserId(String userId);
 }
