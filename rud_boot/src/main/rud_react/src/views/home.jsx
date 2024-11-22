@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
 import Modal from 'react-modal'; // 모달 라이브러리 추가
 
+import gofullpagetestImage from '../assets/images/gofullpagetest.png';
+import info_captureImage from '../assets/images/info_capture.png';
+import cash_blurImage from '../assets/images/cash_blur.png';
+import stocks_blurImage from '../assets/images/stocks_blur.png';
+
 // components
 import StockTable from "./components/stockTable";
 import ImageUpload from "./components/imageUpload";
@@ -57,7 +62,13 @@ const Home = () => {
                 overlayClassName="modal-overlay"
                 shouldCloseOnOverlayClick={false}>
                 <h2>도움말</h2>
-                <p>토스증권, 현금, 종목, 이미지 예시</p>
+                <p>이미지 업로드 예시</p>
+    
+                <div className="info-image-container">
+                <img className="gfp-info" src={gofullpagetestImage}/>
+                    <p className="info-text">이미지를 업로드한 후, 필요한 정보를 입력하세요.</p>
+                </div>
+    
                 <button className="info-button" onClick={closeModal}>확인</button>
             </Modal>
 
