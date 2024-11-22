@@ -17,7 +17,7 @@ public class WalletService {
         return walletRepository.save(wallet);
     }
 
-    public Wallet getWalletByUserIdAndRudDate(String userId, String rudDate){
+    public List<Wallet> getWalletByUserIdAndRudDate(String userId, String rudDate){
         return walletRepository.findByUserIdAndRudDate(userId, rudDate);
     }
 

@@ -19,7 +19,7 @@ public class RudService {
     }
 
     // id, date로 rud 조회
-    public Rud getRudByUserIdAndRudDate(String userId, String rudDate) {
+    public List<Rud> getRudByUserIdAndRudDate(String userId, String rudDate) {
         return rudRepository.findByUserIdAndRudDate(userId, rudDate);
     }
 
