@@ -11,7 +11,6 @@ import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // images
-import loadingImage from '../../assets/images/loading-gif.gif'
 import checkicon from '../../assets/images/checkmark.png';
 
 // StockTable 컴포넌트 정의
@@ -22,7 +21,7 @@ const StockTable = ({Reload, SD}) => {
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
     const [currentData, setCurrentData] = useState(stockData["국장"]);
-
+    // console.log(SD.stock);
 
     useEffect(() => {
         const updateTime = () => {  
@@ -46,7 +45,7 @@ const StockTable = ({Reload, SD}) => {
             return;
 
         try {
-            const domesticStocks = SD
+            const domesticStocks = SD.stock
                 ?.국장 || [];
             const foreignStocks = SD
                 ?.해외장 || [];
