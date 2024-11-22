@@ -1,7 +1,7 @@
 package com.rud.rud;
 
-import com.rud.rud.member.Member;
-import com.rud.rud.member.MemberRepository;
+import com.rud.rud.domain.Member;
+import com.rud.rud.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
