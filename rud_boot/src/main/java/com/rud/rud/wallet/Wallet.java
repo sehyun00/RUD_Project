@@ -22,10 +22,11 @@ public class Wallet {
     @NotNull
     private String rudDate; // 날짜
 
-    private String won; // 원화 금액
+    private Double won; // 원화 금액
 
-    private String dollar; // 달러 금액
+    private Double wonPer; // 비중
 
-    @NotNull
-    private Double expertPer; // 비중
+    private Double dollar; // 달러 금액
+
+    private Double dollarPer; // 비중
 }
