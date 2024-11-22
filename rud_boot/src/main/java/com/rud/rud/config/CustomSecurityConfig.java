@@ -45,8 +45,8 @@ public class CustomSecurityConfig {
 //                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 //                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
         http.csrf(config -> config.disable());
-        http.csrf((csrf) -> csrf
-                .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")));
+//        http.csrf((csrf) -> csrf
+//                .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")));
         http.headers(headers -> headers
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
                         XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)));

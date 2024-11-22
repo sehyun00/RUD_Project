@@ -25,9 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService{
 
         log.info("----------------loadUserByUsername-----------------------------");
 
+        log.info("Fetching member with userId: {}", username);
         Member member = memberRepository.getWithRoles(username);
+        log.info("Fetched member: {}", member);
 
         if(member == null){
+
             throw new UsernameNotFoundException("Not Found");
         }
 

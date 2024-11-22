@@ -49,9 +49,9 @@ public class MemberRepositoryTests {
     @Test
     public void testRead() {
 
-        String email = "user9@aaa.com";
+        String userId = "user1";
 
-        Member member = memberRepository.getWithRoles(email);
+        Member member = memberRepository.getWithRoles(userId);
 
         log.info("-----------------");
         log.info(member);
