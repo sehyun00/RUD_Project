@@ -20,7 +20,7 @@ const StockTable = ({Reload, SD}) => {
     const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
-    const [moneyData, setMoneyData] = useState({"원화":[], "달러":[]})
+    const [moneyData, setMoneyData] = useState({"국장":[], "해외장":[]})
     const [currentData, setCurrentData] = useState(stockData["국장"]);
  
     useEffect(() => {
@@ -40,30 +40,58 @@ const StockTable = ({Reload, SD}) => {
         "해외장": Array(stockData["해외장"].length).fill(0)
     });
 
+    const fetchMoneyPrices = async () => {
+        try {
+            const domesticMoneys = SD.cash
+                ?.원화 || "";
+            const foreignMoneys = SD.cash
+                ?.달러 || "";
+
+            const domesticMoneyData = (() => {
+                const acc = [];
+                acc.push({
+                    id: acc.length + 1, 
+                    name: "원화",
+                    moneyprice: domesticMoneys,
+                    marketType: "국장"
+                });
+                return acc; // acc를 반환합니다.
+            })();
+
+            const foreignMoneyData = (() => {
+                const acc = [];
+                acc.push({
+                    id: acc.length + 1, 
+                    name: "원화",
+                    moneyprice: foreignMoneys,
+                    marketType: "국장"
+                });
+                return acc; // acc를 반환합니다.
+            })();
+
+            setMoneyData({"국장": domesticMoneyData, "해외장": foreignMoneyData});
+
+            console.log(moneyData);
+
+        } catch (error) {
+            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
     const fetchStockPrices = async () => {
         if (loading) 
             return;
 
         try {
-            console.log(SD);
-            const domesticMoneys = SD.cash
-                ?.원화 || "";
-            const foreignMoneys = SD.cash
-                ?.달러 || "";
-            console.log(domesticMoneys,foreignMoneys);
+            // console.log(SD);
 
             const domesticStocks = SD.stock
                 ?.국장 || [];
-            const foreignStocks = SD
+            const foreignStocks = SD.stock
                 ?.해외장 || [];
-
-            // const domesticMoneyData = domesticMoneys((acc, curr) => {
-            //     acc.push({
-            //         id: acc.length + 1,
-            //         name: curr,
-            //         // moneyprice: 
-            //     });
-            // },[]);
 
             const domesticData = domesticStocks.reduce((acc, curr, index) => {
                 if (index % 2 === 0) {
@@ -126,6 +154,7 @@ const StockTable = ({Reload, SD}) => {
     };
 
     useEffect(() => {
+        fetchMoneyPrices();
         fetchStockPrices();
     }, [SD]);
 
@@ -152,7 +181,7 @@ const StockTable = ({Reload, SD}) => {
                 const response = await axios.get(
                     'https://api.exchangerate-api.com/v4/latest/USD'
                 );
-                console.log(response);
+                // console.log(response);
                 setExchangeRate(response.data.rates.KRW);
             } catch (error) {
                 console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
@@ -317,7 +346,7 @@ const StockTable = ({Reload, SD}) => {
         try {
             const response = await axios.get(`http://localhost:5004/?stock_names=${stockNamesString}`);
             const weights = response.data;
-            console.log(weights);
+            // console.log(weights);
     
             // weights 객체를 원하는 형식으로 변환하여 상태 업데이트
             const newWeights = {
@@ -326,7 +355,7 @@ const StockTable = ({Reload, SD}) => {
             };
             
             setDesiredWeights(newWeights);
-            console.log(newWeights);
+            // console.log(newWeights);
 
         } catch (error) {
             console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
