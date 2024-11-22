@@ -18,9 +18,6 @@ public class RudController {
     @Autowired
     private RudService rudService;
 
-    @Autowired
-    private MemberService memberService;
-
     // rud 저장
     @PostMapping("/save")
     public ResponseEntity<Rud> saveRud(@RequestBody Rud rud) {

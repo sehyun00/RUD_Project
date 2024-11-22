@@ -20,9 +20,6 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @Autowired
-    private MemberService memberService;
-
     // 저장
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
