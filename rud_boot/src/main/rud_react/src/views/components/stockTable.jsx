@@ -11,7 +11,6 @@ import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // images
-import loadingImage from '../../assets/images/loading-gif.gif'
 import checkicon from '../../assets/images/checkmark.png';
 
 // StockTable 컴포넌트 정의
@@ -22,7 +21,7 @@ const StockTable = ({Reload, SD}) => {
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
     const [currentData, setCurrentData] = useState(stockData["국장"]);
-
+ 
 
     useEffect(() => {
         const updateTime = () => {  
@@ -31,7 +30,7 @@ const StockTable = ({Reload, SD}) => {
         };
 
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
-        const intervalId = setInterval(updateTime, 1000); // 1초마다 시간 업데이트
+        const intervalId = setInterval(updateTime); // 1초마다 시간 업데이트
 
         return() => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
     }, []);
@@ -138,6 +137,7 @@ const StockTable = ({Reload, SD}) => {
                 const response = await axios.get(
                     'https://api.exchangerate-api.com/v4/latest/USD'
                 );
+                console.log(response);
                 setExchangeRate(response.data.rates.KRW);
             } catch (error) {
                 console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
@@ -295,6 +295,29 @@ const StockTable = ({Reload, SD}) => {
         return <div>환율을 로딩 중...</div>;
     }
 
+    const fetchDesiredWeights = async () => {
+        const stockNames = [...stockData["국장"].map(stock => stock.name), ...stockData["해외장"].map(stock => stock.name)];
+        const stockNamesString = stockNames.join(',');
+    
+        try {
+            const response = await axios.get(`http://localhost:5004/?stock_names=${stockNamesString}`);
+            const weights = response.data;
+            console.log(weights);
+    
+            // weights 객체를 원하는 형식으로 변환하여 상태 업데이트
+            const newWeights = {
+                "국장": stockData["국장"].map(stock => weights[stock.name] ? weights[stock.name] : "0"),
+                "해외장": stockData["해외장"].map(stock => weights[stock.name] ? weights[stock.name] : "0")
+            };
+            
+            setDesiredWeights(newWeights);
+            console.log(newWeights);
+
+        } catch (error) {
+            console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
+        }
+    };
+
     return (
         <div className="stock-container">
             <div className="name-container">
@@ -324,7 +347,7 @@ const StockTable = ({Reload, SD}) => {
                             </div>
                         </div>
                         <div className="switch-left">
-                            <div>희망 비중 추천받기</div>
+                            <div onClick={fetchDesiredWeights}>희망 비중 추천받기</div>
                             <div>저장하기</div>
                         </div>
                     </div>
