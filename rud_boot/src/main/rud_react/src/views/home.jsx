@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
 import Modal from 'react-modal'; // 모달 라이브러리 추가
@@ -31,6 +31,22 @@ const Home = () => {
         setModalOpen(false); // 모달 닫기
     };
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                closeModal(); // 엔터 키를 눌렀을 때 모달 닫기
+            }
+        };
+
+        if (isModalOpen) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
+
+        return() => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isModalOpen]); // 모달이 열릴 때만 이벤트 리스너 추가
+
     return (
         <div className="home-container">
             <Modal
@@ -39,8 +55,7 @@ const Home = () => {
                 contentLabel="안내 메시지"
                 className="upload-info"
                 overlayClassName="modal-overlay"
-                shouldCloseOnOverlayClick={false}
-            >
+                shouldCloseOnOverlayClick={false}>
                 <h2>도움말</h2>
                 <p>토스증권, 현금, 종목, 이미지 예시</p>
                 <button className="info-button" onClick={closeModal}>확인</button>
@@ -48,8 +63,8 @@ const Home = () => {
 
             {
                 isImageUploadVisible
-                    ? (<ImageUpload onSave={handleSave} />)
-                    : (<StockTable Reload={handleReloadImageUpload} SD={stockData} />)
+                    ? (<ImageUpload onSave={handleSave}/>)
+                    : (<StockTable Reload={handleReloadImageUpload} SD={stockData}/>)
             }
         </div>
     );

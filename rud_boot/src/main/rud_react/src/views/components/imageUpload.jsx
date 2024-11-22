@@ -180,7 +180,6 @@ const ImageUpload = ({ onSave }) => {
                 </div>
                 <div className="confirm-button-container">
                     <Button className="confirm-button" onClick={handleSaveClick}>저장</Button>
-                    <Button className="filecheck-button" onClick={handleSaveClick}>검사</Button>
                 </div>
             </div>
         </div>
