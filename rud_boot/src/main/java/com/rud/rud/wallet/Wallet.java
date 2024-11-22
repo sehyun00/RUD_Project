@@ -24,8 +24,10 @@ public class Wallet {
 
     private String won; // 원화 금액
 
+    private Double wonPer; // 원 비중
+
     private String dollar; // 달러 금액
 
-    @NotNull
-    private Double expertPer; // 비중
+    private Double dollarPer; // 달러 비중
+
 }
