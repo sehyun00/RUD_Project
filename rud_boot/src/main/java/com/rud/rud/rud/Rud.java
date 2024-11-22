@@ -1,33 +1,38 @@
 package com.rud.rud.rud;
 
-import com.rud.rud.member.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 
 @Getter
 @Setter
 @Entity
 public class Rud {
     @Id
-    private Date rebalancingDate; //rud일자
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id; //autoint, pk
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private Member userId; //유저 아이디
+    //밑의 두개를 이용하여 검색함
+    @NotNull
+    private String userId; //유저 아이디
 
-    private String won; //원화
+    @NotNull
+    private String rudDate; // 날짜
 
-    private String dollar; //달러
-
+    @NotNull
     private String stockName; //주식명
 
-    private double nos; //수량
+    @NotNull
+    private Double marketOrder; // 주식 가격
 
-    private double marketOrder; //주식가격
+    @NotNull
+    private Double nos; // 주식 수량
 
-    private double expertPer; //희망비중
+    @NotNull
+    private Double expertPer; // 비중
+
 
 }

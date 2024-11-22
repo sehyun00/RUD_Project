@@ -20,9 +20,9 @@ const StockTable = ({Reload, SD}) => {
     const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
+    const [moneyData, setMoneyData] = useState({"원화":[], "달러":[]})
     const [currentData, setCurrentData] = useState(stockData["국장"]);
  
-
     useEffect(() => {
         const updateTime = () => {  
             const now = new Date();
@@ -45,10 +45,25 @@ const StockTable = ({Reload, SD}) => {
             return;
 
         try {
-            const domesticStocks = SD
+            console.log(SD);
+            const domesticMoneys = SD.cash
+                ?.원화 || "";
+            const foreignMoneys = SD.cash
+                ?.달러 || "";
+            console.log(domesticMoneys,foreignMoneys);
+
+            const domesticStocks = SD.stock
                 ?.국장 || [];
             const foreignStocks = SD
                 ?.해외장 || [];
+
+            // const domesticMoneyData = domesticMoneys((acc, curr) => {
+            //     acc.push({
+            //         id: acc.length + 1,
+            //         name: curr,
+            //         // moneyprice: 
+            //     });
+            // },[]);
 
             const domesticData = domesticStocks.reduce((acc, curr, index) => {
                 if (index % 2 === 0) {
@@ -59,7 +74,7 @@ const StockTable = ({Reload, SD}) => {
                         quantity: parseInt(quantity),
                         price: 0,
                         marketType: '국장'
-                    });
+                    }); 
                 }
                 return acc;
             }, []);

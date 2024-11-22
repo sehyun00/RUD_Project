@@ -25,12 +25,12 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
     background-color: #181a20; /* 카드 배경색 변경 */
     border-radius: 10px; /* squircle 효과를 위한 둥근 모서리 */
-    color: #FFFFFF; /* 카드 내 텍스트 색상 */
+    color: #EAECEF; /* 카드 내 텍스트 색상 */
 
     .auth-title {
         margin-bottom: 20px;
         text-align: center;
-        color: #FFFFFF; /* 텍스트 색상 변경 */
+        color: #EAECEF; /* 텍스트 색상 변경 */
     }
 
     .form {
@@ -45,7 +45,7 @@
                 border: 1.5px solid #2B3139;
                 border-radius: 10px; /* 둥근 모서리 */
                 width: 100%;
-                color: #FFFFFF; /* 입력 텍스트 색상 */
+                color: #EAECEF; /* 입력 텍스트 색상 */
                 background-color: #181a20; /* 입력 배경색 */
 
                 &::placeholder {
@@ -59,7 +59,7 @@
         width: 100%;
         padding: 10px;
         background-color: #2a48b6;
-        color: white;
+        color: #EAECEF;
         border: none;
         border-radius: 10px;
         cursor: pointer;
@@ -97,7 +97,7 @@
 
         span {
             margin: 0 10px;
-            color: #fff; /* 'or' 텍스트 색상 */
+            color: #EAECEF; /* 'or' 텍스트 색상 */
         }
     }
 
@@ -111,7 +111,7 @@
         display: block; /* 블록 요소로 설정하여 전체 너비 사용 */
         margin-top: 20px; /* 버튼과의 간격 */
         text-align: center; /* 가운데 정렬 */
-        color: #ffffff; /* 링크 색상 */
+        color: #EAECEF; /* 링크 색상 */
         font-size: 14px; /* 글씨 크기 */
         text-decoration: none; /* 기본 밑줄 제거 */
 
