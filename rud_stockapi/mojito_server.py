@@ -7,17 +7,18 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# 주식명 -> 주식 코드 csv 파일
-df = pd.read_csv('stock_codes_combined.csv')
-
 app.route('/kospi', methods=['POST'])
 
+# kos 주식 데이터 CSV 파일 로드
+kos_stock_data = pd.read_csv('Stock_List/Kos_stock_list.csv')
+# Nas 주식 데이터 CSV 파일 로드
+nas_stock_data = pd.read_csv('Stock_List/Nas_stock_list.csv', header=None, names=['symbol', 'name'])
 
 # 주식명 -> 주식 코드 part
-def get_stock_code(stock_name):
+def get_kos_stock_code(stock_name):
     try:
         # 주어진 주식명으로 데이터프레임 검색
-        result = df[df['한글종목명'] == stock_name]
+        result = kos_stock_data[kos_stock_data['한글종목명'] == stock_name]
 
         if not result.empty:
             # 일치하는 결과가 있으면 주식코드 반환
@@ -37,7 +38,7 @@ def get_kospicode(name):
         if not name:
             return {"error": "주식명을 제공해야 합니다."}
 
-        code = get_stock_code(name)
+        code = get_kos_stock_code(name)
 
         if code is not None:
             return code
@@ -49,6 +50,14 @@ def get_kospicode(name):
         print(f"에러 발생: {e}")
         return {"error": str(e)}
 
+# 주식 이름을 코드로 변환하는 함수
+def get_nas_stock_code(stock_name):
+    stock_name = stock_name.strip().lower()
+    matched_row = nas_stock_data[nas_stock_data['name'].str.lower().str.contains(stock_name)]
+
+    if matched_row.empty:
+        return None  # 찾지 못한 경우
+    return matched_row.iloc[0]['symbol']  # 첫 번째 매칭된 주식 코드 반환
 
 # 주식 시세 확인 part
 # 앱키, 시크릿키, 모의투자 계좌
@@ -87,7 +96,7 @@ def get_daily_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_stock_code(request.args.get('name')),
+        symbol=get_kos_stock_code(request.args.get('name')),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='D',
         adj_price=True
@@ -117,7 +126,7 @@ def get_monthly_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_stock_code(request.args.get('name')),
+        symbol=get_kos_stock_code(request.args.get('name')),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='M',
         adj_price=True
@@ -138,11 +147,14 @@ def get_monthly_kospi():
     return jsonify(result), 200
 
 
-# 나스닥 시세 구하는 메소드
 @app.route('/getnas', methods=['GET'])
 def get_nasdaq():
-    exchanges = ['나스닥', '아멕스', '뉴욕']
+    stock_input = request.args.get('name')  # 주식 코드 또는 주식 이름을 입력받음
 
+    # 입력값이 주식 코드인 경우 바로 조회 시도
+    stock_code = stock_input
+
+    exchanges = ['나스닥', '아멕스', '뉴욕']
     for exchange in exchanges:
         broker = mojito.KoreaInvestment(
             api_key=key,
@@ -150,13 +162,27 @@ def get_nasdaq():
             acc_no=acc_no,
             exchange=exchange
         )
-        resp = broker.fetch_price(request.args.get('name'))
+
+        # 먼저 주식 코드로 조회 시도
+        resp = broker.fetch_price(stock_code)
 
         if resp and resp.get('rt_cd') == "0":
             if 'output' in resp and 'last' in resp['output']:
                 result = resp['output']['last']
                 if result != "":
                     return jsonify(result), 200
+
+        # 주식 코드로 조회가 실패했을 때 주식 이름으로 코드 변환 후 재시도
+        # 주식 코드가 아니라면, 이름으로 코드를 변환하여 조회
+        if not resp or resp.get('rt_cd') == "1":  # 주식 코드로 조회가 실패한 경우
+            stock_code = get_nas_stock_code(stock_input)  # 주식 이름을 코드로 변환
+            if stock_code:
+                resp = broker.fetch_price(stock_code)
+                if resp and resp.get('rt_cd') == "0":
+                    if 'output' in resp and 'last' in resp['output']:
+                        result = resp['output']['last']
+                        if result != "":
+                            return jsonify(result), 200
 
         # 호출을 다라락 하면 한투 서버가 막음
         time.sleep(0.4)
@@ -168,8 +194,12 @@ def get_nasdaq():
 # 나스닥 일봉 구하는 메소드
 @app.route('/getdailynas', methods=['GET'])
 def get_daily_nasdaq():
+    stock_input = request.args.get('name')  # 주식 코드 또는 주식 이름을 입력받음
     exchanges = ['나스닥', '아멕스', '뉴욕']
     result = {}
+
+    # 주식 코드로 바로 조회 시도
+    stock_code = stock_input
 
     for exchange in exchanges:
         broker = mojito.KoreaInvestment(
@@ -178,11 +208,25 @@ def get_daily_nasdaq():
             acc_no=acc_no,
             exchange=exchange
         )
+
+        # 주식 코드로 조회 시도
         resp = broker.fetch_ohlcv(
-            symbol=request.args.get('name'),
+            symbol=stock_code,
             timeframe='D',
             adj_price=True
         )
+
+        # 조회가 실패했으면, 주식 이름을 코드로 변환하여 재시도
+        if not resp or resp.get('rt_cd') != "0":  # 주식 코드로 조회가 실패한 경우
+            stock_code = get_nas_stock_code(stock_input)  # 주식 이름을 코드로 변환
+            if stock_code:
+                resp = broker.fetch_ohlcv(
+                    symbol=stock_code,
+                    timeframe='D',
+                    adj_price=True
+                )
+            else:
+                print(f"Failed to find stock code for {stock_input}")
 
         if resp and resp.get('rt_cd') == "0":
             data = resp.get('output2', [])
@@ -191,21 +235,18 @@ def get_daily_nasdaq():
                     date = entry['xymd']  # 날짜
                     result[date] = {
                         'open': entry['open'],  # 시작가
-                        'high': entry['high'],   # 고가
-                        'low': entry['low'],    # 저가
-                        'close': entry['clos']    # 종가
+                        'high': entry['high'],  # 고가
+                        'low': entry['low'],  # 저가
+                        'close': entry['clos']  # 종가
                     }
                 break  # 데이터를 찾으면 루프 종료
             else:
-                print(
-                    f"No data found for {exchange} on {request.args.get('name')}")
+                print(f"No data found for {exchange} on {stock_code}")
         else:
             print(f"Error in response for {exchange}: {resp.get('msg1')}")
+
         # 호출을 다라락 하면 한투 서버가 막음 많이 터지면 시간 늘리기
         time.sleep(0.5)
-
-    else:
-        print(f"Error in response for {exchange}: {resp.get('msg1')}")
 
     if not result:
         return jsonify({"error": "가격 정보를 찾을 수 없습니다."}), 404
@@ -213,11 +254,14 @@ def get_daily_nasdaq():
     return jsonify(result), 200
 
 
-# 나스닥 월봉 구하는 메소드
 @app.route('/getmonthlynas', methods=['GET'])
 def get_monthly_nasdaq():
+    stock_input = request.args.get('name')  # 주식 코드 또는 주식 이름을 입력받음
     exchanges = ['나스닥', '아멕스', '뉴욕']
     result = {}
+
+    # 주식 코드로 바로 조회 시도
+    stock_code = stock_input
 
     for exchange in exchanges:
         broker = mojito.KoreaInvestment(
@@ -226,11 +270,25 @@ def get_monthly_nasdaq():
             acc_no=acc_no,
             exchange=exchange
         )
+
+        # 주식 코드로 조회 시도
         resp = broker.fetch_ohlcv(
-            symbol=request.args.get('name'),
+            symbol=stock_code,
             timeframe='M',
             adj_price=True
         )
+
+        # 조회가 실패했으면, 주식 이름을 코드로 변환하여 재시도
+        if not resp or resp.get('rt_cd') != "0":  # 주식 코드로 조회가 실패한 경우
+            stock_code = get_nas_stock_code(stock_input)  # 주식 이름을 코드로 변환
+            if stock_code:
+                resp = broker.fetch_ohlcv(
+                    symbol=stock_code,
+                    timeframe='M',
+                    adj_price=True
+                )
+            else:
+                print(f"Failed to find stock code for {stock_input}")
 
         if resp and resp.get('rt_cd') == "0":
             data = resp.get('output2', [])
@@ -239,21 +297,18 @@ def get_monthly_nasdaq():
                     date = entry['xymd']  # 날짜
                     result[date] = {
                         'open': entry['open'],  # 시작가
-                        'high': entry['high'],   # 고가
-                        'low': entry['low'],    # 저가
-                        'close': entry['clos']    # 종가
+                        'high': entry['high'],  # 고가
+                        'low': entry['low'],  # 저가
+                        'close': entry['clos']  # 종가
                     }
                 break  # 데이터를 찾으면 루프 종료
             else:
-                print(
-                    f"No data found for {exchange} on {request.args.get('name')}")
+                print(f"No data found for {exchange} on {stock_code}")
         else:
             print(f"Error in response for {exchange}: {resp.get('msg1')}")
+
         # 호출을 다라락 하면 한투 서버가 막음 많이 터지면 시간 늘리기
         time.sleep(0.5)
-
-    else:
-        print(f"Error in response for {exchange}: {resp.get('msg1')}")
 
     if not result:
         return jsonify({"error": "가격 정보를 찾을 수 없습니다."}), 404
