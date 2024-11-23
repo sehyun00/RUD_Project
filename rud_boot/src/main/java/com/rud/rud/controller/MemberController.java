@@ -41,10 +41,6 @@ public class MemberController {
         if (memberService.isUserIdExists(memberCreateForm.getUserId())) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        // 에러가 있을 경우
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
 
         // 회원가입 처리
         Member member = memberService.create(

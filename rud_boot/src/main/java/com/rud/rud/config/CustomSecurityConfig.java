@@ -1,15 +1,19 @@
 package com.rud.rud.config;
 
+import com.rud.rud.security.handler.APILoginFailHandler;
 import com.rud.rud.security.handler.APILoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,6 +28,7 @@ import java.util.Arrays;
 @Log4j2
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@EnableWebSecurity
 public class CustomSecurityConfig {
 
     @Bean
@@ -47,12 +52,11 @@ public class CustomSecurityConfig {
         http.formLogin(config -> {
             config.loginPage("/superant/login");
             config.successHandler(new APILoginSuccessHandler());
+//            config.failureHandler(new APILoginFailHandler());
         });
 
         return http.build();
     }
-
-
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

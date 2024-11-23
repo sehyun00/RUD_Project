@@ -25,7 +25,7 @@ public class MemberDTO extends User {
     private  boolean dataAnalysisConsent;
     private List<String> roleNames = new ArrayList<String>();
 
-    public MemberDTO(String userId, String password, String name, String email, String phoneNumber, boolean personalInfoConsent,
+    public MemberDTO(String userId, String email, String password, String name, String phoneNumber, boolean personalInfoConsent,
                      boolean dataAnalysisConsent, List<String> roleNames) {
         super(
                 userId,
