@@ -60,7 +60,7 @@ const Signup = () => {
                 }
             } catch (error) {
                 if (error.response && error.response.data) {
-                    alert(error.response.data.message || '회원가입 중 오류가 발생했습니다.');
+                    alert(error.response.data.message || '아이디가 이미 존재합니다!');
                 } else {
                     alert('서버와의 연결에 문제가 발생했습니다.');
                 }
