@@ -4,6 +4,7 @@ import com.rud.rud.domain.Member;
 import com.rud.rud.dto.MemberCreateForm;
 import com.rud.rud.repository.MemberRepository;
 import com.rud.rud.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,9 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/login")
-    public void login()
+    public void login(@RequestParam String username, @RequestParam String password, HttpServletResponse response)
     {
+
         System.out.println("login");
 
     }

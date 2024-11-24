@@ -52,7 +52,7 @@ public class CustomSecurityConfig {
         http.formLogin(config -> {
             config.loginPage("/superant/login");
             config.successHandler(new APILoginSuccessHandler());
-//            config.failureHandler(new APILoginFailHandler());
+            config.failureHandler(new APILoginFailHandler());
         });
 
         return http.build();
