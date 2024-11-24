@@ -4,10 +4,7 @@ import com.rud.rud.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -23,9 +20,20 @@ public class WalletController {
     @Autowired
     private MemberService memberService;
 
+
+    //환율 받는 api
+    @GetMapping("/exchange")
+    public Double getExchange() {
+        return walletService.getDollarExchangeRate();
+    }
+
     // 저장
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
+        // 환율만 여기서 가져와서 지정해줌
+        Double exchange = walletService.getDollarExchangeRate();
+        wallet.setExchange(exchange);
+
         Wallet savedWallet = walletService.saveWallet(wallet);
         return ResponseEntity.ok(savedWallet);
     }

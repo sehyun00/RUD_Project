@@ -22,6 +22,9 @@ public class Wallet {
     @NotNull
     private String rudDate; // 날짜
 
+    @NotNull
+    private Double exchange; //환율
+    
     private Double won; // 원화 금액
 
     private Double wonPer; // 비중

@@ -58,4 +58,14 @@ public class RudController {
         List<Rud> getAll = rudService.getRudByUserId(userId);
         return ResponseEntity.ok(getAll);
     }
+
+    // log 조회
+    // 종목 가격 * 수량 + 원화 + 달러 * 환율
+    @PostMapping("/log")
+    public ResponseEntity<List<Rud>> getLog(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+
+        List<Rud> getAllLog = rudService.getAllLog(userId);
+        return ResponseEntity.ok(getAllLog);
+    }
 }
