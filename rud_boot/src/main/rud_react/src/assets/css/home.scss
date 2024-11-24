@@ -10,8 +10,9 @@
     color: #EAECEF;
 }
 
-.upload-info {
-    width: 1000px;
+.upload-info { /* 도움말 Modal */
+    width: 1200px;
+    height: 80%;
     padding: 20px;
     background: #1f2540;
     border-radius: 10px;
@@ -19,25 +20,39 @@
     line-height: 2;
     position: relative;
     margin: auto;
-    top: 20%;
+    top: 10%;
+    overflow-y: auto; /* 스크롤을 활성화 */
 
+    .info-image-1 {
+        width: 400px;
+        height: auto;
+    }
+
+    .info-image-2,
+    .info-image-3 {
+        width: 600px;
+    }
+    
+    .upload-info:focus {
+        outline: none;
+    }
+    
     .info-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
         border-color: transparent;
         border-radius: 10px;
-        padding: 4px 8px;
+        padding: 10px 16px;
         background-color: #3254ce;
         color: #EAECEF;
         font-weight: 600;
         cursor: pointer;
-
+    
         &:hover {
             background-color: #213a9680;
         }
     }
-}
-
-.upload-info:focus {
-    outline: none;
 }
 
 .modal-overlay {
