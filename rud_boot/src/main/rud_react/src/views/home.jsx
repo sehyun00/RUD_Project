@@ -4,7 +4,6 @@ import '../assets/css/home.scss';
 import Modal from 'react-modal'; // 모달 라이브러리 추가
 
 import gofullpagetestImage from '../assets/images/gofullpagetest.png';
-import info_captureImage from '../assets/images/info_capture.png';
 import cash_blurImage from '../assets/images/cash_blur.png';
 import stocks_blurImage from '../assets/images/stocks_blur.png';
 
@@ -60,7 +59,8 @@ const Home = () => {
                 onRequestClose={closeModal}
                 contentLabel="안내 메시지"
                 overlayClassName="modal-overlay"
-                shouldCloseOnOverlayClick={false}>
+                shouldCloseOnOverlayClick={false}
+                tabIndex="-1">
                 <h2>도움말</h2>
                 <p>
                     1. chrome 웹 스토어에서{' '}

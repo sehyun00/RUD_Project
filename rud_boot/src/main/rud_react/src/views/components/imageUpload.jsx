@@ -1,22 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import axios from 'axios';
+import Modal from 'react-modal'; // 모달 라이브러리 추가
 import '../../assets/css/components/imageUpload.scss';
 
+import questionmarkImage from '../../assets/images/questionmark.png';
+import gofullpagetestImage from '../../assets/images/gofullpagetest.png';
+import cash_blurImage from '../../assets/images/cash_blur.png';
+import stocks_blurImage from '../../assets/images/stocks_blur.png';
+
+Modal.setAppElement('#root');
+
 const ImageUpload = ({ onSave }) => {
-    const [files, setFiles] = useState([null, null]); // 두 개의 파일 상태
-    const [fileNames, setFileNames] = useState(["", ""]); // 파일 이름 상태
-    const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 인덱스
-    const fileInputRefs = [useRef(null), useRef(null)]; // 두 개의 ref
+    const [files, setFiles] = useState([null, null]);
+    const [fileNames, setFileNames] = useState(["", ""]);
+    const [draggingIndex, setDraggingIndex] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
+    const fileInputRefs = [useRef(null), useRef(null)];
 
     const handleFileInputChange = (index) => (event) => {
         const selectedFiles = Array.from(event.target.files);
         const newFiles = [...files];
         const newFileNames = [...fileNames];
 
-        newFiles[index] = selectedFiles[0]; // 해당 인덱스에 파일 저장
-        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+        newFiles[index] = selectedFiles[0];
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : "";
 
         setFiles(newFiles);
         setFileNames(newFileNames);
@@ -32,21 +41,21 @@ const ImageUpload = ({ onSave }) => {
         const newFiles = [...files];
         const newFileNames = [...fileNames];
 
-        newFiles[index] = selectedFiles[0]; // 드롭한 파일 저장
-        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+        newFiles[index] = selectedFiles[0];
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : "";
 
         setFiles(newFiles);
         setFileNames(newFileNames);
-        setDraggingIndex(null); // 드래그 종료
+        setDraggingIndex(null);
     };
 
     const handleDragOver = (index) => (event) => {
-        event.preventDefault(); // 기본 동작 방지
-        setDraggingIndex(index); // 드래그 중인 인덱스 설정
+        event.preventDefault();
+        setDraggingIndex(index);
     };
 
     const handleDragLeave = () => {
-        setDraggingIndex(null); // 드래그가 박스를 떠날 때 인덱스 초기화
+        setDraggingIndex(null);
     };
 
     const handleSaveClick = async () => {
@@ -91,8 +100,7 @@ const ImageUpload = ({ onSave }) => {
 
             console.log('Cash Upload Success:', cashResponse.data);
             console.log('Stock Upload Success:', stockResponse.data);
-            onSave({ cash: cashResponse.data, stock: stockResponse.data }); // 업로드된 데이터 전달
-            console.log(cashResponse.data, stockResponse.data)
+            onSave({ cash: cashResponse.data, stock: stockResponse.data });
         } catch (error) {
             console.error('Upload Error:', error);
             alert("파일 업로드 실패: " + (
@@ -103,6 +111,27 @@ const ImageUpload = ({ onSave }) => {
         }
     };
 
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
+    };
+
+    // 엔터 키로 모달 닫기
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter' && modalOpen) {
+                toggleModal(); // 모달이 열려 있을 때만 닫기
+            }
+        };
+
+        if (modalOpen) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [modalOpen]);
+
     return (
         <div className="image-upload-container">
             <div className="contents-container">
@@ -112,6 +141,7 @@ const ImageUpload = ({ onSave }) => {
                             <div>
                                 <span>이미지 업로드</span>
                             </div>
+                            <img className="questionmark" src={questionmarkImage} onClick={toggleModal} alt="질문 마크" />
                         </div>
                     </div>
                 </div>
@@ -127,7 +157,7 @@ const ImageUpload = ({ onSave }) => {
                             )}
                             {!files[0] && (
                                 <div>
-                                    <span>현금 이미지 올려</span>
+                                    <span> 자산 캡쳐화면을 업로드해주세요.</span>
                                 </div>
                             )}
                         </div>
@@ -158,7 +188,7 @@ const ImageUpload = ({ onSave }) => {
                             )}
                             {!files[1] && (
                                 <div>
-                                    <span>종목 이미지 올려</span>
+                                    <span>종목 캡쳐화면을 업로드해주세요.</span>
                                 </div>
                             )}
                         </div>
@@ -182,6 +212,47 @@ const ImageUpload = ({ onSave }) => {
                     <Button className="confirm-button" onClick={handleSaveClick}>저장</Button>
                 </div>
             </div>
+
+            {/* 모달 구현 */}
+            <Modal
+                className="upload-info"
+                isOpen={modalOpen}
+                onRequestClose={toggleModal}
+                contentLabel="안내 메시지"
+                overlayClassName="modal-overlay"
+                shouldCloseOnOverlayClick={false}
+                tabIndex="-1">
+                <h2>도움말</h2>
+                <p>
+                    1. chrome 웹 스토어에서{' '}
+                    <a
+                        href="https://chromewebstore.google.com/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl?hl=ko&utm_source=ext_sidebar"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Gofullpage
+                    </a>
+                    확장 프로그램 설치
+                </p>
+                <br />
+                <p>
+                2. 원하는 페이지에서 우측 상단 확장프로그램 모음 → gofullpage 아이콘을 클릭 후 Download image (PNG)로 캡쳐
+                </p><br />
+                <img className="info-image-1" src={gofullpagetestImage} alt="도움말 이미지 1" />
+                <br />
+                <br />
+                <p>
+                3. 내 계좌 → 자산 페이지에서 우측 사이드 바 닫은 후 캡쳐.
+                </p><br />
+                <img className="info-image-2" src={cash_blurImage} alt="도움말 이미지 2" />
+                <br />
+                <br />
+                <p>
+                4. 우측 사이드 바 → 내 투자 페이지에서 사이드 바 닫은 후 캡쳐
+                </p><br />
+                <img className="info-image-3" src={stocks_blurImage} alt="도움말 이미지 3" />
+
+                <button className="info-button" onClick={toggleModal}>확인</button>
+            </Modal>
         </div>
     );
 };
@@ -191,3 +262,4 @@ ImageUpload.propTypes = {
 };
 
 export default ImageUpload;
+
