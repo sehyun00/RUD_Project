@@ -112,8 +112,8 @@ public class RudController {
     }
 
     // to csv
-    @PostMapping("/csv")
-    public ResponseEntity<List<Rud>> csvRud(@RequestBody Map<String, String> request) {
-
-    }
+//    @PostMapping("/csv")
+//    public ResponseEntity<List<Rud>> csvRud(@RequestBody Map<String, String> request) {
+//
+//    }
 }
