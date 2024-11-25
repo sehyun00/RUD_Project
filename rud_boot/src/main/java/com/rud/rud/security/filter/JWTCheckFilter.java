@@ -35,12 +35,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("check uri.............." + path);
 
         //api/member/ 경로의 호출은 체크하지 않음
-        if(path.startsWith("/superant/member/")) {
-            return true;
-        }
-
-        //이미지 조회 경로는 체크하지 않는다면
-        if(path.startsWith("/superant/rud")) {
+        if(path.startsWith("/superant/signup/")) {
             return true;
         }
 
