@@ -14,9 +14,6 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('/superant/login', { // 백엔드 로그인 API 경로
-                headers: {
-                    "Content-type": "multipart/form-data"
-                },
                 username,
                 password
             });

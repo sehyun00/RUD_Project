@@ -1,5 +1,6 @@
 package com.rud.rud.config;
 
+import com.rud.rud.security.filter.JWTCheckFilter;
 import com.rud.rud.security.handler.APILoginFailHandler;
 import com.rud.rud.security.handler.APILoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -54,6 +56,9 @@ public class CustomSecurityConfig {
             config.successHandler(new APILoginSuccessHandler());
             config.failureHandler(new APILoginFailHandler());
         });
+
+//        http.addFilterBefore(new JWTCheckFilter(),
+//                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

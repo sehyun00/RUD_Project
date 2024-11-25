@@ -17,31 +17,30 @@
 //@RequestMapping("/superant")
 //public class RudController {
 //
-//    @Autowired
-//    private RudService rudService;
+////    @Autowired
+////    private RudService rudService;
 //
 //    @Autowired
 //    private MemberService memberService;
 //
 //    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그 db에 저장ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-//    @GetMapping
-//    public String rud() {
+//    @GetMapping("/rud")
+//    public void rud() {
 //        System.out.println();
-//        return "rud_form";
 //    }
 //
-//    @PostMapping("/rud")
-//    public void saveRud(List<Rud> rud, Principal principal) {
-//        System.out.println("리밸런싱 로그 저장 요청 수신");
-//
-//        String currentUserId = principal.getName(); // 사용자 이름이 userId라고 가정
-//        Member userId = memberService.findByUserId(currentUserId);
-//
-//        Date rebalancingDate = Date.valueOf("2024-11-11"); // 예시 날짜
-//
-//        rudService.create(rud);
-//
-//    }
+////    @PostMapping("/rud")
+////    public void saveRud(List<Rud> rud, Principal principal) {
+////        System.out.println("리밸런싱 로그 저장 요청 수신");
+////
+////        String currentUserId = principal.getName(); // 사용자 이름이 userId라고 가정
+////        Member userId = memberService.findByUserId(currentUserId);
+////
+////        Date rebalancingDate = Date.valueOf("2024-11-11"); // 예시 날짜
+////
+////        rudService.create(rud);
+////
+////    }
 //
 //
 ////    @PostMapping
