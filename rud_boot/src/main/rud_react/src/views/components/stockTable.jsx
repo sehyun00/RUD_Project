@@ -23,8 +23,8 @@ const StockTable = ({Reload, SD}) => {
     const [currentData, setCurrentData] = useState(stockData["국장"]);
     
     useEffect(() => {
-        console.log(stockData);
-    },[stockData]);
+        console.log(currentData);
+    },[currentData]);
 
     const updateTime = () => {  
         const now = new Date();
@@ -61,6 +61,7 @@ const StockTable = ({Reload, SD}) => {
                         quantity: parseInt(quantity),
                         price: 0,
                         currentPrice: 0,
+                        rebalancingRatio:0,
                         marketType: '국장'
                     }); 
                 }
@@ -76,6 +77,7 @@ const StockTable = ({Reload, SD}) => {
                         quantity: parseInt(quantity),
                         price: 0,
                         currentPrice: 0,
+                        rebalancingRatio:0,
                         marketType: '해외장'
                     });
                 }
@@ -102,6 +104,7 @@ const StockTable = ({Reload, SD}) => {
                 quantity: false, // 현금은 수량으로 1로 설정
                 price: false, // price는 0으로 설정
                 currentPrice: domesticMoney, // 원화의 현재 가격을 currentPrice에 저장
+                rebalancingRatio:0,
                 marketType: '국장'
             };
     
@@ -111,6 +114,7 @@ const StockTable = ({Reload, SD}) => {
                 quantity: false, // 현금은 수량으로 1로 설정
                 price: false, // price는 0으로 설정
                 currentPrice: foreignMoney, // 달러의 현재 가격을 currentPrice에 저장
+                rebalancingRatio:0,
                 marketType: '해외장'
             };      
             setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
@@ -249,6 +253,7 @@ const StockTable = ({Reload, SD}) => {
             quantity: 0,
             price: null,
             currentPrice: 0,
+            rebalancingRatio:0,
             marketType: activeButton
         };
 
