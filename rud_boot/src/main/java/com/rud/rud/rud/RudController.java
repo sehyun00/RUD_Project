@@ -1,6 +1,5 @@
 package com.rud.rud.rud;
 
-import com.rud.rud.member.MemberService;
 import com.rud.rud.wallet.Wallet;
 import com.rud.rud.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -81,18 +80,16 @@ public class RudController {
         for (Rud rud : rudList) {
             String date = rud.getRudDate();
             logMap.putIfAbsent(date, new Log(date));
-            // 날짜로 가져옴ii
+            // 날짜로 가져옴
             Log logResponse = logMap.get(date);
             // 국장이면 그대로
             if (!rud.getPaul()) {
                 logResponse.addStockValue(rud.getMarketOrder() * rud.getNos());
-                System.out.println("국장: " + rud.getMarketOrder() * rud.getNos());
             }
             // 해외장이면 환율 곱해줌
             else {
                 double exchangeRate = walletService.getExchangeForDate(walletList, date);
                 logResponse.addStockValue(rud.getMarketOrder() * exchangeRate * rud.getNos());
-                System.out.println("해외장: " + rud.getMarketOrder() * exchangeRate * rud.getNos());
             }
 
             // 종목 수량 추가
@@ -107,11 +104,16 @@ public class RudController {
             Log logResponse = logMap.get(date);
             // 달러 * 환율 + 원화
             double walletValue = (wallet.getDollar() != null ? wallet.getDollar() * wallet.getExchange() : 0) + (wallet.getWon() != null ? wallet.getWon() : 0);
-            System.out.println("지갑: " + walletValue);
             logResponse.addWalletValue(walletValue);
         }
 
         List<Log> logResponses = new ArrayList<>(logMap.values());
         return ResponseEntity.ok(logResponses);
+    }
+
+    // to csv
+    @PostMapping("/csv")
+    public ResponseEntity<List<Rud>> csvRud(@RequestBody Map<String, String> request) {
+
     }
 }
