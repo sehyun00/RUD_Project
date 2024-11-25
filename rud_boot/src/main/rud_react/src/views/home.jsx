@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
 import Modal from 'react-modal'; // 모달 라이브러리 추가
 
+import gofullpagetestImage from '../assets/images/gofullpagetest.png';
+import cash_blurImage from '../assets/images/cash_blur.png';
+import stocks_blurImage from '../assets/images/stocks_blur.png';
+
 // components
 import StockTable from "./components/stockTable";
 import ImageUpload from "./components/imageUpload";
@@ -49,18 +53,46 @@ const Home = () => {
 
     return (
         <div className="home-container">
-            <Modal
+            {/* <Modal
+                className="upload-info"
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="안내 메시지"
-                className="upload-info"
                 overlayClassName="modal-overlay"
-                shouldCloseOnOverlayClick={false}>
+                shouldCloseOnOverlayClick={false}
+                tabIndex="-1">
                 <h2>도움말</h2>
-                <p>토스증권, 현금, 종목, 이미지 예시</p>
-                <button className="info-button" onClick={closeModal}>확인</button>
-            </Modal>
+                <p>
+                    1. chrome 웹 스토어에서{' '}
+                    <a
+                        href="https://chromewebstore.google.com/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl?hl=ko&utm_source=ext_sidebar"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Gofullpage
+                    </a>
+                    확장 프로그램 설치
+                </p>
+                <br />
+                <p>
+                2. 원하는 페이지에서 우측 상단 확장프로그램 모음 → gofullpage 아이콘을 클릭 후 Download image (PNG)로 캡쳐
+                </p><br />
+                <img className="info-image-1" src={gofullpagetestImage} />
+                <br />
+                <br />
+                <p>
+                3. 내 계좌 → 자산 페이지에서 우측 사이드 바 닫은 후 캡쳐.
+                </p><br />
+                <img className="info-image-2" src={cash_blurImage} />
+                <br />
+                <br />
+                <p>
+                3. 우측 사이드 바 → 내 투자 페이지에서 사이드 바 닫은 후 캡쳐
+                </p><br />
+                <img className="info-image-3" src={stocks_blurImage} />
 
+                <button className="info-button" onClick={closeModal}>확인</button>
+            </Modal> */}
+    
             {
                 isImageUploadVisible
                     ? (<ImageUpload onSave={handleSave}/>)
