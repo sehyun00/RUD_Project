@@ -1,8 +1,8 @@
 package com.rud.rud.controller;
 
 import com.rud.rud.service.MemberService;
-import com.rud.rud.wallet.Wallet;
-import com.rud.rud.wallet.WalletService;
+import com.rud.rud.domain.Wallet;
+import com.rud.rud.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
