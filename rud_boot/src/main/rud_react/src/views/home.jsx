@@ -53,7 +53,7 @@ const Home = () => {
 
     return (
         <div className="home-container">
-            <Modal
+            {/* <Modal
                 className="upload-info"
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
@@ -91,7 +91,7 @@ const Home = () => {
                 <img className="info-image-3" src={stocks_blurImage} />
 
                 <button className="info-button" onClick={closeModal}>확인</button>
-            </Modal>
+            </Modal> */}
     
             {
                 isImageUploadVisible
