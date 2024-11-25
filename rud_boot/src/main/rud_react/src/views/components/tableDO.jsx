@@ -59,7 +59,7 @@ const TableDO = ({
                 {
                     data.map((item, index) => {
                         // 현재 잔고
-                        const currentprice = item.price * item.quantity;
+                        const currentprice = item.id == 1 ? item.currentPrice : item.price * item.quantity;
 
                         // 현재 비중 
                         const currentBalance = currentTotalBalance > 0 ? (currentprice / currentTotalBalance) * 100 : 0;
@@ -76,10 +76,10 @@ const TableDO = ({
                         const desiredInvestment = currentTotalBalance * (rebalanceWeight/100);
 
                         // 희망 수량 계산
-                        const desiredQuantity = desiredInvestment / item.price;
+                        const desiredQuantity = item.name === "원화" ? desiredInvestment : desiredInvestment / item.price;
 
                         // 조절 수량
-                        const quantityControl = desiredQuantity - item.quantity;
+                        const quantityControl = item.name ==="원화" ? desiredQuantity-item.currentPrice : desiredQuantity - item.quantity;
 
                         // 조절 수량 스타일 결정
                         const quantityControlStyle = quantityControl > 0 ? 'text-plus' : 'text-minus'; // 양수는 빨간색, 음수는 파란색
@@ -93,15 +93,43 @@ const TableDO = ({
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}/>
                                 </td>
-                                <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                {item.name === "원화" ? (
+                                    <td>X</td>
+                                ) : (
+                                    <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                )}
                                 <td>
-                                    <input
-                                        className="number"
-                                        type="number"
-                                        value={item.quantity}
-                                        onChange={(e) => handleChange(index, 'quantity', e.target.value)}/>
+                                    {item.name === "원화" ? (
+                                        <span>X</span> 
+                                    ) : (
+                                        <input
+                                            className="number"
+                                            type="number"
+                                            value={item.quantity}
+                                            onChange={(e) => {
+                                                const newQuantity = e.target.value;
+                                                handleChange(index, 'quantity', newQuantity);
+                                                handleChange(index, 'currentPrice', newQuantity * item.price);
+                                            }}
+                                        />
+                                    )}
                                 </td>
-                                <td>{formatCurrency(currentprice)}</td>
+                                <td>
+
+                                    {item.name === "원화" ? (
+                                        <input
+                                            className="number"
+                                            type="number"
+                                            value={item.currentPrice}
+                                            onChange={(e) => {
+                                                const newCurrentPrice = Number(e.target.value);
+                                                handleChange(index, 'currentPrice', newCurrentPrice);;
+                                            }}
+                                        />
+                                    ) : (
+                                        <span>{formatCurrency(item.currentPrice)}</span>
+                                    )}
+                                </td>
                                 <td>{formatCurrency(currentBalance.toFixed(2))} %</td>
                                 <td>
                                     <input
@@ -115,7 +143,7 @@ const TableDO = ({
                                 <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
-                                {searchButton(item, index)}
+                                {item.name !== "원화" && searchButton(item, index)}
                             </tr>
                         );
                     })

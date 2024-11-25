@@ -70,7 +70,7 @@ const ImageUpload = ({ onSave }) => {
 
         try {
             const cashResponse = await axios.post(
-                'https://6041-61-34-253-238.ngrok-free.app/wallet',
+                'https://6b2d-61-34-253-238.ngrok-free.app/wallet',
                 cashFormData,
                 {
                     headers: {
@@ -80,7 +80,7 @@ const ImageUpload = ({ onSave }) => {
             );
 
             const stockResponse = await axios.post(
-                'https://6041-61-34-253-238.ngrok-free.app/upload',
+                'https://6b2d-61-34-253-238.ngrok-free.app/upload',
                 stockFormData,
                 {
                     headers: {

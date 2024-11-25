@@ -20,9 +20,8 @@ const StockTable = ({Reload, SD}) => {
     const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
-    const [moneyData, setMoneyData] = useState({"국장":[], "해외장":[]})
     const [currentData, setCurrentData] = useState(stockData["국장"]);
- 
+    
     useEffect(() => {
         const updateTime = () => {  
             const now = new Date();
@@ -40,121 +39,89 @@ const StockTable = ({Reload, SD}) => {
         "해외장": Array(stockData["해외장"].length).fill(0)
     });
 
-    const fetchMoneyPrices = async () => {
-        try {
-            const domesticMoneys = SD.cash
-                ?.원화 || "";
-            const foreignMoneys = SD.cash
-                ?.달러 || "";
-
-            const domesticMoneyData = (() => {
-                const acc = [];
-                acc.push({
-                    id: acc.length + 1, 
-                    name: "원화",
-                    moneyprice: domesticMoneys,
-                    marketType: "국장"
-                });
-                return acc; // acc를 반환합니다.
-            })();
-
-            const foreignMoneyData = (() => {
-                const acc = [];
-                acc.push({
-                    id: acc.length + 1, 
-                    name: "원화",
-                    moneyprice: foreignMoneys,
-                    marketType: "국장"
-                });
-                return acc; // acc를 반환합니다.
-            })();
-
-            setMoneyData({"국장": domesticMoneyData, "해외장": foreignMoneyData});
-
-            console.log(moneyData);
-
-        } catch (error) {
-            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
-        } finally {
-            setLoading(false);
-        }
-
-    };
-
     const fetchStockPrices = async () => {
         if (loading) 
             return;
-
+    
         try {
-            // console.log(SD);
 
-            const domesticStocks = SD.stock
-                ?.국장 || [];
-            const foreignStocks = SD.stock
-                ?.해외장 || [];
-
+            const domesticStocks = SD.stock?.국장 || [];
+            const foreignStocks = SD.stock?.해외장 || [];
+            const domesticMoney = Number(SD.cash.원화.replace(/,/g, ''));
+            const foreignMoney = Number(SD.cash.달러.replace(/,/g, ''));
+            console.log(SD.cash.달러)   
+    
             const domesticData = domesticStocks.reduce((acc, curr, index) => {
                 if (index % 2 === 0) {
                     const quantity = domesticStocks[index + 1] || 1;
                     acc.push({
-                        id: acc.length + 1,
+                        id: acc.length + 3,
                         name: curr,
                         quantity: parseInt(quantity),
                         price: 0,
+                        currentPrice: 0,
                         marketType: '국장'
                     }); 
                 }
                 return acc;
             }, []);
-
+    
             const foreignData = foreignStocks.reduce((acc, curr, index) => {
                 if (index % 2 === 0) {
                     const quantity = foreignStocks[index + 1] || 1;
                     acc.push({
-                        id: acc.length + domesticData.length + 1,
+                        id: acc.length + domesticData.length + 3,
                         name: curr,
                         quantity: parseInt(quantity),
                         price: 0,
+                        currentPrice: 0,
                         marketType: '해외장'
                     });
                 }
                 return acc;
             }, []);
-
+    
             // 가격을 가져올 종목 리스트 생성
             const allStocks = [
                 ...domesticData,
                 ...foreignData
             ];  
-
+    
             // 종가를 순차적으로 가져오기
             for (const stock of allStocks) {
-                stock.price = await fetchStockPrice(stock.name, stock.marketType);
+                stock.price = await fetchStockPrice(stock.name, stock.marketType); // currentPrice에 가격 저장
+                stock.currentPrice = await stock.price * stock.quantity;
                 await new Promise(resolve => setTimeout(resolve, 500));
-                // console.log(`${stock.name}: ${stock.price}`);  종목명과 가격 로그
             }
-
-            setStockData({"국장": domesticData, "해외장": foreignData});
-
+    
+            // 현금 정보를 stockData에 추가
+            const cashDataKRW = {
+                id: 1,
+                name: '원화',
+                quantity: false, // 현금은 수량으로 1로 설정
+                price: false, // price는 0으로 설정
+                currentPrice: domesticMoney, // 원화의 현재 가격을 currentPrice에 저장
+                marketType: '국장'
+            };
+    
+            const cashDataUSD = {
+                id: 2,
+                name: '달러',
+                quantity: false, // 현금은 수량으로 1로 설정
+                price: false, // price는 0으로 설정
+                currentPrice: foreignMoney, // 달러의 현재 가격을 currentPrice에 저장
+                marketType: '해외장'
+            };      
+            setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
+    
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
         } finally {
             setLoading(false);
         }
     };
-    const reloadButton = async () => {
-        if (window.confirm("재업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
-            setLoading(true); // 로딩 시작
-
-            // 주식 가격을 다시 가져오는 함수 호출
-            await fetchStockPrices();
-
-            setLoading(false); // 로딩 종료
-        }
-    };
 
     useEffect(() => {
-        fetchMoneyPrices();
         fetchStockPrices();
     }, [SD]);
 
@@ -181,7 +148,6 @@ const StockTable = ({Reload, SD}) => {
                 const response = await axios.get(
                     'https://api.exchangerate-api.com/v4/latest/USD'
                 );
-                // console.log(response);
                 setExchangeRate(response.data.rates.KRW);
             } catch (error) {
                 console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
@@ -218,11 +184,11 @@ const StockTable = ({Reload, SD}) => {
 
     const calculateCurrentTotalBalance = () => {
         const domesticTotal = stockData["국장"].reduce(
-            (sum, item) => sum + (item.price * item.quantity),
+            (sum, item) => sum + item.currentPrice,
             0
         );
         const foreignTotal = stockData["해외장"].reduce(
-            (sum, item) => sum + (item.price * item.quantity),
+            (sum, item) => sum + item.currentPrice,
             0
         );
         return activeButton === "국장"
@@ -238,6 +204,7 @@ const StockTable = ({Reload, SD}) => {
 
     const handleChange = (index, field, value) => {
         const newData = [...currentData];
+        newData.currentPrice = newData.quantity * newData.price;
 
         // 만약 index가 currentData의 길이와 같다면 새로운 행 추가
         if (index === newData.length) {
@@ -275,10 +242,11 @@ const StockTable = ({Reload, SD}) => {
     const addEmptyRow = async () => {
     
         const newRow = {
-            id: currentData.length + 1, // 새로운 ID 생성
+            id: currentData.length + 2, // 새로운 ID 생성
             name: '',
             quantity: 0,
             price: null,
+            currentPrice: 0,
             marketType: activeButton
         };
 
@@ -308,9 +276,11 @@ const StockTable = ({Reload, SD}) => {
                     ? `http://localhost:5001/getkos?name=${stockName}`
                     : `http://localhost:5001/getnas?name=${stockName}`;
     
-                const response = await axios.get(endpoint);
+                const response = await axios.get(endpoint); 
                 const updatedPrice = response.data; // API 호출로 받은 가격
+                const updatadCurrentPrice = updatedPrice * item.quantity;
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
+                handleChange(index, 'currentPrice', updatadCurrentPrice);
             } catch (error) {
                 console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
             }
@@ -346,7 +316,6 @@ const StockTable = ({Reload, SD}) => {
         try {
             const response = await axios.get(`http://localhost:5004/?stock_names=${stockNamesString}`);
             const weights = response.data;
-            // console.log(weights);
     
             // weights 객체를 원하는 형식으로 변환하여 상태 업데이트
             const newWeights = {
@@ -355,7 +324,6 @@ const StockTable = ({Reload, SD}) => {
             };
             
             setDesiredWeights(newWeights);
-            // console.log(newWeights);
 
         } catch (error) {
             console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
