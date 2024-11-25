@@ -1,8 +1,6 @@
 package com.rud.rud.member;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,8 +16,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true); // 쿠키 등을 포함할지 여부
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

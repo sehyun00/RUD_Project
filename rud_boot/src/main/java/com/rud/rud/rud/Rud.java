@@ -2,7 +2,6 @@ package com.rud.rud.rud;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,5 +33,6 @@ public class Rud {
     @NotNull
     private Double expertPer; // 비중
 
-
+    @NotNull
+    private Boolean paul; // 국장인지 해외장인지
 }

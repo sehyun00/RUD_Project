@@ -20,20 +20,9 @@ public class WalletController {
     @Autowired
     private MemberService memberService;
 
-
-    //환율 받는 api
-    @GetMapping("/exchange")
-    public Double getExchange() {
-        return walletService.getDollarExchangeRate();
-    }
-
     // 저장
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
-        // 환율만 여기서 가져와서 지정해줌
-        Double exchange = walletService.getDollarExchangeRate();
-        wallet.setExchange(exchange);
-
         Wallet savedWallet = walletService.saveWallet(wallet);
         return ResponseEntity.ok(savedWallet);
     }
