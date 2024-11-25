@@ -23,16 +23,17 @@ const StockTable = ({Reload, SD}) => {
     const [currentData, setCurrentData] = useState(stockData["국장"]);
     
     useEffect(() => {
-        const updateTime = () => {  
-            const now = new Date();
-            setCurrentTime(now.toLocaleString()); // 현재 시간을 문자열로 설정
-        };
+        console.log(stockData);
+    },[stockData]);
 
+    const updateTime = () => {  
+        const now = new Date();
+        setCurrentTime(now.toLocaleString()); // 현재 시간을 문자열로 설정
+    };
+
+    useEffect(() => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
-        const intervalId = setInterval(updateTime); // 1초마다 시간 업데이트
-
-        return() => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
-    }, []);
+    }, [stockData]);
 
     const [desiredWeights, setDesiredWeights] = useState({
         "국장": Array(stockData["국장"].length).fill(0),
@@ -113,7 +114,8 @@ const StockTable = ({Reload, SD}) => {
                 marketType: '해외장'
             };      
             setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
-    
+            updateTime();
+
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
         } finally {
@@ -323,10 +325,40 @@ const StockTable = ({Reload, SD}) => {
                 "해외장": stockData["해외장"].map(stock => weights[stock.name] ? weights[stock.name] : "0")
             };
             
+            updateTime();
             setDesiredWeights(newWeights);
 
         } catch (error) {
             console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
+        }
+    };
+
+    const saveDataToDB = async () => {
+        const userId = "zxcv"; // 임의의 사용자 ID
+        const rudDate = currentTime.split(",")[0]; // 현재 날짜
+        const allStocks = [...stockData["국장"], ...stockData["해외장"]];
+
+        for (const stock of allStocks) {
+            const payload = {
+                userId,
+                rudDate,
+                stockName: stock.name,
+                marketOrder: stock.currentPrice,
+                nos: stock.quantity,
+                expertPer: 12.112, // 임의로 설정한 값
+                paul: false // 임의로 설정한 값
+            };
+
+            try {
+                const endpoint = stock.marketType === '국장'
+                    ? 'http://localhost:8081/rud/save'
+                    : 'http://localhost:8081/wallet/save';
+
+                await axios.post(endpoint, payload);
+                console.log(`${stock.name}의 데이터가 저장되었습니다.`);
+            } catch (error) {
+                console.error(`${stock.name}의 데이터 저장 중 오류 발생:`, error);
+            }
         }
     };
 
@@ -360,7 +392,7 @@ const StockTable = ({Reload, SD}) => {
                         </div>
                         <div className="switch-left">
                             <div onClick={fetchDesiredWeights}>희망 비중 추천받기</div>
-                            <div>저장하기</div>
+                            <div onClick={saveDataToDB}>저장하기</div>
                         </div>
                     </div>
                 </div>
@@ -398,7 +430,7 @@ const StockTable = ({Reload, SD}) => {
                                 <th className="th"></th>
                                 <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>
                                 <th className="th"></th>
-                                <th className="th">{totalDesiredWeight}</th>
+                                <th className="th">{Math.round(totalDesiredWeight)}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>

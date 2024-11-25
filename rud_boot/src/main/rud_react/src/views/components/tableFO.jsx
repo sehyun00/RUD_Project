@@ -33,10 +33,6 @@ const TableFO = ({
         handleWeightChange(index, newDesiredWeights[index]);
     };
 
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
-
     return (
         <Table className="custom-table">
             <thead>

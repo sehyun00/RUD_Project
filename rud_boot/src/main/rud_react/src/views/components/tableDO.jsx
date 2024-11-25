@@ -28,10 +28,6 @@ const TableDO = ({
 
         handleWeightChange(index, newDesiredWeights[index]);
     };
-      
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
 
 
     return (
