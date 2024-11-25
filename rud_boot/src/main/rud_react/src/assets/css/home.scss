@@ -1,9 +1,50 @@
 .home-container {
-    display: flex;
+    margin: auto;
+    display: block;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; // 상단 정렬
-    height: 100vh; // 전체 화면 높이
-    overflow-y: auto; // 세로 스크롤 활성화
-    padding: 20px; // 내부 여백
+    height: auto; // 전체 화면 높이
+    // overflow-y: auto; // 세로 스크롤 활성화
+    // padding: 20px; // 내부 여백
+    color: #EAECEF;
+}
+
+.upload-info {
+    width: 1000px;
+    padding: 20px;
+    background: #1f2540;
+    border-radius: 10px;
+    color: #EAECEF;
+    line-height: 2;
+    position: relative;
+    margin: auto;
+    top: 20%;
+
+    .info-button {
+        border-color: transparent;
+        border-radius: 10px;
+        padding: 4px 8px;
+        background-color: #3254ce;
+        color: #EAECEF;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #213a9680;
+        }
+    }
+}
+
+.upload-info:focus {
+    outline: none;
+}
+
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }

@@ -15,7 +15,8 @@ import Header from "./views/componentItems/header";
 import Log from "./views/components/log";
 
 function App() {
-    
+    console.log("씨이이이빨")
+
     // view
     return (
         <div>

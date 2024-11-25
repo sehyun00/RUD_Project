@@ -1,0 +1,126 @@
+.log-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; // 상단 정렬
+    height: 100vh; // 전체 화면 높이
+    overflow-y: auto; // 세로 스크롤 활성화
+    padding: 20px; // 내부 여백
+    color: #EAECEF;
+
+    .contents-container {
+        width: 1200px;
+        margin: 50px 300px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100vh; // 전체 화면 높이
+        overflow-y: auto; // 세로 스크롤 활성화
+        padding: 20px; // 내부 여백
+
+        .switch-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            margin-top: 5%;
+
+            .table-switch-wrapper {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                border-color: transparent;
+                border-radius: 10px;
+                background-color: #1f2540;
+                padding: 8px;
+
+                .table-switch {
+                    display: flex;
+                    justify-content: space-around;
+                    width: 12%;
+                    padding: 4px 8px;
+
+                    div {
+                        border-color: transparent;
+                        border-radius: 10px;
+                        padding: 4px 8px;
+                        background-color: #213A96;
+                        color: #EAECEF;
+                        font-weight: 600;
+
+                        span {
+                            padding: 4px 8px;
+                        }
+
+                        &:hover {
+                            background-color: #15255e;
+                            color: #8eaaff;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .table-header-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+
+            .table-header-wrapper {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+                background-color: transparent;
+                padding: 8px;
+
+                Table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    th {
+                        text-align: center;
+                        padding: 12px; // 패딩 조정
+                        font-size: 14px;
+                        background-color: #181a20; // 밝은 배경색
+                        color: #EAECEF;
+                        border-bottom: 2px solid #2B3139;
+                    }
+                
+                    td {
+                        text-align: center;
+                        padding: 10px; // 패딩 조정
+                        font-size: 14px;
+                        background-color: transparent;
+                        color: #EAECEF;
+                    }
+                
+                    tr:hover {
+                        background-color: rgba(0, 0, 0, 0.5);
+                    }
+                }
+            }
+
+        }
+
+        .table-body-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+
+            .table-body-wrapper {}
+        }
+    }
+
+}

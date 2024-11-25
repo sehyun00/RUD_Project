@@ -1,171 +1,385 @@
-import React, { useState } from "react";
+// feature
+import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
-import { Table } from "reactstrap";
-import "../../assets/css/components/stockTable.scss";
+import axios from 'axios';
 
-// 더미 데이터 정의 - 해외
-const initialData = [
-    { id: 1, name: "AAPL", price: 150.00, quantity: 10, targetRatio: 100 },
-    { id: 2, name: "GOOGL", price: 2800.00, quantity: 5, targetRatio: 80 },
-    { id: 3, name: "TSLA", price: 700.00, quantity: 20, targetRatio: 90 },
-    { id: 4, name: "AMZN", price: 3400.00, quantity: 15, targetRatio: 70 },
-    { id: 5, name: "MSFT", price: 290.00, quantity: 12, targetRatio: 60 },
-    { id: 6, name: "MSFT", price: 290.00, quantity: 12, targetRatio: 60 },
-];
+// scss
+import '../../assets/css/stockTable.scss';
 
-// 더미 데이터 정의 - 국내
-const initialDomesticData = [
-    { id: 1, name: "KODEX", price: 150.00, quantity: 10, targetRatio: 100 },
-    { id: 2, name: "TIGER", price: 2800.00, quantity: 5, targetRatio: 80 },
-    { id: 3, name: "PLUS", price: 700.00, quantity: 20, targetRatio: 90 },
-    { id: 4, name: "KOSEF", price: 3400.00, quantity: 15, targetRatio: 70 },
-    { id: 5, name: "RISE", price: 290.00, quantity: 12, targetRatio: 60 },
-    { id: 6, name: "TREX", price: 290.00, quantity: 12, targetRatio: 60 },
-];
+// components
+import TableDO from "./tableDO"; // 국내 컴포넌트
+import TableFO from "./tableFO"; // 해외 컴포넌트
 
-// 각 종목의 데이터 행을 표시하는 컴포넌트
-const DataRow = ({ item, totalAssets, totalTargetRatio, onQuantityChange, onTargetRatioChange }) => {
-    const balance = item.price * item.quantity;
-    const ratio = ((balance / totalAssets) * 100).toFixed(2);
-    const rebalancingRatio = totalTargetRatio > 0 ? ((item.targetRatio / totalTargetRatio) * 100).toFixed(2) : 0;
-    const targetInvestment = (rebalancingRatio / 100) * totalAssets;
-    const targetQuantity = targetInvestment > 0 ? targetInvestment / item.price : 0;
-    const quantityAdjustment = targetQuantity - item.quantity;
+// images
+import checkicon from '../../assets/images/checkmark.png';
 
-    return (
-        <tr>
-            <td className="text-center">{item.name}</td>
-            <td className="text-center">{item.price}</td>
-            <td className="input-cell">
-                <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) => onQuantityChange(item.id, parseFloat(e.target.value) || 0)}
-                    className="input-style"
-                />
-            </td>
-            <td className="text-center">{balance.toFixed(2)}</td>
-            <td className="text-center">{ratio} %</td>
-            <td className="input-cell">
-                <input
-                    type="number"
-                    value={item.targetRatio}
-                    onChange={(e) => onTargetRatioChange(item.id, parseFloat(e.target.value) || 0)}
-                    className="input-style"
-                />
-            </td>
-            <td className="text-center">{rebalancingRatio} %</td>
-            <td className="text-center">{targetInvestment.toFixed(2)}</td>
-            <td className="text-center">{targetQuantity.toFixed(2)}</td>
-            <td className="text-center">{quantityAdjustment.toFixed(2)}</td>
-        </tr>
+// StockTable 컴포넌트 정의
+const StockTable = ({Reload, SD}) => {
+    const [activeButton, setActiveButton] = useState("국장");
+    const [exchangeRate, setExchangeRate] = useState(0);
+    const [loading, setLoading] = useState(false);  
+    const [currentTime, setCurrentTime] = useState('');
+    const [stockData, setStockData] = useState({"국장": [], "해외장": []});
+    const [currentData, setCurrentData] = useState(stockData["국장"]);
+    // console.log(SD.stock);
+
+    useEffect(() => {
+        const updateTime = () => {  
+            const now = new Date();
+            setCurrentTime(now.toLocaleString()); // 현재 시간을 문자열로 설정
+        };
+
+        updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
+        const intervalId = setInterval(updateTime, 1000); // 1초마다 시간 업데이트
+
+        return() => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
+    }, []);
+
+    const [desiredWeights, setDesiredWeights] = useState({
+        "국장": Array(stockData["국장"].length).fill(0),
+        "해외장": Array(stockData["해외장"].length).fill(0)
+    });
+
+    const fetchStockPrices = async () => {
+        if (loading) 
+            return;
+
+        try {
+            const domesticStocks = SD.stock
+                ?.국장 || [];
+            const foreignStocks = SD
+                ?.해외장 || [];
+
+            const domesticData = domesticStocks.reduce((acc, curr, index) => {
+                if (index % 2 === 0) {
+                    const quantity = domesticStocks[index + 1] || 1;
+                    acc.push({
+                        id: acc.length + 1,
+                        name: curr,
+                        quantity: parseInt(quantity),
+                        price: 0,
+                        marketType: '국장'
+                    });
+                }
+                return acc;
+            }, []);
+
+            const foreignData = foreignStocks.reduce((acc, curr, index) => {
+                if (index % 2 === 0) {
+                    const quantity = foreignStocks[index + 1] || 1;
+                    acc.push({
+                        id: acc.length + domesticData.length + 1,
+                        name: curr,
+                        quantity: parseInt(quantity),
+                        price: 0,
+                        marketType: '해외장'
+                    });
+                }
+                return acc;
+            }, []);
+
+            // 가격을 가져올 종목 리스트 생성
+            const allStocks = [
+                ...domesticData,
+                ...foreignData
+            ];  
+
+            // 종가를 순차적으로 가져오기
+            for (const stock of allStocks) {
+                stock.price = await fetchStockPrice(stock.name, stock.marketType);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                // console.log(`${stock.name}: ${stock.price}`);  종목명과 가격 로그
+            }
+
+            setStockData({"국장": domesticData, "해외장": foreignData});
+
+        } catch (error) {
+            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const reloadButton = async () => {
+        if (window.confirm("재업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
+            setLoading(true); // 로딩 시작
+
+            // 주식 가격을 다시 가져오는 함수 호출
+            await fetchStockPrices();
+
+            setLoading(false); // 로딩 종료
+        }
+    };
+
+    useEffect(() => {
+        fetchStockPrices();
+    }, [SD]);
+
+    const fetchStockPrice = async (stockName, marketType) => {
+        try {
+            const endpoint = marketType === '국장'
+                ? `http://localhost:5001/getkos?name=${stockName}`
+                : `http://localhost:5001/getnas?name=${stockName}`;
+
+            const response = await axios.get(endpoint);
+            if (response.data) {
+                return response.data;
+            }
+            return null;
+        } catch (error) {
+            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            return null;
+        }
+    };
+
+    useEffect(() => {
+        const fetchExchangeRate = async () => {
+            try {
+                const response = await axios.get(
+                    'https://api.exchangerate-api.com/v4/latest/USD'
+                );
+                setExchangeRate(response.data.rates.KRW);
+            } catch (error) {
+                console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchExchangeRate();
+    }, []);
+
+    useEffect(() => {
+        setCurrentData(stockData[activeButton]);
+    }, [activeButton, stockData]);
+
+    const formatCurrency = (amount, isForeign) => {
+        const options = {
+            style: 'decimal',
+            minimumFractionDigits: isForeign
+                ? 2
+                : 0,
+            maximumFractionDigits: isForeign
+                ? 2
+                : 0
+        };
+        const formattedAmount = new Intl
+            .NumberFormat('ko-KR', options)
+            .format(amount);
+        return isForeign
+            ? `$ ${formattedAmount}`
+            : `₩ ${formattedAmount}`;
+
+    };
+
+    const calculateCurrentTotalBalance = () => {
+        const domesticTotal = stockData["국장"].reduce(
+            (sum, item) => sum + (item.price * item.quantity),
+            0
+        );
+        const foreignTotal = stockData["해외장"].reduce(
+            (sum, item) => sum + (item.price * item.quantity),
+            0
+        );
+        return activeButton === "국장"
+            ? domesticTotal + (foreignTotal * exchangeRate)
+            : (domesticTotal / exchangeRate) + foreignTotal;
+    };
+
+    const handleReloadClick = () => {
+        if (window.confirm("재업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
+            Reload();
+        }
+    };
+
+    const handleChange = (index, field, value) => {
+        const newData = [...currentData];
+
+        // 만약 index가 currentData의 길이와 같다면 새로운 행 추가
+        if (index === newData.length) {
+            newData.push(value); // 새로운 빈 데이터 추가
+        } else {
+            newData[index][field] = value; // 기존 데이터 수정
+        }
+
+        setCurrentData(newData);
+    };  
+
+    const handleButtonClick = (clickButton) => {
+        setActiveButton(clickButton);
+        setCurrentData(stockData[clickButton]);
+    };
+
+    const handleWeightChange = (index, value) => {
+        const newWeights = {
+            ...desiredWeights
+        };
+        newWeights[activeButton][index] = value;
+        setDesiredWeights(newWeights);
+    };
+
+    const totalDesiredWeight = desiredWeights["국장"].reduce(
+        (total, weight) => total + (parseFloat(weight) || 0),
+        0
+    ) + desiredWeights["해외장"].reduce(
+        (total, weight) => total + (parseFloat(weight) || 0),
+        0
     );
-};
 
-const StockTable = () => {
-    const [data, setData] = useState(initialData);
-    const [domesticData, setDomesticData] = useState(initialDomesticData); // 국내 데이터 추가
+    const currentTotalBalance = calculateCurrentTotalBalance();
 
-    const handleQuantityChange = (id, newQuantity) => {
-        setData((prevData) => prevData.map((item) => item.id === id ? { ...item, quantity: newQuantity } : item));
+    const addEmptyRow = async () => {
+    
+        const newRow = {
+            id: currentData.length + 1, // 새로운 ID 생성
+            name: '',
+            quantity: 0,
+            price: null,
+            marketType: activeButton
+        };
+
+        // 현재 활성화된 버튼에 따라 적절한 데이터 상태에 추가
+        setStockData(prevState => ({
+            ...prevState,
+            [activeButton]: [
+                ...prevState[activeButton],
+                newRow
+            ] // 현재 활성화된 마켓에 추가
+        }));
+
+        // currentData도 업데이트
+        setCurrentData(prevData => [
+            ...prevData,
+            newRow
+        ]);
     };
 
-    const handleTargetRatioChange = (id, newRatio) => {
-        setData((prevData) => prevData.map((item) => item.id === id ? { ...item, targetRatio: newRatio } : item));
+    // 주식 검색 버튼
+    const searchButton = (item, index) => {
+        const fetchPriceAndUpdate = async () => {
+            const marketType = item.marketType;
+            const stockName = item.name;
+            try {
+                const endpoint = marketType === '국장'
+                    ? `http://localhost:5001/getkos?name=${stockName}`
+                    : `http://localhost:5001/getnas?name=${stockName}`;
+    
+                const response = await axios.get(endpoint);
+                const updatedPrice = response.data; // API 호출로 받은 가격
+                handleChange(index, 'price', updatedPrice); // 가격 업데이트
+            } catch (error) {
+                console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+            }
+        };
+        return (
+            <td className="option-button">
+                {item.price === null && 
+                <img 
+                    src ={checkicon} 
+                    className="check-icon"
+                    onClick={fetchPriceAndUpdate}
+                />
+                }
+                {item.price === '0' && 
+                <img 
+                    src ={checkicon} 
+                    className="check-icon"
+                    onClick={fetchPriceAndUpdate}
+                />
+                }
+            </td>
+        );
     };
 
-    const totalAssets = data.reduce((total, item) => total + item.price * item.quantity, 0);
-    const totalTargetRatio = data.reduce((total, item) => total + item.targetRatio, 0);
+    if (loading) {
+        return <div>환율을 로딩 중...</div>;
+    }
 
     return (
-        <div className="table-container">
-            <div className="table-wrapper">
-
-                <div className="table-spacing">
-                    <span>해외</span>
-                </div>
-
-                <Table className="custom-table-overseas">
-                    <thead>
-                        <tr>
-                            <th rowSpan="2" className="text-center">종목명</th>
-                            <th rowSpan="2" className="text-center">주가</th>
-                            <th colSpan="3" className="text-center">현재</th>
-                            <th rowSpan="2" className="text-center">희망비중</th>
-                            <th colSpan="3" className="text-center">리밸런싱</th>
-                            <th rowSpan="2" className="text-center">수량조절</th>
-                        </tr>
-                        <tr>
-                            <th>수량</th>
-                            <th>잔고 ($)</th>
-                            <th>비중 (%)</th>
-                            <th>비중 (%)</th>
-                            <th>희망투자금 ($)</th>
-                            <th>희망수량</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((item) => (
-                            <DataRow
-                                key={item.id}
-                                item={item}
-                                totalAssets={totalAssets}
-                                totalTargetRatio={totalTargetRatio}
-                                onQuantityChange={handleQuantityChange}
-                                onTargetRatioChange={handleTargetRatioChange}
-                            />
-                        ))}
-                    </tbody>
-                </Table>
+        <div className="stock-container">
+            <div className="name-container">
+                <h1>StockTable</h1>
+                <p>{currentTime}</p>
             </div>
-
-            <div className="table-wrapper">
-                <div className="table-spacing">
-                    <span>국내</span>
+            <div className="switch-container">
+                <div className="table-switch-wrapper">
+                    <div className="table-switch">
+                        <div className="switch-right">
+                            <div
+                                className={`table-choice ${activeButton === '국장'
+                                    ? 'active'
+                                    : ''}`}
+                                onClick={() => handleButtonClick('국장')}>
+                                <span>국내</span>
+                            </div>
+                            <div
+                                className={`table-choice ${activeButton === '해외장'
+                                    ? 'active'
+                                    : ''}`}
+                                onClick={() => handleButtonClick('해외장')}>
+                                <span>해외</span>
+                            </div>
+                            <div className="image-reload" onClick={handleReloadClick}>
+                                <span>이미지 재업로드</span>
+                            </div>
+                        </div>
+                        <div className="switch-left">
+                            <div>희망 비중 추천받기</div>
+                            <div>저장하기</div>
+                        </div>
+                    </div>
                 </div>
-
-                <Table className="custom-table-domestic">
-                    <thead>
-                        <tr>
-                            <th rowSpan="2" className="text-center">종목명</th>
-                            <th rowSpan="2" className="text-center">주가</th>
-                            <th colSpan="3" className="text-center">현재</th>
-                            <th rowSpan="2" className="text-center">희망비중</th>
-                            <th colSpan="3" className="text-center">리밸런싱</th>
-                            <th rowSpan="2" className="text-center">수량조절</th>
-                        </tr>
-                        <tr>
-                            <th>수량</th>
-                            <th>잔고 (₩)</th>
-                            <th>비중 (%)</th>
-                            <th>비중 (%)</th>
-                            <th>희망투자금 (₩)</th>
-                            <th>희망수량</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {domesticData.map((item) => (
-                            <DataRow
-                                key={item.id}
-                                item={item}
-                                totalAssets={totalAssets}
-                                totalTargetRatio={totalTargetRatio}
-                                onQuantityChange={handleQuantityChange}
-                                onTargetRatioChange={handleTargetRatioChange}
-                            />
-                        ))}
-                    </tbody>
-                </Table>
+            </div>
+            <div className="table-container">   
+                <div className="table-wrapper">
+                    {
+                        activeButton === '국장'
+                            ? <TableDO
+                                    data={currentData}
+                                    totalBalance={calculateCurrentTotalBalance()}
+                                    handleChange={handleChange}
+                                    desiredWeights={desiredWeights["국장"]}
+                                    handleWeightChange={handleWeightChange}
+                                    currentTotalBalance={currentTotalBalance}
+                                    totalDesiredWeight={totalDesiredWeight}
+                                    addEmptyRow={addEmptyRow}
+                                    searchButton={searchButton}/>
+                            : <TableFO
+                                    data={currentData}
+                                    totalBalance={calculateCurrentTotalBalance()}
+                                    handleChange={handleChange}
+                                    desiredWeights={desiredWeights["해외장"]}
+                                    handleWeightChange={handleWeightChange}
+                                    currentTotalBalance={currentTotalBalance}
+                                    totalDesiredWeight={totalDesiredWeight}
+                                    addEmptyRow={addEmptyRow}
+                                    searchButton={searchButton}/>
+                    }
+                    <table className="custom-table">
+                        <thead>
+                            <tr>
+                                <th className="th"></th>
+                                <th className="th">총합</th>
+                                <th className="th"></th>
+                                <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>
+                                <th className="th"></th>
+                                <th className="th">{totalDesiredWeight}</th>
+                                <th className="th">{/*  */}</th>
+                                <th className="th">{/*  */}</th>
+                                <th className="th">{/*  */}</th>
+                                <th className="th">{/*  */}</th>
+                                <th className="option-button"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-
     );
 };
 
-
-
+// PropTypes로 prop의 타입 정의
 StockTable.propTypes = {
-    classes: PropTypes.object
+    Reload: PropTypes.func.isRequired, // 재업로드 함수
 };
 
 export default StockTable;
