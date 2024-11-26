@@ -1,36 +1,32 @@
-// package com.rud.rud;
+package com.rud.rud;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.rud.rud.domain.Member;
+import com.rud.rud.repository.MemberRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// import java.text.SimpleDateFormat;
-// import java.time.LocalDateTime;
-// import java.time.ZoneId;
-// import java.util.Date;
+@SpringBootTest
+class RudApplicationTests {
 
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.context.SpringBootTest;
+	@Autowired
+	private MemberRepository memberRepository;
 
-// import com.rud.rud.rud.Rud;
-// import com.rud.rud.rud.RudRepository;
+	@Test
+	void loginTest(){
+		Member member = new Member();
+		member.setUserId("qwer");
+		member.setPassword("123456");
+		member.setEmail("qwer@naver.com");
+		member.setName("qwer");
+		member.setPhoneNumber("123412341234");
+		member.setDataAnalysisConsent(true);
+		member.setPersonalInfoConsent(true);
+		this.memberRepository.save(member);
+	}
 
-// @SpringBootTest
-// class RudApplicationTests {
+	@Test
+	void contextLoads() {
+	}
 
-// 	@Autowired
-// 	private RudRepository rudRepository;
-//     LocalDateTime now = LocalDateTime.now();
-//     Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-//     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-// 	@Test
-// 	void loginrud() {
-// 		try {
-// 			Rud rud = this.rudRepository.findByUserIdandDate("qwer", "2024-11-14 17:18:59");
-// 			assertEquals(1, rud.getId());
-// 		} catch (Exception e) {
-// 			e.printStackTrace();
-// 		}
-
-// 	}
-// }
+}
