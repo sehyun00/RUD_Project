@@ -6,20 +6,20 @@ import ios from '../assets/images/ios.png';
 import google from '../assets/images/logogoogle.png';
 
 const Login = () => {
-    const [id, setId] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
         try {
             const response = await axios.post('/superant/login', { // 백엔드 로그인 API 경로
-                id,
+                username,
                 password
             });
             
             if (response.status === 200) {
+                console.log(username, password)
                 console.log('로그인 성공:', response.data);
                 // 로그인 성공 시 메인 페이지로 이동
                 navigate('/home'); 
@@ -31,6 +31,7 @@ const Login = () => {
                 alert('서버와의 연결에 문제가 발생했습니다.');
             }
         }
+
     };
 
     return (
@@ -41,11 +42,11 @@ const Login = () => {
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
                             <input
-                                type="id"
-                                id="id"
+                                type="username"
+                                id="username"
                                 placeholder="아이디를 입력하세요"
-                                value={id}
-                                onChange={(e) => setId(e.target.value)}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required="required"
                             />
                         </div>
@@ -60,6 +61,7 @@ const Login = () => {
                             />
                         </div>
                         <button type="submit">로그인</button>
+                       
                     </form>
 
                     <div className="divider">
