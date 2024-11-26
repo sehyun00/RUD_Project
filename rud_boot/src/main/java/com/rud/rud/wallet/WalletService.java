@@ -17,7 +17,7 @@ public class WalletService {
         return walletRepository.save(wallet);
     }
 
-    public List<Wallet> getWalletByUserIdAndRudDate(String userId, String rudDate) {
+    public Wallet getWalletByUserIdAndRudDate(String userId, String rudDate) {
         return walletRepository.findByUserIdAndRudDate(userId, rudDate);
     }
 
@@ -32,6 +32,15 @@ public class WalletService {
             if (wallet.getRudDate().equals(date)) {
                 return wallet.getExchange();
             }
+        }
+        return 0.0;
+    }
+
+    // 오버라이딩
+    // 날짜로 그 날짜에 해당하는 환율 조회
+    public Double getExchangeForDate(Wallet wallet, String date) {
+        if (wallet.getRudDate().equals(date)) {
+            return wallet.getExchange();
         }
         return 0.0;
     }

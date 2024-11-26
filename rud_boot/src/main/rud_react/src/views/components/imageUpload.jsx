@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import '../../assets/css/components/imageUpload.scss';
 
 const ImageUpload = ({ onSave }) => {
     const [files, setFiles] = useState([null, null]); // 두 개의 파일 상태
-    const [fileNames, setFileNames] = useState(["", ""]); // 파일 이름 상태
+    const [fileNames, setFileNames] = useState(['', '']); // 파일 이름 상태
     const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 인덱스
     const fileInputRefs = [useRef(null), useRef(null)]; // 두 개의 ref
 
@@ -16,7 +16,7 @@ const ImageUpload = ({ onSave }) => {
         const newFileNames = [...fileNames];
 
         newFiles[index] = selectedFiles[0]; // 해당 인덱스에 파일 저장
-        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ''; // 파일명 저장
 
         setFiles(newFiles);
         setFileNames(newFileNames);
@@ -33,7 +33,7 @@ const ImageUpload = ({ onSave }) => {
         const newFileNames = [...fileNames];
 
         newFiles[index] = selectedFiles[0]; // 드롭한 파일 저장
-        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ""; // 파일명 저장
+        newFileNames[index] = selectedFiles[0] ? selectedFiles[0].name : ''; // 파일명 저장
 
         setFiles(newFiles);
         setFileNames(newFileNames);
@@ -53,12 +53,12 @@ const ImageUpload = ({ onSave }) => {
         const [cashFile, stockFile] = files;
 
         if (!cashFile) {
-            alert("현금 이미지를 업로드 해주세요.");
+            alert('현금 이미지를 업로드 해주세요.');
             return;
         }
 
         if (!stockFile) {
-            alert("종목 이미지를 업로드 해주세요.");
+            alert('종목 이미지를 업로드 해주세요.');
             return;
         }
 
@@ -69,37 +69,25 @@ const ImageUpload = ({ onSave }) => {
         stockFormData.append('file', stockFile);
 
         try {
-            const cashResponse = await axios.post(
-                'https://6041-61-34-253-238.ngrok-free.app/wallet',
-                cashFormData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
+            const cashResponse = await axios.post('https://6b2d-61-34-253-238.ngrok-free.app/wallet', cashFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-            const stockResponse = await axios.post(
-                'https://6041-61-34-253-238.ngrok-free.app/upload',
-                stockFormData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
+            const stockResponse = await axios.post('https://6b2d-61-34-253-238.ngrok-free.app/upload', stockFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
             console.log('Cash Upload Success:', cashResponse.data);
             console.log('Stock Upload Success:', stockResponse.data);
             onSave({ cash: cashResponse.data, stock: stockResponse.data }); // 업로드된 데이터 전달
-            console.log(cashResponse.data, stockResponse.data)
+            console.log(cashResponse.data, stockResponse.data);
         } catch (error) {
             console.error('Upload Error:', error);
-            alert("파일 업로드 실패: " + (
-                error.response
-                    ? error.response.data.error
-                    : "서버 오류"
-            ));
+            alert('파일 업로드 실패: ' + (error.response ? error.response.data.error : '서버 오류'));
         }
     };
 
@@ -118,13 +106,13 @@ const ImageUpload = ({ onSave }) => {
                 <div className="image-box-container">
                     {/* 첫 번째 이미지 박스 */}
                     <div className="image-box-wrapper-1">
-                        <div className={`image-box-1 ${draggingIndex === 0 ? 'drag-over' : ''}`} 
-                            onDrop={handleDrop(0)} 
-                            onDragOver={handleDragOver(0)} 
-                            onDragLeave={handleDragLeave}>
-                            {files[0] && (
-                                <img src={URL.createObjectURL(files[0])} alt="미리보기" className="image-1" />
-                            )}
+                        <div
+                            className={`image-box-1 ${draggingIndex === 0 ? 'drag-over' : ''}`}
+                            onDrop={handleDrop(0)}
+                            onDragOver={handleDragOver(0)}
+                            onDragLeave={handleDragLeave}
+                        >
+                            {files[0] && <img src={URL.createObjectURL(files[0])} alt="미리보기" className="image-1" />}
                             {!files[0] && (
                                 <div>
                                     <span>현금 이미지 올려</span>
@@ -149,13 +137,13 @@ const ImageUpload = ({ onSave }) => {
 
                     {/* 두 번째 이미지 박스 */}
                     <div className="image-box-wrapper-2">
-                        <div className={`image-box-2 ${draggingIndex === 1 ? 'drag-over' : ''}`} 
-                        onDrop={handleDrop(1)} 
-                            onDragOver={handleDragOver(1)} 
-                            onDragLeave={handleDragLeave}>
-                            {files[1] && (
-                                <img src={URL.createObjectURL(files[1])} alt="미리보기" className="image-2" />
-                            )}
+                        <div
+                            className={`image-box-2 ${draggingIndex === 1 ? 'drag-over' : ''}`}
+                            onDrop={handleDrop(1)}
+                            onDragOver={handleDragOver(1)}
+                            onDragLeave={handleDragLeave}
+                        >
+                            {files[1] && <img src={URL.createObjectURL(files[1])} alt="미리보기" className="image-2" />}
                             {!files[1] && (
                                 <div>
                                     <span>종목 이미지 올려</span>
@@ -179,7 +167,9 @@ const ImageUpload = ({ onSave }) => {
                     </div>
                 </div>
                 <div className="confirm-button-container">
-                    <Button className="confirm-button" onClick={handleSaveClick}>저장</Button>
+                    <Button className="confirm-button" onClick={handleSaveClick}>
+                        저장
+                    </Button>
                 </div>
             </div>
         </div>
@@ -187,7 +177,7 @@ const ImageUpload = ({ onSave }) => {
 };
 
 ImageUpload.propTypes = {
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
 };
 
 export default ImageUpload;

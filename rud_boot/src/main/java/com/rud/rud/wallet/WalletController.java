@@ -29,7 +29,7 @@ public class WalletController {
 
     // id + 날짜 조회
     @PostMapping("/date")
-    public ResponseEntity<List<Wallet>> dateWallet(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Wallet> dateWallet(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
         String rudDate = request.get("rudDate");
 
@@ -38,7 +38,7 @@ public class WalletController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        List<Wallet> savedWallet = walletService.getWalletByUserIdAndRudDate(userId, rudDate);
+        Wallet savedWallet = walletService.getWalletByUserIdAndRudDate(userId, rudDate);
         return ResponseEntity.ok(savedWallet);
     }
 
