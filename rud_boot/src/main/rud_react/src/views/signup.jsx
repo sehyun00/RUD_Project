@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import '../assets/css/auth.scss'; 
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
-        userId: '', // 아이디 추가
+        userId: '',
         email: '',
         password: '',
         passwordcheck: '',
-        phone: '' // 전화번호 추가
+        phone: ''
     });
+    const [passwordMatch, setPasswordMatch] = useState(null); // 비밀번호 일치 여부 상태 추가
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,20 +20,22 @@ const Signup = () => {
             ...formData,
             [name]: value
         });
+
+        // 비밀번호와 비밀번호 확인이 일치하는지 확인
+        if (name === 'passwordcheck') {
+            setPasswordMatch(value === formData.password);
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // 회원가입 로직 추가
         console.log('회원가입 데이터:', formData);
 
-        // 모든 필드가 작성되었는지 체크
-        if (Object.values(formData).every(field => field.trim() !== '')) {
-            // 로그인 페이지로 이동
-            navigate('/login'); // useNavigate로 페이지 이동
+        if (Object.values(formData).every(field => field.trim() !== '') && passwordMatch) {
+            navigate('/login');
         } else {
-            alert('모든 필드를 작성해주세요.'); // 필드가 모두 작성되지 않았을 때 알림
+            alert('모든 필드를 작성해주세요. 또는 비밀번호가 일치하지 않습니다.');
         }
     };
 
@@ -107,6 +110,12 @@ const Signup = () => {
                             required
                         />
                     </div>
+                    {passwordMatch === false && (
+                        <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>
+                    )}
+                    {passwordMatch === true && (
+                        <p style={{ color: 'green' }}>비밀번호가 일치합니다.</p>
+                    )}
                     <button type="submit" className="signup-button">가입하기</button>
                 </form>
                 <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>

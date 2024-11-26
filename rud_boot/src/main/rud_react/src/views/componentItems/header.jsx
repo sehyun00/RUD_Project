@@ -23,9 +23,6 @@ const Header = () => {
                 {
                     !isLoginPage && (
                         <div className="header-right">
-                            <div className="button">
-                                <h5>메뉴1</h5>
-                            </div>
                             <Link to="/log">
                                 <div className='button'>
                                     <h5>내 기록</h5>

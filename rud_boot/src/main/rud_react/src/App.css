@@ -42,6 +42,6 @@ html, body {
 }
 
 a { /*modal Gofullpage 하이퍼링크 */
-  color: blue; /* 링크 기본 색상 */
+  color: #3254ce; /* 링크 기본 색상 */
   text-decoration: none; /* 밑줄 제거 */
 }

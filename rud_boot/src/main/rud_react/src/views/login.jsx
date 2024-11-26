@@ -61,10 +61,10 @@ const Login = () => {
                             />
                         </div>
                         <button type="submit">로그인</button>
-                       
+                
                     </form>
 
-                    <div className="divider">
+                    {/* <div className="divider">
                         <span>or</span>
                     </div>
                     <div className='google-ios'>
@@ -74,7 +74,7 @@ const Login = () => {
                         <button type="button" className='apple'>
                             <img src={ios} alt="ios"/>Continue with Apple
                         </button>
-                    </div>
+                    </div> */}
                     <div className="signup-link-container">
                         <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
                     </div>

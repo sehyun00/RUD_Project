@@ -299,7 +299,13 @@ const ImageUpload = ({onSave}) => {
                                 rel="noopener noreferrer">
                                 Gofullpage
                             </a>
-                            확장 프로그램 설치
+                            확장 프로그램 설치{' '}
+                            <a
+                                href="https://microsoftedge.microsoft.com/addons/detail/gofullpage-full-page-sc/hfaciehifhdcgoolaejkoncjciicbemc?refid=bingshortanswersdownload"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                (Edge 브라우저)
+                            </a>
                         </p>
                         <br/>
                         <p>
