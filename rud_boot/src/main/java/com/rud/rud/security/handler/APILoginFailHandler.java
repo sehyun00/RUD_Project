@@ -23,6 +23,8 @@ public class APILoginFailHandler implements AuthenticationFailureHandler{
 
         log.info("Login fail....." + exception);
 
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+
         Gson gson = new Gson();
 
         String jsonStr = gson.toJson(Map.of("error", "ERROR_LOGIN"));
