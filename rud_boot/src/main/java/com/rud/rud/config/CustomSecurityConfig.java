@@ -3,6 +3,7 @@ package com.rud.rud.config;
 import com.rud.rud.security.filter.JWTCheckFilter;
 import com.rud.rud.security.handler.APILoginFailHandler;
 import com.rud.rud.security.handler.APILoginSuccessHandler;
+import com.rud.rud.security.handler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -57,8 +58,12 @@ public class CustomSecurityConfig {
             config.failureHandler(new APILoginFailHandler());
         });
 
-//        http.addFilterBefore(new JWTCheckFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTCheckFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling(config-> {
+            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+        });
+
 
         return http.build();
     }

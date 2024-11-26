@@ -6,6 +6,7 @@ import com.rud.rud.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class WalletController {
     private MemberService memberService;
 
     // 저장
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
         Wallet savedWallet = walletService.saveWallet(wallet);
@@ -33,6 +35,7 @@ public class WalletController {
     }
 
     // id + 날짜 조회
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/date")
     public ResponseEntity<List<Wallet>> dateWallet(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -48,6 +51,7 @@ public class WalletController {
     }
 
     // id로 모두 조회
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Wallet>> getAllWallet(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");

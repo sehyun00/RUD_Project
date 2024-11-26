@@ -7,6 +7,7 @@ import com.rud.rud.domain.Wallet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class RudController {
     private MemberService memberService;
 
     // rud 저장
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<Rud> saveRud(@RequestBody Rud rud) {
         Rud savedRud = rudService.saveRud(rud);
@@ -31,6 +33,7 @@ public class RudController {
     }
 
     // id + 날짜 조회
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/date")
     public ResponseEntity<List<Rud>> dateRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -48,6 +51,7 @@ public class RudController {
 
     // id + 종목 조회
     //그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Rud>> allRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
