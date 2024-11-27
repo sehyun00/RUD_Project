@@ -58,11 +58,11 @@ public class CustomSecurityConfig {
             config.failureHandler(new APILoginFailHandler());
         });
 
-        http.addFilterBefore(new JWTCheckFilter(),
-                UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling(config-> {
-            config.accessDeniedHandler(new CustomAccessDeniedHandler());
-        });
+//        http.addFilterBefore(new JWTCheckFilter(),
+//                UsernamePasswordAuthenticationFilter.class);
+//        http.exceptionHandling(config-> {
+//            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+//        });
 
 
         return http.build();

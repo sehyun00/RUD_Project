@@ -1,20 +1,19 @@
 package com.rud.rud.controller;
 
+import com.rud.rud.domain.Rud;
+import com.rud.rud.domain.Csv;
+import com.rud.rud.domain.Log;
 import com.rud.rud.domain.Wallet;
 import com.rud.rud.service.WalletService;
-import com.rud.rud.domain.Rud;
-import com.rud.rud.service.MemberService;
 import com.rud.rud.service.RudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.rud.rud.domain.Csv;
-import com.rud.rud.domain.Log;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +70,8 @@ public class RudController {
     }
 
     // log 조회
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/log")
-
     public ResponseEntity<List<Log>> getLog(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
         List<Log> logResponses = rudService.getLogByUserId(userId);
@@ -82,6 +81,7 @@ public class RudController {
 
     // to csv
     // 주식은 리스트에 넣어서 보내고
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/csv")
     public ResponseEntity<List<Csv>> csvRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
