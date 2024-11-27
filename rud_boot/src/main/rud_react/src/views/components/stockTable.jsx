@@ -362,9 +362,10 @@ const StockTable = ({Reload, SD}) => {
         const dollar = stockData['해외장'].find(stock => stock.name === '달러')?.currentPrice || 0; 
         const wonPer = stockData['국장'].find(stock => stock.name === '원화')?.rebalancingRatio || 0; 
         const dollarPer = stockData['해외장'].find(stock => stock.name === '달러')?.rebalancingRatio || 0; 
+        let totalError = false;
 
         for (const stock of allStocks) {
-            const payload = (stock.name === '원화') ? {
+            const payload = (stock.name === '원화' || stock.name === '달러') ? {
                 userId,
                 rudDate,
                 exchange: exchangeRate,
@@ -392,7 +393,13 @@ const StockTable = ({Reload, SD}) => {
                 console.log(`${stock.name}의 데이터가 저장되었습니다.`);
             } catch (error) {
                 console.error(`${stock.name}의 데이터 저장 중 오류 발생:`, error);
+                totalError = true;
             }
+        }
+        if (totalError === false) {
+            alert('저장이 완료 됐어용!')
+        } else {
+            alert('저장 중 오류가 발생했어용!')
         }
     };
 
