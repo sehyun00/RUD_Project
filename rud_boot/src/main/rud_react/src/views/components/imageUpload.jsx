@@ -69,13 +69,13 @@ const ImageUpload = ({ onSave }) => {
         stockFormData.append('file', stockFile);
 
         try {
-            const cashResponse = await axios.post('https://6b2d-61-34-253-238.ngrok-free.app/wallet', cashFormData, {
+            const cashResponse = await axios.post('https://9701-61-34-253-238.ngrok-free.app/wallet', cashFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            const stockResponse = await axios.post('https://6b2d-61-34-253-238.ngrok-free.app/upload', stockFormData, {
+            const stockResponse = await axios.post('https://9701-61-34-253-238.ngrok-free.app/upload', stockFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
