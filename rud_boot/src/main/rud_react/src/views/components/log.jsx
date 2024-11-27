@@ -55,7 +55,7 @@ const Log = () => {
 
             const data = response.data;
 
-            // Excel 파일로 변환
+            // 여기에 넣어줘서 excel로 만듬
             const excelData = [];
 
             // 총자산 헤더 추가
@@ -63,6 +63,7 @@ const Log = () => {
             data.forEach((item) => {
                 excelData.push([item.total]);
             });
+
             // 빈 줄 추가
             excelData.push([]);
 
@@ -82,19 +83,42 @@ const Log = () => {
             excelData.push([]);
 
             // RUD 데이터 헤더 추가
-            excelData.push(['종목명', '가격', '수량', '잔고', '비중', '희망비중', '희망투자금', '수량조절', '거래소']);
+            excelData.push([
+                '종목명',
+                '가격(원)',
+                '수량',
+                '잔고',
+                '비중',
+                '희망비중',
+                '희망투자금',
+                '수량조절',
+                '거래소',
+            ]);
             data.forEach((item) => {
                 item.rud.forEach((rudItem) => {
+                    //해외장이면 환율 곱
+                    const marketOrder = rudItem.paul ? rudItem.marketOrder * item.wallet.exchange : rudItem.marketOrder;
                     excelData.push([
+                        // 주식명
                         rudItem.stockName,
-                        rudItem.marketOrder,
+                        // 가격
+                        marketOrder,
+                        //수량
                         rudItem.nos,
-                        '', // 잔고
-                        '', // 비중
+                        // 잔고
+                        marketOrder * rudItem.nos,
+                        // 비중
+                        (marketOrder * rudItem.nos) / item.total,
+                        // 희망 비중
                         rudItem.expertPer,
-                        '', // 희망투자금
-                        '', // 수량조절
-                        rudItem.paul ? '해외' : '국내', // 거래소
+                        //희망 투자금
+                        rudItem.expertPer * item.total,
+                        // 수량조절
+                        (rudItem.expertPer * item.total) / marketOrder > 0
+                            ? `+${(rudItem.expertPer * item.total) / marketOrder}`
+                            : `-${(rudItem.expertPer * item.total) / marketOrder}`,
+                        //거래소
+                        rudItem.paul ? '해외' : '국내',
                     ]);
                 });
             });
@@ -153,7 +177,7 @@ const Log = () => {
                                     // 변동률 계산
                                     const changeRate = calculateChangeRate(row.total, previousTotal);
 
-                                    // 스타일 클래스 설정
+                                    // + 빨강, - 파랑
                                     const changeRateStyle = changeRate && changeRate > 0 ? 'text-plus' : 'text-minus';
 
                                     return (
