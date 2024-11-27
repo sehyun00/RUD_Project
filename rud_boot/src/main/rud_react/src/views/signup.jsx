@@ -12,7 +12,7 @@ const Signup = () => {
         passwordcheck: '',
         phone: ''
     });
-    const [passwordMatch, setPasswordMatch] = useState(null); // 비밀번호 일치 여부 상태 추가
+    const [passwordMatch, setPasswordMatch] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,8 +30,6 @@ const Signup = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        console.log('회원가입 데이터:', formData);
-
         if (Object.values(formData).every(field => field.trim() !== '') && passwordMatch) {
             navigate('/login');
         } else {
@@ -110,15 +108,16 @@ const Signup = () => {
                             required
                         />
                     </div>
-                    {passwordMatch === false && (
-                        <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>
-                    )}
-                    {passwordMatch === true && (
-                        <p style={{ color: 'green' }}>비밀번호가 일치합니다.</p>
+                    {passwordMatch !== null && (
+                        <p className={`password-message ${passwordMatch ? 'match' : 'no-match'}`}>
+                            {passwordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+                        </p>
                     )}
                     <button type="submit" className="signup-button">가입하기</button>
                 </form>
-                <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>
+                <div className="signup-link-container">
+                    <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>
+                </div>
             </div>
         </div>
     );
