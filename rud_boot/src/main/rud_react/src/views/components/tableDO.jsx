@@ -54,6 +54,39 @@ const TableDO = ({
             <tbody>
                 {
                     data.map((item, index) => {
+                        
+                        if (item.price === '0' || item.price === null) {
+                            return (
+                                <tr key={item.id}>
+                                    <td> 
+                                        <input
+                                            type="text"
+                                            value={item.name} 
+                                            onChange={(e) => handleChange(index, 'name', e.target.value)}/> {/* */}
+                                    </td>
+                                    {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
+                                    {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
+                                    
+                                    <td>
+                                        {(item.name === "원화" ) ? (
+                                            <span>X</span> 
+                                        ) : (
+                                            <input
+                                                className="number"
+                                                type="number"
+                                                value={item.quantity}
+                                                onChange={(e) => {
+                                                    const newQuantity = e.target.value;
+                                                    handleChange(index, 'quantity', newQuantity);
+                                                    handleChange(index, 'currentPrice', newQuantity * item.price);
+                                                }}
+                                            />
+                                        )}
+                                    </td>
+
+                                </tr>
+                            );
+                        }
                         // 현재 잔고
                         const currentprice = item.id == 1 ? item.currentPrice : item.price * item.quantity;
 
@@ -89,14 +122,16 @@ const TableDO = ({
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}/>
                                 </td>
-                                {item.name === "원화" ? (
-                                    <td>X</td>
-                                ) : (
-                                    <td className="money-expression">₩ {formatCurrency(item.price)}</td>
-                                )}
+                                
+                                {item.name === "원화" ? ( // 주가
+                                    <td></td>
+                                 ) : (
+                                 <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                 )}
+
                                 <td>
-                                    {item.name === "원화" ? (
-                                        <span>X</span> 
+                                    {(item.name === "원화" ) ? (
+                                        ""
                                     ) : (
                                         <input
                                             className="number"
@@ -139,7 +174,7 @@ const TableDO = ({
                                 <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
-                                {item.name !== "원화" && searchButton(item, index)}
+                                {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
                             </tr>
                         );
                     })
