@@ -45,6 +45,7 @@ public class CustomSecurityConfig {
         http.cors(httpSecurityCorsConfigurer -> {
                     httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
                 });
+
         http.sessionManagement(sessionConfig -> sessionConfig.
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(config -> config.disable());
@@ -58,11 +59,11 @@ public class CustomSecurityConfig {
             config.failureHandler(new APILoginFailHandler());
         });
 
-        http.addFilterBefore(new JWTCheckFilter(),
-                UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling(config-> {
-            config.accessDeniedHandler(new CustomAccessDeniedHandler());
-        });
+//        http.addFilterBefore(new JWTCheckFilter(),
+//                UsernamePasswordAuthenticationFilter.class);
+//        http.exceptionHandling(config-> {
+//            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+//        });
 
 
         return http.build();
@@ -76,14 +77,18 @@ public class CustomSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization")); // Authorization 헤더를 노출
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 
 }
