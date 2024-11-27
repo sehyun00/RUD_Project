@@ -58,53 +58,54 @@ const Log = () => {
             // Excel 파일로 변환
             const excelData = [];
 
+            // 총자산 헤더 추가
+            excelData.push(['총자산']);
             data.forEach((item) => {
-                // 총자산 정보 추가
-                excelData.push({
-                    total: item.total,
-                });
+                excelData.push([item.total]);
+            });
+            // 빈 줄 추가
+            excelData.push([]);
 
-                // 빈 줄 추가
-                excelData.push({});
-
-                // 지갑 정보 추가
-                excelData.push({
-                    won: item.wallet.won,
-                    wonPer: item.wallet.wonPer,
-                    dollar: item.wallet.dollar,
-                    dollarPer: item.wallet.dollarPer,
-                    exchange: item.wallet.exchange,
-                });
-
-                // 빈 줄 추가
-                excelData.push({});
-
-                // RUD 데이터 추가
-                item.rud.forEach((rudItem) => {
-                    excelData.push({
-                        stockName: rudItem.stockName,
-                        marketOrder: rudItem.marketOrder,
-                        nos: rudItem.nos,
-                        balance: '', // 빈 값으로 설정
-                        currentPer: '', // 빈 값으로 설정
-                        expertPer: rudItem.expertPer,
-                        expertInvestment: '', // 빈 값으로 설정
-                        expertNos: '', // 빈 값으로 설정
-                        adjustmentNos: '', // 빈 값으로 설정
-                        nasdaq: rudItem.paul ? '해외' : '국내', // 예시로 추가
-                    });
-                });
-
-                // 빈 줄 추가
-                excelData.push({});
+            // 지갑 정보 추가
+            excelData.push(['원화', '원화비율', '달러', '달러비율', '환율']);
+            data.forEach((item) => {
+                excelData.push([
+                    item.wallet.won,
+                    item.wallet.wonPer,
+                    item.wallet.dollar,
+                    item.wallet.dollarPer,
+                    item.wallet.exchange,
+                ]);
             });
 
-            const worksheet = XLSX.utils.json_to_sheet(excelData, { header: Object.keys(excelData[0]) });
+            // 빈 줄 추가
+            excelData.push([]);
+
+            // RUD 데이터 헤더 추가
+            excelData.push(['종목명', '가격', '수량', '잔고', '비중', '희망비중', '희망투자금', '수량조절', '거래소']);
+            data.forEach((item) => {
+                item.rud.forEach((rudItem) => {
+                    excelData.push([
+                        rudItem.stockName,
+                        rudItem.marketOrder,
+                        rudItem.nos,
+                        '', // 잔고
+                        '', // 비중
+                        rudItem.expertPer,
+                        '', // 희망투자금
+                        '', // 수량조절
+                        rudItem.paul ? '해외' : '국내', // 거래소
+                    ]);
+                });
+            });
+
+            // 2차원 배열을 사용하여 시트 생성
+            const worksheet = XLSX.utils.aoa_to_sheet(excelData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Log Data');
 
             // Excel 파일 다운로드
-            XLSX.writeFile(workbook, `${date}_log_data.xlsx`);
+            XLSX.writeFile(workbook, `${date}_log.xlsx`);
         } catch (error) {
             console.error('Error fetching CSV data for Excel:', error);
         }
