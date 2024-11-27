@@ -31,6 +31,7 @@ const TableFO = ({
         newDesiredWeights[index] = Math.min(100, Math.max(0, value));
 
         handleWeightChange(index, newDesiredWeights[index]);
+        // console.log(newDesiredWeights, totalDesiredWeight);
     };
 
     return (
@@ -73,6 +74,7 @@ const TableFO = ({
 
                         // 희망 투자금 계산
                         const desiredInvestment = currentTotalBalance * (rebalanceWeight/100);
+                        console.log(Number(currentTotalBalance), rebalanceWeight);
 
                         // 희망 수량 계산
                         const desiredQuantity = item.name === "달러" ? desiredInvestment : desiredInvestment / item.price;

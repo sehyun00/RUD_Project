@@ -21,10 +21,15 @@ const StockTable = ({Reload, SD}) => {
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
     const [currentData, setCurrentData] = useState(stockData["국장"]);
-    
+    const [totalDesiredWeight, setTotalDesiredWeight] = useState(0);
+    const [desiredWeights, setDesiredWeights] = useState({
+        "국장": Array(stockData["국장"].length).fill(0),
+        "해외장": Array(stockData["해외장"].length).fill(0)
+    });
+
     useEffect(() => {
-        console.log(stockData);
-    },[stockData]);
+        // console.log(currentData);
+    },[currentData]);
 
     const updateTime = () => {  
         const now = new Date();
@@ -34,12 +39,6 @@ const StockTable = ({Reload, SD}) => {
     useEffect(() => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
-
-    const [desiredWeights, setDesiredWeights] = useState({
-        "국장": Array(stockData["국장"].length).fill(0),
-        "해외장": Array(stockData["해외장"].length).fill(0)
-    });
-
     const fetchStockPrices = async () => {
         if (loading) 
             return;
@@ -50,7 +49,6 @@ const StockTable = ({Reload, SD}) => {
             const foreignStocks = SD.stock?.해외장 || [];
             const domesticMoney = Number(SD.cash.원화.replace(/,/g, ''));
             const foreignMoney = Number(SD.cash.달러.replace(/,/g, ''));
-            console.log(SD.cash.달러)   
     
             const domesticData = domesticStocks.reduce((acc, curr, index) => {
                 if (index % 2 === 0) {
@@ -61,6 +59,7 @@ const StockTable = ({Reload, SD}) => {
                         quantity: parseInt(quantity),
                         price: 0,
                         currentPrice: 0,
+                        rebalancingRatio:0,
                         marketType: '국장'
                     }); 
                 }
@@ -76,6 +75,7 @@ const StockTable = ({Reload, SD}) => {
                         quantity: parseInt(quantity),
                         price: 0,
                         currentPrice: 0,
+                        rebalancingRatio:0,
                         marketType: '해외장'
                     });
                 }
@@ -102,6 +102,7 @@ const StockTable = ({Reload, SD}) => {
                 quantity: false, // 현금은 수량으로 1로 설정
                 price: false, // price는 0으로 설정
                 currentPrice: domesticMoney, // 원화의 현재 가격을 currentPrice에 저장
+                rebalancingRatio:0,
                 marketType: '국장'
             };
     
@@ -111,6 +112,7 @@ const StockTable = ({Reload, SD}) => {
                 quantity: false, // 현금은 수량으로 1로 설정
                 price: false, // price는 0으로 설정
                 currentPrice: foreignMoney, // 달러의 현재 가격을 currentPrice에 저장
+                rebalancingRatio:0,
                 marketType: '해외장'
             };      
             setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
@@ -223,6 +225,26 @@ const StockTable = ({Reload, SD}) => {
         setCurrentData(stockData[clickButton]);
     };
 
+    useEffect(() => {
+        const total = desiredWeights["국장"].reduce(
+            (total, weight) => total + (parseFloat(weight) || 0),
+            0
+        ) + desiredWeights["해외장"].reduce(
+            (total, weight) => total + (parseFloat(weight) || 0),
+            0
+        );
+        setTotalDesiredWeight(total);
+    }, [desiredWeights]);
+
+    useEffect(() => {
+        // totalDesiredWeight가 변경될 때마다 rebalancingRatio 업데이트
+        if (totalDesiredWeight > 0) {
+            stockData[activeButton].forEach((stock, index) => {
+                stock.rebalancingRatio = (desiredWeights[activeButton][index] / totalDesiredWeight) * 100;
+            });
+        }
+    }, [totalDesiredWeight, desiredWeights, activeButton, stockData, currentTime]);
+    
     const handleWeightChange = (index, value) => {
         const newWeights = {
             ...desiredWeights
@@ -230,14 +252,6 @@ const StockTable = ({Reload, SD}) => {
         newWeights[activeButton][index] = value;
         setDesiredWeights(newWeights);
     };
-
-    const totalDesiredWeight = desiredWeights["국장"].reduce(
-        (total, weight) => total + (parseFloat(weight) || 0),
-        0
-    ) + desiredWeights["해외장"].reduce(
-        (total, weight) => total + (parseFloat(weight) || 0),
-        0
-    );
 
     const currentTotalBalance = calculateCurrentTotalBalance();
 
@@ -249,6 +263,7 @@ const StockTable = ({Reload, SD}) => {
             quantity: 0,
             price: null,
             currentPrice: 0,
+            rebalancingRatio:0,
             marketType: activeButton
         };
 
@@ -328,6 +343,12 @@ const StockTable = ({Reload, SD}) => {
             updateTime();
             setDesiredWeights(newWeights);
 
+            // for (const stock of allStocks) {
+                
+            //     stock.rebalancingRatio = weights[stock.name];
+            // };
+
+
         } catch (error) {
             console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
         }
@@ -337,22 +358,35 @@ const StockTable = ({Reload, SD}) => {
         const userId = "zxcv"; // 임의의 사용자 ID
         const rudDate = currentTime.split(",")[0]; // 현재 날짜
         const allStocks = [...stockData["국장"], ...stockData["해외장"]];
+        const won = stockData['국장'].find(stock => stock.name === '원화')?.currentPrice || 0; 
+        const dollar = stockData['해외장'].find(stock => stock.name === '달러')?.currentPrice || 0; 
+        const wonPer = stockData['국장'].find(stock => stock.name === '원화')?.rebalancingRatio || 0; 
+        const dollarPer = stockData['해외장'].find(stock => stock.name === '달러')?.rebalancingRatio || 0; 
 
         for (const stock of allStocks) {
-            const payload = {
+            const payload = (stock.name === '원화') ? {
+                userId,
+                rudDate,
+                exchange: exchangeRate,
+                won,
+                wonPer,
+                dollar,
+                dollarPer,
+            } : {
                 userId,
                 rudDate,
                 stockName: stock.name,
                 marketOrder: stock.currentPrice,
                 nos: stock.quantity,
-                expertPer: 12.112, // 임의로 설정한 값
-                paul: false // 임의로 설정한 값
-            };
+                expertPer: stock.rebalancingRatio,
+                paul: stock.marketType === "국장" ? false : true,
+            }
+            console.log(payload);
 
             try {
-                const endpoint = stock.marketType === '국장'
-                    ? 'http://localhost:8081/rud/save'
-                    : 'http://localhost:8081/wallet/save';
+                const endpoint = (stock.name === '원화' || stock.name === '달러')
+                    ? 'http://localhost:8081/wallet/save'
+                    : 'http://localhost:8081/rud/save';
 
                 await axios.post(endpoint, payload);
                 console.log(`${stock.name}의 데이터가 저장되었습니다.`);
