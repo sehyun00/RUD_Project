@@ -1,97 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
+import axios from 'axios';
+import * as XLSX from 'xlsx';
+
+// scss
 import '../../assets/css/components/log.scss';
 
-// 더미 데이터 ...
-const logData = [
-    {
-        id: 1,
-        date: '2024-10-01',
-        totalAssets: 4796657,
-        itemCount: 1,
-    },
-    {
-        id: 2,
-        date: '2024-10-02',
-        totalAssets: 4986663,
-        itemCount: 18,
-    },
-    {
-        id: 3,
-        date: '2024-10-03',
-        totalAssets: 4393176,
-        itemCount: 19,
-    },
-    {
-        id: 4,
-        date: '2024-10-04',
-        totalAssets: 4747154,
-        itemCount: 18,
-    },
-    {
-        id: 5,
-        date: '2024-10-05',
-        totalAssets: 5597602,
-        itemCount: 17,
-    },
-    {
-        id: 6,
-        date: '2024-10-06',
-        totalAssets: 5229597,
-        itemCount: 12,
-    },
-    {
-        id: 7,
-        date: '2024-10-07',
-        totalAssets: 5872709,
-        itemCount: 13,
-    },
-    {
-        id: 8,
-        date: '2024-10-08',
-        totalAssets: 5794438,
-        itemCount: 20,
-    },
-    {
-        id: 9,
-        date: '2024-10-09',
-        totalAssets: 5183997,
-        itemCount: 19,
-    },
-    {
-        id: 10,
-        date: '2024-10-10',
-        totalAssets: 5352869,
-        itemCount: 18,
-    },
-];
-
-// 변동률 계산 함수 ...
+// 변동률 계산 함수
 const calculateChangeRate = (current, previous) => {
-    if (previous === 0) return '';
+    if (previous === 0 || previous === undefined) return '0.00';
     const changeRate = ((current - previous) / previous) * 100;
-    return `${changeRate > 0 ? '+' : ''}${changeRate.toFixed(2)}%`;
+    return changeRate.toFixed(2); // 변동률 값만 반환
 };
 
-// CSV 파일 다운로드 함수
-const downloadCSV = (date) => {
-    const csvContent =
-        `data:text/csv;charset=utf-8,${date} 날짜,총자산,종목수\n` +
-        logData.map((row) => `${row.date},${row.totalAssets},${row.itemCount}`).join('\n');
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `${date}.csv`);
-    document.body.appendChild(link); // Firefox 호환성
-
-    link.click();
-};
-
-// Log 컴포넌트
+// Log 컴포넌트, 파일명이랑 동일 생성자 느낌인가
 const Log = () => {
+    const [logData, setLogData] = useState([]);
     const [isAscending, setIsAscending] = useState(false);
+
+    // API 요청 함수
+    const fetchLogData = async () => {
+        try {
+            const response = await axios.post('http://localhost:8081/rud/log', {
+                userId: 'zxcv', // 더미 데이터 바꿔야함
+            });
+            setLogData(response.data);
+        } catch (error) {
+            console.error('Error fetching log data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchLogData();
+    }, []);
 
     // 정렬 함수 ...
     const sortedLogData = logData.sort((a, b) => {
@@ -103,10 +45,76 @@ const Log = () => {
         setIsAscending(!isAscending);
     };
 
+    // Excel 파일 다운로드 함수
+    const downloadExcel = async (date) => {
+        try {
+            const response = await axios.post('http://localhost:8081/rud/csv', {
+                userId: 'zxcv', // 더미 데이터 바꿔야함
+                rudDate: date,
+            });
+
+            const data = response.data;
+
+            // Excel 파일로 변환
+            const excelData = [];
+
+            // 총자산 헤더 추가
+            excelData.push(['총자산']);
+            data.forEach((item) => {
+                excelData.push([item.total]);
+            });
+            // 빈 줄 추가
+            excelData.push([]);
+
+            // 지갑 정보 추가
+            excelData.push(['원화', '원화비율', '달러', '달러비율', '환율']);
+            data.forEach((item) => {
+                excelData.push([
+                    item.wallet.won,
+                    item.wallet.wonPer,
+                    item.wallet.dollar,
+                    item.wallet.dollarPer,
+                    item.wallet.exchange,
+                ]);
+            });
+
+            // 빈 줄 추가
+            excelData.push([]);
+
+            // RUD 데이터 헤더 추가
+            excelData.push(['종목명', '가격', '수량', '잔고', '비중', '희망비중', '희망투자금', '수량조절', '거래소']);
+            data.forEach((item) => {
+                item.rud.forEach((rudItem) => {
+                    excelData.push([
+                        rudItem.stockName,
+                        rudItem.marketOrder,
+                        rudItem.nos,
+                        '', // 잔고
+                        '', // 비중
+                        rudItem.expertPer,
+                        '', // 희망투자금
+                        '', // 수량조절
+                        rudItem.paul ? '해외' : '국내', // 거래소
+                    ]);
+                });
+            });
+
+            // 2차원 배열을 사용하여 시트 생성
+            const worksheet = XLSX.utils.aoa_to_sheet(excelData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Log Data');
+
+            // Excel 파일 다운로드
+            XLSX.writeFile(workbook, `${date}_log.xlsx`);
+        } catch (error) {
+            console.error('Error fetching CSV data for Excel:', error);
+        }
+    };
+
     // 각 행 클릭 핸들러
     const handleRowClick = (date) => {
-        if (window.confirm(`${date}.csv 파일을 다운로드 하시겠습니까?`)) {
-            downloadCSV(date);
+        if (window.confirm(`${date}.xlsx 파일을 다운로드 하시겠습니까?`)) {
+            downloadExcel(date);
         }
     };
 
@@ -137,15 +145,31 @@ const Log = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedLogData.map((row) => (
-                                    <tr key={row.id} onClick={() => handleRowClick(row.date)}>
-                                        <td>{row.id}</td>
-                                        <td>{row.date}</td>
-                                        <td>{row.totalAssets.toLocaleString()}원</td>
-                                        <td>{row.itemCount}개</td>
-                                        <td>{row.changeRate}</td>
-                                    </tr>
-                                ))}
+                                {sortedLogData.map((row, index) => {
+                                    // 이전 날짜의 총자산을 가져옴
+                                    const previousTotal =
+                                        index < sortedLogData.length - 1 ? sortedLogData[index + 1].total : undefined;
+
+                                    // 변동률 계산
+                                    const changeRate = calculateChangeRate(row.total, previousTotal);
+
+                                    // 스타일 클래스 설정
+                                    const changeRateStyle = changeRate && changeRate > 0 ? 'text-plus' : 'text-minus';
+
+                                    return (
+                                        <tr onClick={() => handleRowClick(row.date)}>
+                                            <td>{sortedLogData.length - index}</td>
+                                            <td>{row.date}</td>
+                                            <td>{row.total.toLocaleString()}원</td>
+                                            <td>{row.stockCount}개</td>
+                                            <td className={changeRateStyle}>
+                                                {changeRate !== '0.00'
+                                                    ? `${changeRate > 0 ? '+' : ''}${changeRate}%`
+                                                    : ''}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </Table>
                     </div>

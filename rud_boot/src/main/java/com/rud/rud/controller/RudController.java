@@ -1,19 +1,17 @@
 package com.rud.rud.controller;
 
-<<<<<<< HEAD:rud_boot/src/main/java/com/rud/rud/rud/RudController.java
-import com.rud.rud.wallet.Wallet;
-import com.rud.rud.wallet.WalletService;
-=======
+import com.rud.rud.domain.Wallet;
+import com.rud.rud.service.WalletService;
 import com.rud.rud.domain.Rud;
 import com.rud.rud.service.MemberService;
 import com.rud.rud.service.RudService;
-import com.rud.rud.domain.Wallet;
->>>>>>> back)logintest:rud_boot/src/main/java/com/rud/rud/controller/RudController.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.rud.rud.domain.Csv;
+import com.rud.rud.domain.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +55,7 @@ public class RudController {
     }
 
     // id + 종목 조회
-    //그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
+    // 그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Rud>> allRud(@RequestBody Map<String, String> request) {
@@ -71,64 +69,36 @@ public class RudController {
         List<Rud> getAll = rudService.getRudByUserId(userId);
         return ResponseEntity.ok(getAll);
     }
-<<<<<<< HEAD:rud_boot/src/main/java/com/rud/rud/rud/RudController.java
 
     // log 조회
-    // 날짜, 총자산, 종목수, 전 기록 대비 변동률을 반환해야 함
-    // 날짜마다 rud, wallet을 나눔
-    // 총자산 = (동일한 날짜)종목 가격 * 종목 수 + 원화 + 달러 * 환율
-    // 종목 수 = (동일한 날짜)종목 수
     @PostMapping("/log")
+
     public ResponseEntity<List<Log>> getLog(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
+        List<Log> logResponses = rudService.getLogByUserId(userId);
 
-        // 일단 기록 모두 다 가져옴
-        List<Rud> rudList = rudService.getRudByUserId(userId);
-        List<Wallet> walletList = walletService.getWalletByUserId(userId);
-        // 여기에다가 넣어서 반환
-        Map<String, Log> logMap = new HashMap<>();
-
-        // 주식 종목 가격 계산
-        for (Rud rud : rudList) {
-            String date = rud.getRudDate();
-            logMap.putIfAbsent(date, new Log(date));
-            // 날짜로 가져옴
-            Log logResponse = logMap.get(date);
-            // 국장이면 그대로
-            if (!rud.getPaul()) {
-                logResponse.addStockValue(rud.getMarketOrder() * rud.getNos());
-            }
-            // 해외장이면 환율 곱해줌
-            else {
-                double exchangeRate = walletService.getExchangeForDate(walletList, date);
-                logResponse.addStockValue(rud.getMarketOrder() * exchangeRate * rud.getNos());
-            }
-
-            // 종목 수량 추가
-            logResponse.plusStockCount();
-        }
-
-        // 원화 + 달러 총 자산 계산
-        for (Wallet wallet : walletList) {
-            String date = wallet.getRudDate();
-            logMap.putIfAbsent(date, new Log(date));
-            // 날짜로 가져옴
-            Log logResponse = logMap.get(date);
-            // 달러 * 환율 + 원화
-            double walletValue = (wallet.getDollar() != null ? wallet.getDollar() * wallet.getExchange() : 0) + (wallet.getWon() != null ? wallet.getWon() : 0);
-            logResponse.addWalletValue(walletValue);
-        }
-
-        List<Log> logResponses = new ArrayList<>(logMap.values());
         return ResponseEntity.ok(logResponses);
     }
 
     // to csv
-//    @PostMapping("/csv")
-//    public ResponseEntity<List<Rud>> csvRud(@RequestBody Map<String, String> request) {
-//
-//    }
+    // 주식은 리스트에 넣어서 보내고
+    @PostMapping("/csv")
+    public ResponseEntity<List<Csv>> csvRud(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        String rudDate = request.get("rudDate");
+
+        // 그 날의 모든 rud, wallet, 총자산
+        double total = rudService.getTotlaByUserIdAndDate(userId, rudDate);
+        Wallet wallet = walletService.getWalletByUserIdAndRudDate(userId, rudDate);
+        List<Rud> rudList = rudService.getRudByUserIdAndRudDate(userId, rudDate);
+
+        // 여기에다가 넣어서 반환
+        List<Csv> csvResponses = new ArrayList<>();
+
+        // 총자산 추가
+        Csv totalCsv = new Csv(rudDate, total, wallet, rudList);
+        csvResponses.add(totalCsv);
+
+        return ResponseEntity.ok(csvResponses);
+    }
 }
-=======
-}
->>>>>>> back)logintest:rud_boot/src/main/java/com/rud/rud/controller/RudController.java

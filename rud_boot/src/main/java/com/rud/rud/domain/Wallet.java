@@ -2,10 +2,6 @@ package com.rud.rud.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-<<<<<<< HEAD:rud_boot/src/main/java/com/rud/rud/wallet/Wallet.java
-
-=======
->>>>>>> back)logintest:rud_boot/src/main/java/com/rud/rud/domain/Wallet.java
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,8 +22,8 @@ public class Wallet {
     private String rudDate; // 날짜
 
     @NotNull
-    private Double exchange; //환율
-    
+    private Double exchange; // 환율
+
     private Double won; // 원화 금액
 
     private Double wonPer; // 비중
