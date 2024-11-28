@@ -299,37 +299,47 @@ const StockTable = ({Reload, SD}) => {
                 const updatadCurrentPrice = updatedPrice * item.quantity;
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
                 handleChange(index, 'currentPrice', updatadCurrentPrice);
+                console.log(item.index.price);
             } catch (error) {
                 console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
             }
         };
         return (
             <td className="option-button">
-                {item.price === null && 
-                <img 
-                    src ={checkicon} 
-                    className="check-icon"
-                    onClck={fetchPriceAndUpdate}
-                />
-                }
+            {item.price === null && 
+            <img 
+                src ={checkicon} 
+                className="check-icon"
+                onClick={fetchPriceAndUpdate}
+            />
+            }
+            {item.price === '0' && 
+            <img 
+                src ={checkicon} 
+                className="check-icon"
+                onClick={fetchPriceAndUpdate}
+            />
+            }
             </td>
         );
     };
+
     // 행 제거 버튼
-    const deleteButton =(item, index) => {
+    const deleteButton =(marketType, index) => {
         const deletestock = () => {
-            console.log(item, index);
+            setStockData(prevStockData => ({
+                ...prevStockData,
+                [marketType]: prevStockData[marketType].filter((_, i) => i !== index)
+            }));
         }
 
         return (
             <td className="option-button">
-                {item.price === '0' && 
-                <img 
+                <img
                     src ={deleteicon} 
                     className="delete-icon"
                     onClick={deletestock}
                 />
-                }
             </td>
         );
     }

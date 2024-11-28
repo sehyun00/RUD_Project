@@ -1,5 +1,5 @@
 .stock-container {
-    width: 1300px;
+    width: 1450px;
     margin: 10% auto;
     display: block;
     flex-direction: column;
@@ -170,14 +170,14 @@
                     width: 50px;
 
                     .check-icon {
-                        width: 40%;
+                        width: 50%;
+                        cursor: pointer;
                     }
 
                     .delete-icon {
-                        width: 40%;
+                        width: 50%;
+                        cursor: pointer;
                     }
-
-
                 }
 
                 thead {
@@ -275,6 +275,7 @@
                         .td11 {
                             width: 1450px;
                             padding-top: 15px;
+                            cursor: pointer;
                         }
                         .text-plus {
                             color: rgb(255, 65, 65);

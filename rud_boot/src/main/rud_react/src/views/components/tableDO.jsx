@@ -12,6 +12,7 @@ const TableDO = ({
     currentTotalBalance,
     addEmptyRow,
     searchButton,
+    deleteButton,
 }) => {
     const lastRowRef = useRef(null); // 마지막 행을 참조할 ref
 
@@ -43,12 +44,12 @@ const TableDO = ({
             <thead>
                 <tr>
                     <th rowSpan="2" className="th">종목명</th>
+                    <th rowSpan="2" className="option-button"></th>
                     <th rowSpan="2" className="th">주가</th>
                     <th colSpan="3">현재</th>
                     <th rowSpan="2" className="th">희망비중</th>
                     <th colSpan="3">리밸런싱</th>
                     <th rowSpan="2" className="th">수량조절</th>
-                    <th rowSpan="2" className="option-button"></th>
                 </tr>
                 <tr>
                     <th className="th">수량</th>
@@ -66,14 +67,16 @@ const TableDO = ({
                         if (item.price === '0' || item.price === null) {
                             return (
                                 <tr key={item.id}>
-                                    <td> 
+                                    <td>
+                                        <form>
                                         <input
                                             type="text"
                                             value={item.name} 
                                             onChange={(e) => handleChange(index, 'name', e.target.value)}
                                             placeholder="종목 입력"/> {/* */}
+                                        </form>
                                     </td>
-                                    {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
+                                    {item.name !== "원화" ? (deleteButton(item.marketType, index)): (<td className="option-button"/>)}
                                     {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
                                     
                                     <td>
@@ -131,7 +134,7 @@ const TableDO = ({
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}/>
                                 </td>
-                                
+                                {item.name !== "원화" ? (deleteButton(item.marketType, index)): (<td className="option-button"/>)}
                                 {item.name === "원화" ? ( // 주가
                                     <td></td>
                                 ) : (
@@ -183,7 +186,6 @@ const TableDO = ({
                                 <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
                                 <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
                                 <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
-                                {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
                             </tr>
                         );
                     })
