@@ -125,7 +125,8 @@ def get_daily_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_kos_stock_code(request.args.get('name')),
+        symbol=get_kospicode(request.args.get('name')) if not isinstance(
+            request.args.get('name'), int) else request.args.get('name'),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='D',
         adj_price=True
@@ -155,7 +156,8 @@ def get_monthly_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_kos_stock_code(request.args.get('name')),
+        symbol=get_kospicode(request.args.get('name')) if not isinstance(
+            request.args.get('name'), int) else request.args.get('name'),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='M',
         adj_price=True
