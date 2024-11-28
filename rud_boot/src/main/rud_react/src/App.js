@@ -1,5 +1,5 @@
 // feature
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 // css
@@ -15,17 +15,28 @@ import Header from "./views/componentItems/header";
 import Log from "./views/components/log";
 
 function App() {
-    console.log("씨이이이빨")
+    const [loginState, setLoginState] = useState(false);
+    const [userID, setUserID] = useState("");
+
+    const loginHandler = (data) => {
+        setLoginState(true);
+        setUserID(data);
+    }
+    const logoutHandler = () => {
+        setLoginState(false);
+        setUserID(null);
+    }
 
     // view
     return (
         <div>
-            <Header />
+            <Header logoutHandler={logoutHandler} loginState={loginState}/>
             <Routes>
-                <Route path='/home' element={<Home />} />
-                <Route path='/login' element={<Login />} />
+                <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/log" element={<Log/>} />
+
+                <Route path='/home' element={<Home userID={userID}/>} />
+                <Route path="/log" element={<Log userID={userID}/>} />
             </Routes>
         </div>
     );

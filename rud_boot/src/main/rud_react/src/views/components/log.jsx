@@ -14,8 +14,8 @@ const calculateChangeRate = (current, previous) => {
     return changeRate.toFixed(2); // 변동률 값만 반환
 };
 
-// Log 컴포넌트, 파일명이랑 동일 생성자 느낌인가
-const Log = () => {
+// Log 컴포넌트
+const Log = ({userID}) => {
     const [logData, setLogData] = useState([]);
     const [isAscending, setIsAscending] = useState(false);
 
