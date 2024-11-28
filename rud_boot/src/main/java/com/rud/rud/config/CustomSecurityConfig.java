@@ -59,6 +59,7 @@ public class CustomSecurityConfig {
             config.failureHandler(new APILoginFailHandler());
         });
 
+        //추후 jwt로 해결하기
 //        http.addFilterBefore(new JWTCheckFilter(),
 //                UsernamePasswordAuthenticationFilter.class);
 //        http.exceptionHandling(config-> {
