@@ -4,6 +4,9 @@ import axios from 'axios'; // axios 추가
 import '../assets/css/auth.scss'; // 스타일 추가
 import ios from '../assets/images/ios.png';
 import google from '../assets/images/logogoogle.png';
+import jwtDecode from 'jwt-decode';
+import qs from 'qs';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -13,10 +16,37 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/superant/login', { // 백엔드 로그인 API 경로
+            const response = await axios.post('/superant/login', qs.stringify({
                 username,
                 password
+            }), {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
+
+            //  // JWT 토큰 가져오기 (헤더에서 또는 본문에서)
+            //  const jwtToken = response.headers['authorization']?.split(' ')[1]; // "Bearer <token>"에서 토큰 추출
+            //  console.log('JWT Token from Header:', jwtToken);
+            //  if (!jwtToken) {
+            //     jwtToken = response.data.accessToken; // 본문에서 JWT 토큰 추출
+            //     if (!jwtToken) {
+            //         alert('JWT 토큰을 받을 수 없습니다.');
+            //         return;
+            //     }
+            // }
+            // console.log('JWT Token:', jwtToken);
+            
+            //  // JWT 디코딩
+            //  const decodedToken = jwtDecode(jwtToken);
+            //  console.log('디코딩된 JWT:', decodedToken);
+ 
+            //  // JWT와 사용자 정보 로컬 저장소 또는 쿠키에 저장 (예: localStorage)
+            //  localStorage.setItem('jwtToken', jwtToken);
+            //  localStorage.setItem('userInfo', JSON.stringify(decodedToken));
+ 
+            //  // 메인 페이지로 이동
+            //  navigate('/home');
             
             if (response.status === 200) {
                 console.log(username, password)
