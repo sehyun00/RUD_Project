@@ -54,13 +54,9 @@ public class RudController {
     }
 
     // id + 종목 조회
-<<<<<<< HEAD
+
     // 그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-=======
-    //그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
-    @PreAuthorize("hasAnyRole('USER')")
->>>>>>> back)logintest
     @PostMapping("/all")
     public ResponseEntity<List<Rud>> allRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");

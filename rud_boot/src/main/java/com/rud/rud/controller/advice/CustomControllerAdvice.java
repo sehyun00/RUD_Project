@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class CustomControllerAdvice {
+    // 예외 반환 메소드
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<?> notExist(NoSuchElementException e) {

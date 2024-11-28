@@ -34,18 +34,22 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class CustomSecurityConfig {
 
+    // 비밀번호 해시 암호화
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 시큐리티 필터 체인 구성
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("-----------------security config---------------------------------");
         http.cors(httpSecurityCorsConfigurer -> {
-                    httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
-                });
+            httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
+        });
 
+        // 로그인 시에 세션 생성 IF_REQUIRED
+        // JWT같은 토큰을 사용하면 STATELESS
         http.sessionManagement(sessionConfig -> sessionConfig.
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(config -> config.disable());
@@ -65,7 +69,6 @@ public class CustomSecurityConfig {
 //            config.accessDeniedHandler(new CustomAccessDeniedHandler());
 //        });
 
-
         return http.build();
     }
 
@@ -74,6 +77,7 @@ public class CustomSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // 리액트단에서 오는 코로스 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -89,6 +93,4 @@ public class CustomSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }
