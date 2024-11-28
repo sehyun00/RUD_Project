@@ -13,9 +13,12 @@ app.route('/kospi', methods=['POST'])
 # kos 주식 데이터 CSV 파일 로드
 kos_stock_data = pd.read_csv('Stock_List/Kos_stock_list.csv')
 # Nas 주식 데이터 CSV 파일 로드
-nas_stock_data = pd.read_csv('Stock_List/Nas_stock_list.csv', header=None, names=['symbol', 'name'])
+nas_stock_data = pd.read_csv(
+    'Stock_List/Nas_stock_list.csv', header=None, names=['symbol', 'name'])
 
 # 주식명 -> 주식 코드 part
+
+
 def get_kos_stock_code(stock_name):
     try:
         # 주어진 주식명으로 데이터프레임 검색
@@ -38,11 +41,11 @@ def get_kospicode(input_value):
     try:
         if not input_value:
             return {"error": "주식명 또는 주식코드를 제공해야 합니다."}
-        
+
         # 입력값이 6자리 숫자인 경우 주식코드로 간주
         if input_value.isdigit() and len(input_value) == 6:
             return input_value
-        
+
         # 주식명으로 코드 검색
         code = get_kos_stock_code(input_value)
         if code is not None:
@@ -54,26 +57,34 @@ def get_kospicode(input_value):
         return {"error": str(e)}
 
 # 주식 이름을 코드로 변환하는 함수
+
+
 def get_nas_stock_code(stock_name):
     stock_name = stock_name.strip().lower()
-    matched_row = nas_stock_data[nas_stock_data['name'].str.lower().str.contains(stock_name)]
+    matched_row = nas_stock_data[nas_stock_data['name'].str.lower(
+    ).str.contains(stock_name)]
 
     if matched_row.empty:
         return None  # 찾지 못한 경우
     return matched_row.iloc[0]['symbol']  # 첫 번째 매칭된 주식 코드 반환
 
 # Google Translate API를 사용한 번역 함수
+
+
 def translate_text(text, src_lang='ko', dest_lang='en'):
     translator = Translator()
     translated = translator.translate(text, src=src_lang, dest=dest_lang)
     return translated.text
 
+
 def translate_input(stock_input):
     # 첫 번째 번역: 한글 -> 영어
     temp = translate_text(stock_input, src_lang='ko', dest_lang='en')
     # 두 번째 번역: 영어 -> 한글
-    translated_stock_input = translate_text(temp, src_lang='en', dest_lang='ko')
+    translated_stock_input = translate_text(
+        temp, src_lang='en', dest_lang='ko')
     return translated_stock_input
+
 
 # 주식 시세 확인 part
 # 앱키, 시크릿키, 모의투자 계좌
@@ -96,7 +107,9 @@ def get_kospi():
 
     # 특정 종목 코드를 이용해 시세 확인
     # get_kospicode 메소드로 코드 확인
-    code = get_kospicode(request.args.get('name'))
+    # name이 정수라면 code는 그대로 정수가 아니라면 국장 코드 구하는 메소드로 구함
+    code = get_kospicode(request.args.get('name')) if not isinstance(
+        request.args.get('name'), int) else request.args.get('name')
     print(code)
     resp = broker.fetch_price(code)
 
@@ -112,7 +125,8 @@ def get_daily_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_kos_stock_code(request.args.get('name')),
+        symbol=get_kospicode(request.args.get('name')) if not isinstance(
+            request.args.get('name'), int) else request.args.get('name'),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='D',
         adj_price=True
@@ -142,7 +156,8 @@ def get_monthly_kospi():
         acc_no=acc_no
     )
     resp = broker.fetch_ohlcv(
-        symbol=get_kos_stock_code(request.args.get('name')),
+        symbol=get_kospicode(request.args.get('name')) if not isinstance(
+            request.args.get('name'), int) else request.args.get('name'),
         # D = 일봉, W = 주봉, M = 월봉
         timeframe='M',
         adj_price=True
@@ -191,7 +206,8 @@ def get_nasdaq():
         # 주식 코드로 조회가 실패했을 때 주식 이름으로 코드 변환 후 재시도
         # 주식 코드가 아니라면, 이름으로 코드를 변환하여 조회
         if not resp or resp.get('rt_cd') == "1":  # 주식 코드로 조회가 실패한 경우
-            stock_code = get_nas_stock_code(translate_input(stock_input))  # 주식 이름을 코드로 변환
+            stock_code = get_nas_stock_code(
+                translate_input(stock_input))  # 주식 이름을 코드로 변환
             if stock_code:
                 resp = broker.fetch_price(stock_code)
                 if resp and resp.get('rt_cd') == "0":
@@ -234,7 +250,8 @@ def get_daily_nasdaq():
 
         # 조회가 실패했으면, 주식 이름을 코드로 변환하여 재시도
         if not resp or resp.get('rt_cd') != "0":  # 주식 코드로 조회가 실패한 경우
-            stock_code = get_nas_stock_code(translate_input(stock_input))  # 주식 이름을 코드로 변환
+            stock_code = get_nas_stock_code(
+                translate_input(stock_input))  # 주식 이름을 코드로 변환
             if stock_code:
                 resp = broker.fetch_ohlcv(
                     symbol=stock_code,
@@ -296,7 +313,8 @@ def get_monthly_nasdaq():
 
         # 조회가 실패했으면, 주식 이름을 코드로 변환하여 재시도
         if not resp or resp.get('rt_cd') != "0":  # 주식 코드로 조회가 실패한 경우
-            stock_code = get_nas_stock_code(translate_input(stock_input))  # 주식 이름을 코드로 변환
+            stock_code = get_nas_stock_code(
+                translate_input(stock_input))  # 주식 이름을 코드로 변환
             if stock_code:
                 resp = broker.fetch_ohlcv(
                     symbol=stock_code,
