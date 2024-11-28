@@ -12,6 +12,7 @@ import TableFO from "./tableFO"; // 해외 컴포넌트
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
+import deleteicon from '../../assets/images/trashcan.png';
 
 // StockTable 컴포넌트 정의
 const StockTable = ({Reload, SD}) => {
@@ -308,19 +309,30 @@ const StockTable = ({Reload, SD}) => {
                 <img 
                     src ={checkicon} 
                     className="check-icon"
-                    onClick={fetchPriceAndUpdate}
-                />
-                }
-                {item.price === '0' && 
-                <img 
-                    src ={checkicon} 
-                    className="check-icon"
-                    onClick={fetchPriceAndUpdate}
+                    onClck={fetchPriceAndUpdate}
                 />
                 }
             </td>
         );
     };
+    // 행 제거 버튼
+    const deleteButton =(item, index) => {
+        const deletestock = () => {
+            console.log(item, index);
+        }
+
+        return (
+            <td className="option-button">
+                {item.price === '0' && 
+                <img 
+                    src ={deleteicon} 
+                    className="delete-icon"
+                    onClick={deletestock}
+                />
+                }
+            </td>
+        );
+    }
 
     if (loading) {
         return <div>환율을 로딩 중...</div>;
@@ -412,7 +424,7 @@ const StockTable = ({Reload, SD}) => {
             <div className="switch-container">
                 <div className="table-switch-wrapper">
                     <div className="table-switch">
-                        <div className="switch-right">
+                        <div className="switch-left">
                             <div
                                 className={`table-choice ${activeButton === '국장'
                                     ? 'active'
@@ -431,9 +443,13 @@ const StockTable = ({Reload, SD}) => {
                                 <span>이미지 재업로드</span>
                             </div>
                         </div>
-                        <div className="switch-left">
-                            <div onClick={fetchDesiredWeights}>희망 비중 추천받기</div>
-                            <div onClick={saveDataToDB}>저장하기</div>
+                        <div className="switch-right">
+                            <div className="DesiredWeight-recommend" onClick={fetchDesiredWeights}>
+                                <span>희망 비중 추천받기</span>
+                            </div>
+                            <div className="save-table" onClick={saveDataToDB}>
+                                <span>저장하기</span>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -451,7 +467,8 @@ const StockTable = ({Reload, SD}) => {
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
-                                    searchButton={searchButton}/>
+                                    searchButton={searchButton}
+                                    deleteButton={deleteButton}/>
                             : <TableFO
                                     data={currentData}
                                     totalBalance={calculateCurrentTotalBalance()}
@@ -461,7 +478,8 @@ const StockTable = ({Reload, SD}) => {
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
-                                    searchButton={searchButton}/>
+                                    searchButton={searchButton}
+                                    deleteButton={deleteButton}/>
                     }
                     <table className="custom-table">
                         <thead>

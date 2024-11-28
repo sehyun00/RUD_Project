@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"; 
+import React, {useEffect, useRef} from "react"; 
 import PropTypes from 'prop-types';
 import { Table } from "reactstrap";
 import '../../assets/css/stockTable.scss';
@@ -13,6 +13,14 @@ const TableDO = ({
     addEmptyRow,
     searchButton,
 }) => {
+    const lastRowRef = useRef(null); // 마지막 행을 참조할 ref
+
+    useEffect(() => {
+        // data가 변경될 때마다 마지막 행으로 스크롤
+        if (lastRowRef.current) {
+            lastRowRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [data]); // data가 변경될 때마다 실행
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('ko-KR', {
@@ -62,7 +70,8 @@ const TableDO = ({
                                         <input
                                             type="text"
                                             value={item.name} 
-                                            onChange={(e) => handleChange(index, 'name', e.target.value)}/> {/* */}
+                                            onChange={(e) => handleChange(index, 'name', e.target.value)}
+                                            placeholder="종목 입력"/> {/* */}
                                     </td>
                                     {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
                                     {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
@@ -125,9 +134,9 @@ const TableDO = ({
                                 
                                 {item.name === "원화" ? ( // 주가
                                     <td></td>
-                                 ) : (
-                                 <td className="money-expression">₩ {formatCurrency(item.price)}</td>
-                                 )}
+                                ) : (
+                                <td className="money-expression">₩ {formatCurrency(item.price)}</td>
+                                )}
 
                                 <td>
                                     {(item.name === "원화" ) ? (
@@ -179,7 +188,7 @@ const TableDO = ({
                         );
                     })
                 }
-                <tr>
+                <tr ref={lastRowRef}> {/* 마지막 행에 ref 추가 */}
                     <td className="td11" onClick={addEmptyRow}><h2>종목 추가</h2></td>
                 </tr>
             </tbody>

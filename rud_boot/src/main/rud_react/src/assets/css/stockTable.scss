@@ -1,5 +1,5 @@
 .stock-container {
-    width: auto;
+    width: 1300px;
     margin: 10% auto;
     display: block;
     flex-direction: column;
@@ -60,11 +60,34 @@
                 width: 100%;
                 padding: 0 8px;
 
-                .switch-right {
+                .switch-left {
                     display: flex;
                     justify-content: space-around;
                     width: auto;
                     
+                    .table-choice {
+                        border-color: transparent;
+                        border-radius: 10px;
+                        padding: 4px 8px;
+                        // height: 30px;
+                        margin-right: 15px;
+                        cursor: pointer;
+    
+                        &:hover {
+                            background-color: #181a20;
+                        }
+    
+                        &.active {
+                            background-color: #3254ce;
+                            color: #EAECEF;
+                            font-weight: 600;
+    
+                            &:hover {
+                                background-color: #3254ce5c;
+                            }
+                        }
+                    }
+
                     .image-reload {
                         border-color: transparent;
                         border-radius: 10px;
@@ -74,45 +97,39 @@
                         font-weight: 600;
                         cursor: pointer;
     
-                        .span {
-                            padding: 4px 8px;
-                        }
-    
                         &:hover {
                             background-color: #3254ce5c;
                         }
-
                     }
                 }
-                .switch-left {
+                
+                .switch-right {
                     display: flex;
                     justify-content: space-around;
                     width: auto;
 
-                }
-
-                .table-choice {
-                    border-color: transparent;
-                    border-radius: 10px;
-                    padding: 4px 8px;
-                    // height: 30px;
-                    margin-right: 15px;
-                    cursor: pointer;
-
-                    .span {
+                    .DesiredWeight-recommend {
+                        border-color: transparent;
+                        border-radius: 10px;
                         padding: 4px 8px;
-                        color: #3254ce;
-                    }
-
-                    &:hover {
-                        background-color: #181a20;
-                    }
-
-                    &.active {
+                        margin-right: 30px;
                         background-color: #3254ce;
-                        color: #EAECEF;
                         font-weight: 600;
+                        cursor: pointer;
+    
+                        &:hover {
+                            background-color: #3254ce5c;
+                        }
+                    }
 
+                    .save-table {
+                        border-color: transparent;
+                        border-radius: 10px;
+                        padding: 4px 12px;
+                        background-color: #3254ce;
+                        font-weight: 600;
+                        cursor: pointer;
+    
                         &:hover {
                             background-color: #3254ce5c;
                         }
@@ -155,6 +172,12 @@
                     .check-icon {
                         width: 40%;
                     }
+
+                    .delete-icon {
+                        width: 40%;
+                    }
+
+
                 }
 
                 thead {
