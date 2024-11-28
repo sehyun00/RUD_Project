@@ -83,7 +83,7 @@ const downloadCSV = (date) => {
 };
 
 // Log 컴포넌트
-const Log = () => {
+const Log = ({userID}) => {
     const [isAscending, setIsAscending] = useState(false);
 
     // 정렬 함수 ...

@@ -10,7 +10,7 @@ import ImageUpload from "./components/imageUpload";
 // modal 스타일 설정
 Modal.setAppElement('#root');
 
-const Home = () => {
+const Home = ({userID}) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(true);
     const [stockData, setStockData] = useState(null);
     const [isModalOpen, setModalOpen] = useState(true); // 모달 상태 추가
