@@ -34,20 +34,22 @@ def get_kos_stock_code(stock_name):
         return None
 
 
-def get_kospicode(name):
+def get_kospicode(input_value):
     try:
-        if not name:
-            return {"error": "주식명을 제공해야 합니다."}
-
-        code = get_kos_stock_code(name)
-
+        if not input_value:
+            return {"error": "주식명 또는 주식코드를 제공해야 합니다."}
+        
+        # 입력값이 6자리 숫자인 경우 주식코드로 간주
+        if input_value.isdigit() and len(input_value) == 6:
+            return input_value
+        
+        # 주식명으로 코드 검색
+        code = get_kos_stock_code(input_value)
         if code is not None:
             return code
         else:
             return {"error": "일치하는 주식명이 없습니다."}
-
     except Exception as e:
-        # 에러 메시지 출력
         print(f"에러 발생: {e}")
         return {"error": str(e)}
 
