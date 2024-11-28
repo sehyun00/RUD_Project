@@ -31,6 +31,7 @@ public class MemberService {
         member.setPersonalInfoConsent(personalInfoConsent);
         member.setDataAnalysisConsent(dataAnalysisConsent);
         this.memberRepository.save(member);
+        member.addDefaultRole();
         return member;
     }
 
