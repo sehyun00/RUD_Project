@@ -26,8 +26,6 @@ const Login = ({loginHandler}) => {
             });
 
             if (response.status === 200) {
-                console.log(username, password)
-                console.log('로그인 성공:', response.data);
                 // 로그인 성공 시 메인 페이지로 이동
                 loginHandler(response.data.userId);
                 navigate('/home'); 

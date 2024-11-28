@@ -8,7 +8,6 @@ const Header = ({logoutHandler, loginState}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
-    console.log(loginState);
 
     const logoutsibal = () => {
         logoutHandler(); // 로그아웃 상태 업데이트
@@ -36,9 +35,6 @@ const Header = ({logoutHandler, loginState}) => {
                 {
                     !isLoginPage && (
                         <div className="header-right">
-                            <div className="button">
-                                <h5>메뉴1</h5>
-                            </div>
                             <Link to="/log">
                                 <div className='button'>
                                     <h5>내 기록</h5>
