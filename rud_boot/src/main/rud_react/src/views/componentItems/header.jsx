@@ -8,7 +8,6 @@ const Header = ({logoutHandler, loginState}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
-    console.log(loginState);
 
     const logoutsibal = () => {
         logoutHandler(); // 로그아웃 상태 업데이트

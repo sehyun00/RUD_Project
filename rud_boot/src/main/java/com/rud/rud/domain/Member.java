@@ -29,10 +29,7 @@ public class Member {
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
 
-    public void addRole(MemberRole memberRole) {
-        memberRoleList.add(memberRole);
-    }
-//    public void addDefaultRole() {
-//    this.memberRoleList.add(MemberRole.USER);
-//}
+    public void addDefaultRole() {
+    this.memberRoleList.add(MemberRole.USER);
+}
 }

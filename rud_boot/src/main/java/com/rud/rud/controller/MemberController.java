@@ -30,9 +30,13 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
         // 아이디 중복 체크
         if (memberService.isUserIdExists(memberCreateForm.getUserId())) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body("아이디가 이미 존재합니다.");
         }
 
         // 회원가입 처리
