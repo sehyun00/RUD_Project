@@ -11,7 +11,9 @@ const Signup = () => {
         email: '',
         password: '',
         passwordcheck: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        personalInfoConsentL: false,
+        dataAnalysisConsent: false
     });
     const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
 
@@ -36,8 +38,11 @@ const Signup = () => {
                 // 로그인 페이지로 이동
                 navigate('/login');
             } catch (error) {
-                console.error('회원가입 실패:', error);
-                setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.'); // 에러 메시지 설정
+                if (error.response && error.response.data) {
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+                }
             }
         } else {
             alert('모든 필드를 작성해주세요.');
