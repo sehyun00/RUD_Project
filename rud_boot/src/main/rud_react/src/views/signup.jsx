@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../assets/css/auth.scss'; 
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Axios import
+import axios from 'axios';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -10,26 +10,33 @@ const Signup = () => {
         userId: '',
         email: '',
         password: '',
-        passwordcheck: '',
+        checkPassword: '',
         phoneNumber: '',
-        personalInfoConsentL: false,
+        personalInfoConsent: false,
         dataAnalysisConsent: false
     });
-    const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, type, checked, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // 모든 필드가 작성되었는지 체크
-        if (Object.values(formData).every(field => field.trim() !== '')) {
+
+        // 문자열 타입 필드 체크 (boolean 필드는 제외)
+        const { name, userId, email, password, checkPassword, phoneNumber } = formData;
+        if (name.trim() && userId.trim() && email.trim() && password.trim() && checkPassword.trim() && phoneNumber.trim()) {
+            // 비밀번호 확인 체크 추가
+            if (password !== checkPassword) {
+                alert('비밀번호가 일치하지 않습니다.'); // 비밀번호 불일치 메시지
+                return;
+            }
+
             try {
                 // 회원가입 API 호출
                 const response = await axios.post('/superant/signup', formData);
@@ -39,9 +46,9 @@ const Signup = () => {
                 navigate('/login');
             } catch (error) {
                 if (error.response && error.response.data) {
-                    setErrorMessage(error.response.data.message);
+                    alert("아이디가 이미 존재합니다!"); // 아이디 중복 에러 메시지
                 } else {
-                    setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+                    setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.'); // 일반 에러 메시지
                 }
             }
         } else {
@@ -113,13 +120,36 @@ const Signup = () => {
                     <div className="input-group">
                         <input
                             type="password"
-                            name="passwordcheck"
+                            name="checkPassword"
                             placeholder="비밀번호 확인"
                             className="signup-input"
-                            value={formData.passwordcheck}
+                            value={formData.checkPassword}
                             onChange={handleChange}
                             required
                         />
+                    </div>
+                    
+                    <div className="input-group">
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="dataAnalysisConsent"
+                                checked={formData.dataAnalysisConsent}
+                                onChange={handleChange}
+                            />
+                            데이터 분석에 동의합니다.
+                        </label>
+                    </div>
+                    <div className="input-group">
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="personalInfoConsent"
+                                checked={formData.personalInfoConsent}
+                                onChange={handleChange}
+                            />
+                            개인정보 수집 및 이용에 동의합니다.
+                        </label>
                     </div>
                     <button type="submit" className="signup-button">가입하기</button>
                 </form>
