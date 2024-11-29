@@ -364,6 +364,17 @@ const StockTable = ({Reload, SD}) => {
         const dollarPer = stockData['해외장'].find(stock => stock.name === '달러')?.rebalancingRatio || 0; 
         let totalError = false;
 
+        // 널, 0 값 체크
+        for (const stock of allStocks) {
+            const check = (stock.currentPrice === 0 || stock.currentPrice === null) ? false : true
+            if (check === false ) {
+                alert('주식의 가격이 0이거나 유효하지 않습니다. 함수를 종료합니다.');
+                return; 
+            }
+            
+        }
+
+        // 널, 0이 아니라면 실행
         for (const stock of allStocks) {
             const payload = (stock.name === '원화' || stock.name === '달러') ? {
                 userId,
@@ -377,7 +388,7 @@ const StockTable = ({Reload, SD}) => {
                 userId,
                 rudDate,
                 stockName: stock.name,
-                marketOrder: stock.currentPrice,
+                marketOrder: stock.price,
                 nos: stock.quantity,
                 expertPer: stock.rebalancingRatio,
                 paul: stock.marketType === "국장" ? false : true,

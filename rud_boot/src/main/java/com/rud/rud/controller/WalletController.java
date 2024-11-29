@@ -23,15 +23,23 @@ public class WalletController {
     private MemberService memberService;
 
     // 저장
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
+        String userId = wallet.getUserId();
+        String rudDate = wallet.getRudDate();
+
+        // 중복 저장 방지
+        if (walletService.getWalletByUserIdAndRudDate(userId, rudDate) != null) {
+            return ResponseEntity.ok(null);
+        }
+
         Wallet savedWallet = walletService.saveWallet(wallet);
         return ResponseEntity.ok(savedWallet);
     }
 
     // id + 날짜 조회
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/date")
     public ResponseEntity<Wallet> dateWallet(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -47,7 +55,7 @@ public class WalletController {
     }
 
     // id로 모두 조회
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Wallet>> getAllWallet(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");

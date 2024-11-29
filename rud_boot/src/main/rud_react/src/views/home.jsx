@@ -14,10 +14,22 @@ import ImageUpload from "./components/imageUpload";
 // modal 스타일 설정
 Modal.setAppElement('#root');
 
-const Home = ({userID}) => {
-    const [isImageUploadVisible, setImageUploadVisible] = useState(true);
-    const [stockData, setStockData] = useState(null);
-    const [isModalOpen, setModalOpen] = useState(true); // 모달 상태 추가
+const Home = ({ userID }) => {
+    const [isImageUploadVisible, setImageUploadVisible] = useState(() => {
+        const savedVisible = localStorage.getItem('isImageUploadVisible');
+        return savedVisible === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+    });
+    
+    const [stockData, setStockData] = useState(() => {
+        const savedData = localStorage.getItem('stockData');
+        return savedData ? JSON.parse(savedData) : null;
+    });
+    
+    const [isModalOpen, setModalOpen] = useState(() => {
+        const savedOpen = localStorage.getItem('isModalOpen');
+        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+    });
+    
     console.log(userID);
 
     const handleSave = (data) => {
@@ -55,6 +67,22 @@ const Home = ({userID}) => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [isModalOpen]); // 모달이 열릴 때만 이벤트 리스너 추가
+
+    // 상태가 변경될 때마다 로컬 스토리지에 저장
+    useEffect(() => {
+        localStorage.setItem('isImageUploadVisible', isImageUploadVisible);
+    }, [isImageUploadVisible]);
+
+    useEffect(() => {
+        localStorage.setItem('stockData', JSON.stringify(stockData));
+        if (stockData === null) {
+            localStorage.removeItem('stockData'); // 데이터가 없으면 로컬 스토리지에서 제거
+        }
+    }, [stockData]);
+
+    useEffect(() => {
+        localStorage.setItem('isModalOpen', isModalOpen);
+    }, [isModalOpen]);
 
     return (
         <div className="home-container">

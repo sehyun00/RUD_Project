@@ -1,6 +1,6 @@
 // feature
-import React, {useState} from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // css
 import "./App.css";
@@ -15,16 +15,28 @@ import Header from "./views/componentItems/header";
 import Log from "./views/components/log";
 
 function App() {
-    const [loginState, setLoginState] = useState(false);
-    const [userID, setUserID] = useState("");
+    // localStorage에서 초기값을 가져옵니다.
+    const [loginState, setLoginState] = useState(() => {
+        const savedLoginState = localStorage.getItem('loginState');
+        return savedLoginState === 'true';
+    });
+    
+    const [userID, setUserID] = useState(() => {
+        return localStorage.getItem('userID') || '';
+    });
 
     const loginHandler = (data) => {
         setLoginState(true);
         setUserID(data);
+        localStorage.setItem('loginState', 'true');
+        localStorage.setItem('userID', data);
     }
+
     const logoutHandler = () => {
         setLoginState(false);
-        setUserID(null);
+        setUserID('');
+        localStorage.removeItem('loginState');
+        localStorage.removeItem('userID');
     }
 
     // view
@@ -34,7 +46,6 @@ function App() {
             <Routes>
                 <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
                 <Route path="/signup" element={<SignUp />} />
-
                 <Route path='/home' element={<Home userID={userID}/>} />
                 <Route path="/log" element={<Log userID={userID}/>} />
             </Routes>
