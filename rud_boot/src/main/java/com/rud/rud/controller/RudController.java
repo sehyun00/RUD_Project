@@ -29,15 +29,25 @@ public class RudController {
     private WalletService walletService;
 
     // rud 저장
-    @PreAuthorize("hasAnyRole('USER')")
+//    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/save")
     public ResponseEntity<Rud> saveRud(@RequestBody Rud rud) {
+        String userId = rud.getUserId();
+        String rudDate = rud.getRudDate();
+        String StockName = rud.getStockName();
+
+        // 이미 같은 기록이 있다면 안들어감
+        if(!rudService.getRudByUserIdAndRudDateAndStockName(userId, rudDate, StockName).isEmpty()) {
+            System.out.println(rudService.getRudByUserIdAndRudDateAndStockName(userId, rudDate, StockName));
+            System.out.println("존재");
+            return ResponseEntity.ok(null);
+        }
         Rud savedRud = rudService.saveRud(rud);
         return ResponseEntity.ok(savedRud);
     }
 
     // id + 날짜 조회
-    @PreAuthorize("hasAnyRole('USER')")
+//    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/date")
     public ResponseEntity<List<Rud>> dateRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -55,7 +65,7 @@ public class RudController {
 
     // id + 종목 조회
     //그냥 리퀘스트 바디로 넣으면 값이 안들어감 map 안에 넣어줘야 됨
-    @PreAuthorize("hasAnyRole('USER')")
+//    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/all")
     public ResponseEntity<List<Rud>> allRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -70,7 +80,7 @@ public class RudController {
     }
 
     // log 조회
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/log")
     public ResponseEntity<List<Log>> getLog(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
@@ -81,7 +91,7 @@ public class RudController {
 
     // to csv
     // 주식은 리스트에 넣어서 보내고
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/csv")
     public ResponseEntity<List<Csv>> csvRud(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");

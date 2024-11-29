@@ -40,6 +40,11 @@ public class RudService {
         return rudRepository.findByUserId(userId);
     }
 
+    // id, date, stockname으로 조회
+    public List<Rud> getRudByUserIdAndRudDateAndStockName(String userId, String rudDate, String stockName) {
+        return rudRepository.findByUserIdAndRudDateAndStockName(userId, rudDate, stockName);
+    }
+
     // 한 날짜의 총자산 조회
     public Double getTotlaByUserIdAndDate(String userId, String date) {
         // 일단 기록 모두 다 가져옴

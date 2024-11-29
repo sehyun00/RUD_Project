@@ -10,4 +10,6 @@ public interface RudRepository extends JpaRepository<Rud, Integer> {
     List<Rud> findByUserIdAndRudDate(String userId, String rudDate);
     // 사용자 id로 찾음
     List<Rud> findByUserId(String userId);
+
+    List<Rud> findByUserIdAndRudDateAndStockName(String userId, String rudDate, String rudStockName);
 }
