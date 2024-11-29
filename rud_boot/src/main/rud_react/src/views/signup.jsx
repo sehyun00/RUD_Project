@@ -1,24 +1,11 @@
 import React, { useState } from 'react';
 import '../assets/css/auth.scss'; 
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
-=======
 import axios from 'axios';
->>>>>>> back)logintest
 
 const Signup = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-<<<<<<< HEAD
-        username: '',
-        userId: '',
-        email: '',
-        password: '',
-        passwordcheck: '',
-        phone: ''
-    });
-    const [passwordMatch, setPasswordMatch] = useState(null);
-=======
         name: '',
         userId: '',
         email: '',
@@ -29,7 +16,6 @@ const Signup = () => {
         dataAnalysisConsent: false
     });
     const [errorMessage, setErrorMessage] = useState('');
->>>>>>> back)logintest
 
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
@@ -37,22 +23,10 @@ const Signup = () => {
             ...formData,
             [name]: type === 'checkbox' ? checked : value
         });
-
-        // 비밀번호와 비밀번호 확인이 일치하는지 확인
-        if (name === 'passwordcheck') {
-            setPasswordMatch(value === formData.password);
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-<<<<<<< HEAD
-        
-        if (Object.values(formData).every(field => field.trim() !== '') && passwordMatch) {
-            navigate('/login');
-        } else {
-            alert('모든 필드를 작성해주세요. 또는 비밀번호가 일치하지 않습니다.');
-=======
 
         // 문자열 타입 필드 체크 (boolean 필드는 제외)
         const { name, userId, email, password, checkPassword, phoneNumber } = formData;
@@ -79,7 +53,6 @@ const Signup = () => {
             }
         } else {
             alert('모든 필드를 작성해주세요.');
->>>>>>> back)logintest
         }
     };
 
@@ -155,13 +128,6 @@ const Signup = () => {
                             required
                         />
                     </div>
-<<<<<<< HEAD
-                    {passwordMatch !== null && (
-                        <p className={`password-message ${passwordMatch ? 'match' : 'no-match'}`}>
-                            {passwordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-                        </p>
-                    )}
-=======
                     
                     <div className="input-group">
                         <label>
@@ -185,12 +151,9 @@ const Signup = () => {
                             개인정보 수집 및 이용에 동의합니다.
                         </label>
                     </div>
->>>>>>> back)logintest
                     <button type="submit" className="signup-button">가입하기</button>
                 </form>
-                <div className="signup-link-container">
-                    <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>
-                </div>
+                <a href="/login" className="signup-link">이미 계정이 있나요? 로그인하기</a>
             </div>
         </div>
     );
