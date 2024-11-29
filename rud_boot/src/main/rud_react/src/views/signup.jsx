@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import '../assets/css/auth.scss'; 
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Axios import
 
 const Signup = () => {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        username: '',
-        userId: '', // 아이디 추가
+        name: '',
+        userId: '',
         email: '',
         password: '',
         passwordcheck: '',
-        phone: '' // 전화번호 추가
+        phoneNumber: ''
     });
+    const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,18 +23,24 @@ const Signup = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // 회원가입 로직 추가
-        console.log('회원가입 데이터:', formData);
-
         // 모든 필드가 작성되었는지 체크
         if (Object.values(formData).every(field => field.trim() !== '')) {
-            // 로그인 페이지로 이동
-            navigate('/login'); // useNavigate로 페이지 이동
+            try {
+                // 회원가입 API 호출
+                const response = await axios.post('/superant/signup', formData);
+                console.log('회원가입 성공:', response.data);
+                
+                // 로그인 페이지로 이동
+                navigate('/login');
+            } catch (error) {
+                console.error('회원가입 실패:', error);
+                setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.'); // 에러 메시지 설정
+            }
         } else {
-            alert('모든 필드를 작성해주세요.'); // 필드가 모두 작성되지 않았을 때 알림
+            alert('모든 필드를 작성해주세요.');
         }
     };
 
@@ -40,14 +48,15 @@ const Signup = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <h2 className="auth-title">회원가입</h2>
+                {errorMessage && <p className="error-message">{errorMessage}</p>} {/* 에러 메시지 표시 */}
                 <form onSubmit={handleSubmit} className="form">
                     <div className="input-group">
                         <input
                             type="text"
-                            name="username"
+                            name="name"
                             placeholder="사용자 이름"
                             className="signup-input"
-                            value={formData.username}
+                            value={formData.name}
                             onChange={handleChange}
                             required
                         />
@@ -55,10 +64,10 @@ const Signup = () => {
                     <div className="input-group">
                         <input
                             type="tel"
-                            name="phone"
+                            name="phoneNumber"
                             placeholder="전화번호"
                             className="signup-input"
-                            value={formData.phone}
+                            value={formData.phoneNumber}
                             onChange={handleChange}
                             required
                         />

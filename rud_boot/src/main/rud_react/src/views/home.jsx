@@ -14,6 +14,7 @@ const Home = ({userID}) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(true);
     const [stockData, setStockData] = useState(null);
     const [isModalOpen, setModalOpen] = useState(true); // 모달 상태 추가
+    console.log(userID);
 
     const handleSave = (data) => {
         setStockData(data);
