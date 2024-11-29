@@ -12,7 +12,10 @@ import  com.rud.rud.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
+/*
+* 로그인할 때 사용자가 userId가 db에 있다면 해당 userId의 상태를 member에 저장하고 상태가 있다면 해당 아이디의 정보를
+* 불러온다.
+*/
 @Service
 @Log4j2
 @RequiredArgsConstructor

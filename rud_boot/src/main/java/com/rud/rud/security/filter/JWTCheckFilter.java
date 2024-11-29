@@ -18,7 +18,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
-
+/*
+코드설명
+JWT토큰이 발행되었을 때 jwt 토큰 처리 방식에 대한 코드이다.
+* */
 @Log4j2
 public class JWTCheckFilter extends OncePerRequestFilter {
 

@@ -23,11 +23,11 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원 가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    @GetMapping("/signup")
-    public void signup(){
-        System.out.println("signup");
-    }
-
+    /*코드설명
+     * 회원가입을 할 때 사용하는 경로이며 사용자가 회원 정보를 입력하고 userID가 이미 DB에 존재할 경우 에러를 표현하고
+     * 비밀번호는 frontend에서 처리하였다.
+     * 회원가입이 성공할 경우 db에 저장이 맞게 되는지 확인하는 로그를 띄운다.
+     * */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
 

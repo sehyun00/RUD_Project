@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
-
+/*코드설명
+ * 회원가입 폼
+ * */
 @Getter
 @Setter
 public class MemberCreateForm {
