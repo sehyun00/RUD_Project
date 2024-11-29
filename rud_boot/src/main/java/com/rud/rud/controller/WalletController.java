@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +24,18 @@ public class WalletController {
     private MemberService memberService;
 
     // 저장
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<Wallet> saveWallet(@RequestBody Wallet wallet) {
+        String userId = wallet.getUserId();
+        String rudDate = wallet.getRudDate();
+
         Wallet savedWallet = walletService.saveWallet(wallet);
+
+        // 같은 날짜 데이터가 있다면 반환x
+//        if (walletService.getWalletByUserIdAndRudDate(userId, rudDate) != null) {
+//            return null;
+//        }
         return ResponseEntity.ok(savedWallet);
     }
 

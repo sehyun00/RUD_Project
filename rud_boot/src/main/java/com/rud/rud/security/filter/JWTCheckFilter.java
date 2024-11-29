@@ -21,34 +21,37 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class JWTCheckFilter extends OncePerRequestFilter {
-
+    // 특정 경로에 대한 요청은 필터링x
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-
         // Preflight요청은 체크하지 않음
         if(request.getMethod().equals("OPTIONS")){
             return true;
         }
 
         String path = request.getRequestURI();
-
         log.info("check uri.............." + path);
 
-        //api/member/ 경로의 호출은 체크하지 않음
-        if(path.startsWith("/superant/signup/")) {
+        // api/member/ 경로의 호출은 체크하지 않음
+        if (path.startsWith("/superant/login") || path.startsWith("/superant/signup")) {
             return true;
         }
 
         return false;
     }
 
-
+    // authorization 헤더에서 jwt를 추출하고 검증
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         log.info("------------------------JWTCheckFilter.......................");
 
         String authHeaderStr = request.getHeader("Authorization");
+
+        if (authHeaderStr == null || !authHeaderStr.startsWith("Bearer ")) {
+            log.error("Authorization header is missing or invalid");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header is missing or invalid");
+            return;
+        }
 
         try {
             //Bearer accestoken...
@@ -92,9 +95,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             PrintWriter printWriter = response.getWriter();
             printWriter.println(msg);
             printWriter.close();
-
         }
     }
-
-
 }

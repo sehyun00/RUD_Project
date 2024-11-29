@@ -11,16 +11,15 @@ import javax.crypto.SecretKey;
 
 @Log4j2
 public class JWTUtil {
-
+    // 암호 키 설정
     private static String key = "1234567890123456789012345678901234567890";
 
+    // jwt 토큰 생성 메서드
     public static String generateToken(Map<String, Object> valueMap, int min) {
-
         SecretKey key = null;
 
         try{
             key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
-
         }catch(Exception e){
             throw new RuntimeException(e.getMessage());
         }
@@ -36,12 +35,11 @@ public class JWTUtil {
         return jwtStr;
     }
 
+    // 토큰 정보 검증 메서드, 유효한 경우 클레임 반환
     public static Map<String, Object> validateToken(String token) {
-
         Map<String, Object> claim = null;
 
         try{
-
             SecretKey key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
 
             claim = Jwts.parserBuilder()
@@ -63,5 +61,4 @@ public class JWTUtil {
         }
         return claim;
     }
-
 }

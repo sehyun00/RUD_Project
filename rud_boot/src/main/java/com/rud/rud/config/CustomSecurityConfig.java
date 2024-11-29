@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,25 +35,30 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class CustomSecurityConfig {
 
+    // 비밀번호 해싱 메소드
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    //
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("-----------------security config---------------------------------");
+        // 코로스 설정
         http.cors(httpSecurityCorsConfigurer -> {
                     httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
                 });
-
+        // 세션 관리
         http.sessionManagement(sessionConfig -> sessionConfig.
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.csrf(config -> config.disable());
+        // csrf 비활성
+        http.csrf(AbstractHttpConfigurer::disable);
+        // 헤더 설정
         http.headers(headers -> headers
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
                         XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)));
-
+        // 폼 로그인 설정
         http.formLogin(config -> {
             config.loginPage("/superant/login");
             config.successHandler(new APILoginSuccessHandler());
@@ -60,11 +66,12 @@ public class CustomSecurityConfig {
         });
 
         //추후 jwt로 해결하기
-//        http.addFilterBefore(new JWTCheckFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
-//        http.exceptionHandling(config-> {
-//            config.accessDeniedHandler(new CustomAccessDeniedHandler());
-//        });
+        http.addFilterBefore(new JWTCheckFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+        // 접근 거부 핸들러
+        http.exceptionHandling(config-> {
+            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+        });
 
 
         return http.build();
@@ -75,21 +82,24 @@ public class CustomSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // 코로스 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
+        // 3000에서의 요청만 허용
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-
+        // 허용할 메서드 설정
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // 허용할 헤더 설정
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        // 노출할 헤더 설정
         configuration.setExposedHeaders(Arrays.asList("Authorization")); // Authorization 헤더를 노출
+        // 자격 증명 포함하도록 설정
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }
