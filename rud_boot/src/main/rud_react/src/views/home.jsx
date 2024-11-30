@@ -30,6 +30,9 @@ const Home = ({ userID }) => {
         return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
     });
     
+    const [loading, setLoading] = useState("0");
+    const [progress, setProgress] = useState(0);
+    
     console.log(userID);
 
     const handleSave = (data) => {
@@ -134,11 +137,26 @@ const Home = ({ userID }) => {
                     <button className="info-button" onClick={toggleModal}>확인</button>
                 </div>
             </Modal>
-
             {
-                isImageUploadVisible
-                    ? (<ImageUpload onSave={handleSave} />)
-                    : (<StockTable Reload={handleReloadImageUpload} SD={stockData} />)
+            isImageUploadVisible ? (
+                <ImageUpload 
+                onSave={handleSave} 
+                setLoading={setLoading} 
+                setProgress={setProgress} 
+                loading = {loading}
+                progress ={progress}
+                />
+            ) : (
+                <StockTable 
+                Reload={handleReloadImageUpload} 
+                SD={stockData} 
+                setLoading={setLoading} 
+                setProgress={setProgress}
+                loading = {loading}
+                progress ={progress}
+                />
+            )
+
             }
         </div>
     );

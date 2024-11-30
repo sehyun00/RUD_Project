@@ -9,15 +9,15 @@ import '../../assets/css/stockTable.scss';
 // components
 import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
+import LoadingPage from '../componentItems/loading'; 
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
-    const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
     const [currentData, setCurrentData] = useState(stockData["국장"]);
@@ -26,6 +26,9 @@ const StockTable = ({Reload, SD}) => {
         "국장": Array(stockData["국장"].length).fill(0),
         "해외장": Array(stockData["해외장"].length).fill(0)
     });
+    const [stockNumber, setStockNumber] =useState(0);
+    const [allStocksNumber, setAllStocksNumber] =useState(0);
+    
 
     useEffect(() => {
         // console.log(currentData);
@@ -40,11 +43,8 @@ const StockTable = ({Reload, SD}) => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
     const fetchStockPrices = async () => {
-        if (loading) 
-            return;
     
         try {
-
             const domesticStocks = SD.stock?.국장 || [];
             const foreignStocks = SD.stock?.해외장 || [];
             const domesticMoney = Number(SD.cash.원화.replace(/,/g, ''));
@@ -87,12 +87,27 @@ const StockTable = ({Reload, SD}) => {
                 ...domesticData,
                 ...foreignData
             ];  
-    
+            let asn = allStocks.length, sn = 0;
+            setAllStocksNumber(asn);
+
             // 종가를 순차적으로 가져오기
             for (const stock of allStocks) {
-                stock.price = await fetchStockPrice(stock.name, stock.marketType); // currentPrice에 가격 저장
-                stock.currentPrice = await stock.price * stock.quantity;
-                await new Promise(resolve => setTimeout(resolve, 500));
+                try {
+                    console.log(`Fetching price for ${stock.name}...`);
+                    stock.price = await fetchStockPrice(stock.name, stock.marketType);
+                    stock.currentPrice = await stock.price * stock.quantity;
+                } catch (err) {
+                    console.error(`Error fetching price for ${stock.name}:`, err);
+                    stock.price = 0; // 기본값 처리
+                    stock.currentPrice = 0; // 기본값 처리
+                }
+    
+                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기
+                sn++;
+                setProgress((sn / asn) * 100);
+                setLoading(stock.name);
+                setStockNumber(sn);
+
             }
     
             // 현금 정보를 stockData에 추가
@@ -121,13 +136,14 @@ const StockTable = ({Reload, SD}) => {
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
         } finally {
-            setLoading(false);
+            setLoading('0');
+            setProgress(0);
         }
     };
 
     useEffect(() => {
         fetchStockPrices();
-    }, [SD]);
+    }, []);
 
     const fetchStockPrice = async (stockName, marketType) => {
         try {
@@ -156,7 +172,7 @@ const StockTable = ({Reload, SD}) => {
             } catch (error) {
                 console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
             } finally {
-                setLoading(false);
+                setLoading("0");
             }
         };
 
@@ -322,10 +338,6 @@ const StockTable = ({Reload, SD}) => {
         );
     };
 
-    if (loading) {
-        return <div>환율을 로딩 중...</div>;
-    }
-
     const fetchDesiredWeights = async () => {
         const stockNames = [...stockData["국장"].map(stock => stock.name), ...stockData["해외장"].map(stock => stock.name)];
         const stockNamesString = stockNames.join(',');
@@ -416,6 +428,12 @@ const StockTable = ({Reload, SD}) => {
 
     return (
         <div className="stock-container">
+            <LoadingPage 
+            loading={loading} 
+            progress={progress} 
+            stockNumber ={stockNumber} 
+            allStocksNumber={allStocksNumber}
+            />
             <div className="name-container">
                 <h1>StockTable</h1>
                 <p>{currentTime}</p>

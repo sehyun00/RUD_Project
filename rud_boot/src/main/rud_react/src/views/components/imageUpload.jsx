@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
 import axios from 'axios';
 import Modal from 'react-modal';
+
 import '../../assets/css/components/imageUpload.scss';
 
 import questionmarkImage from '../../assets/images/questionmark.png';
 import gofullpagetestImage from '../../assets/images/gofullpagetest.png';
 import cash_blurImage from '../../assets/images/cash_blur.png';
 import stocks_blurImage from '../../assets/images/stocks_blur.png';
-import loadinghomerGif from '../../assets/images/loadinghomer.gif'; // GIF 파일 임포트
+
+import LoadingPage from '../componentItems/loading'; 
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [progress, setProgress] = useState(0);
     const fileInputRefs = [useRef(null), useRef(null)];
 
     const handleFileInputChange = (index) => (event) => {
@@ -78,7 +78,7 @@ const ImageUpload = ({onSave}) => {
             return;
         }
 
-        setLoading(true);
+        setLoading("imageupload");
         setProgress(0);
 
         const cashFormData = new FormData();
@@ -129,7 +129,7 @@ const ImageUpload = ({onSave}) => {
                     : "서버 오류"
             ));
         } finally {
-            setLoading(false);
+            setLoading("0");
             setProgress(0);
         }
     };
@@ -156,33 +156,7 @@ const ImageUpload = ({onSave}) => {
 
     return (
         <div className="image-upload-container">
-            {
-                loading && (
-                    <div className="loading-overlay">
-                        {
-                            progress >= 50
-                                ? (<div className="loading-message">종목 정보를 전달하고 있어요... (2/2)</div>)
-                                : (<div className="loading-message">현금 정보를 전달하고 있어요... (1/2)</div>)
-                        }
-                        <div className="progress-bar-container">
-                            {/* 새로운 컨테이너 추가 */}
-                            <div className="progress-bar">
-                                <div
-                                    className="progress"
-                                    style={{
-                                        width: `${progress}%`
-                                    }}></div>
-                            </div>
-                            <img src={loadinghomerGif} alt="로딩 중" className="loading-gif" style={{
-                                    left: `${progress}%`,
-                                    transform: 'translateX(-50%)'
-                                }}
-                                // 진행도에 따라 위치 조정
-                            />
-                        </div>
-                    </div>
-                )
-            }
+            <LoadingPage loading={loading} progress={progress}/>
             <div className="contents-container">
                 <div className="switch-container">
                     <div className="switch-1-wrapper">

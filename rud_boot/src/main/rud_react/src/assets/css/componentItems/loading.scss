@@ -1,0 +1,48 @@
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    .loading-message {
+        font-size: 20px;
+        margin-bottom: 40px;
+    }
+
+    .progress-bar-container {
+        position: relative; /* 상대 위치 설정 */
+        width: 700px; /* 프로그레스 바의 너비와 동일하게 설정 */
+    
+        .loading-gif {
+            position: absolute;
+            top: -42px; /* 프로그레스 바 위쪽에 위치 */
+            left: 50%; /* 중앙 정렬 */
+            transform: translateX(-50%); /* 중앙 정렬 */
+            width: 50px; /* GIF 크기 조정 */
+            height: auto; /* 비율 유지 */
+            transition: left 0.8s ease-in-out;
+        }
+    }
+
+    .progress-bar {
+        width: 700px;
+        background-color: #B0B0B0;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+
+        .progress {
+            height: 10px;
+            background-color: #2a48b6; /* 진행 색상 */
+            transition: width 0.8s ease-in-out; /* 애니메이션 효과 변경 */
+        }
+    }
+}
