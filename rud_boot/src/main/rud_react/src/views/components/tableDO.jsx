@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
-import {Table} from "reactstrap";
+import {Alert, Table} from "reactstrap";
 import '../../assets/css/stockTable.scss';
 
 const TableDO = ({
@@ -19,7 +19,6 @@ const TableDO = ({
     const [rowCount, setRowCount] = useState(data.length); // 행 수 상태
 
     useEffect(() => {
-        // data가 변경될 때마다 마지막 행으로 스크롤
         if (lastRowRef.current) {
             lastRowRef
                 .current
@@ -48,6 +47,26 @@ const TableDO = ({
         addEmptyRow(); // 빈 행 추가 함수 호출
         setRowCount(prevCount => prevCount + 1); // 행 수 증가
     };
+    
+    const fetchOneStockPrice = async (stock, index) => {
+        try {
+        const response = await fetchStockPrice(stock.name, stock.marketType); // currentPrice에 가격 저장
+        const updatedPrice = response; // API 호출로 받은 가격
+        const updatedCurrentPrice = updatedPrice * stock.quantity;
+        
+        console.log(response, updatedPrice, stock.price);
+        
+        if (response === '0' || response === null) {
+            alert("주식 정보를 찾아올 수 없어요!")
+        } else {
+            handleChange(index, 'price', updatedPrice); // 가격 업데이트
+            handleChange(index, 'currentPrice', updatedCurrentPrice);
+
+        }
+        } catch (error) {
+            console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+        }
+    }
 
     return (
         <Table className="custom-table">
@@ -84,7 +103,7 @@ const TableDO = ({
                                             onChange={(e) => handleChange(index, 'name', e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
-                                                    fetchStockPrice(item.name, item.marketType); // 엔터 키가 눌리면 searchButton 호출
+                                                    fetchOneStockPrice(item, index); // 엔터 키가 눌리면 searchButton 호출
                                                     e.preventDefault(); // 기본 동작 방지
                                                 }
                                             }}

@@ -29,8 +29,8 @@ const StockTable = ({Reload, SD}) => {
     });
 
     useEffect(() => {
-        // console.log(currentData);
-    },[currentData]);
+        console.log(currentData);
+    },[stockData]);
 
     const updateTime = () => {  
         const now = new Date();
