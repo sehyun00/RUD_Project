@@ -287,42 +287,39 @@ const StockTable = ({Reload, SD}) => {
     // 주식 검색 버튼
     const searchButton = (item, index) => {
         const fetchPriceAndUpdate = async () => {
+            console.log(item, index);
             const marketType = item.marketType;
             const stockName = item.name;
             try {
                 const endpoint = marketType === '국장'
                     ? `http://localhost:5001/getkos?name=${stockName}`
                     : `http://localhost:5001/getnas?name=${stockName}`;
-    
+
                 const response = await axios.get(endpoint); 
                 const updatedPrice = response.data; // API 호출로 받은 가격
-                const updatadCurrentPrice = updatedPrice * item.quantity;
+                const updatedCurrentPrice = updatedPrice * item.quantity;
+
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
-                handleChange(index, 'currentPrice', updatadCurrentPrice);
-                console.log(item.index.price);
+                handleChange(index, 'currentPrice', updatedCurrentPrice);
             } catch (error) {
                 console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
             }
         };
+
         return (
             <td className="option-button">
-            {item.price === null && 
-            <img 
-                src ={checkicon} 
-                className="check-icon"
-                onClick={fetchPriceAndUpdate}
-            />
-            }
-            {item.price === '0' && 
-            <img 
-                src ={checkicon} 
-                className="check-icon"
-                onClick={fetchPriceAndUpdate}
-            />
-            }
+                {(item.price === null || item.price === '0') && (
+                    <img 
+                        src={checkicon} 
+                        className="check-icon"
+                        onClick={fetchPriceAndUpdate}
+                        alt="Check Icon" // 접근성을 위한 alt 속성 추가
+                    />
+                )}
             </td>
         );
     };
+
 
     // 행 제거 버튼
     const deleteButton =(marketType, index) => {
@@ -404,7 +401,6 @@ const StockTable = ({Reload, SD}) => {
                 expertPer: stock.rebalancingRatio,
                 paul: stock.marketType === "국장" ? false : true,
             }
-            console.log(payload);
 
             try {
                 const endpoint = (stock.name === '원화' || stock.name === '달러')
@@ -478,7 +474,9 @@ const StockTable = ({Reload, SD}) => {
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
                                     searchButton={searchButton}
-                                    deleteButton={deleteButton}/>
+                                    deleteButton={deleteButton}
+                                    fetchStockPrice={fetchStockPrice}
+                                    />
                             : <TableFO
                                     data={currentData}
                                     totalBalance={calculateCurrentTotalBalance()}
@@ -489,7 +487,9 @@ const StockTable = ({Reload, SD}) => {
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
                                     searchButton={searchButton}
-                                    deleteButton={deleteButton}/>
+                                    deleteButton={deleteButton}
+                                    fetchStockPrice={fetchStockPrice}
+                                    />
                     }
                     <table className="custom-table">
                         <thead>

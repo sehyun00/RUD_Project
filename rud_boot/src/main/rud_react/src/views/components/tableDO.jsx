@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from "react"; 
+import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
-import { Table } from "reactstrap";
+import {Table} from "reactstrap";
 import '../../assets/css/stockTable.scss';
 
 const TableDO = ({
@@ -13,23 +13,29 @@ const TableDO = ({
     addEmptyRow,
     searchButton,
     deleteButton,
+    fetchStockPrice,
 }) => {
     const lastRowRef = useRef(null); // 마지막 행을 참조할 ref
+    const [rowCount, setRowCount] = useState(data.length); // 행 수 상태
 
     useEffect(() => {
         // data가 변경될 때마다 마지막 행으로 스크롤
         if (lastRowRef.current) {
-            lastRowRef.current.scrollIntoView({ behavior: 'smooth' });
+            lastRowRef
+                .current
+                .scrollIntoView({behavior: 'smooth'});
         }
-    }, [data]); // data가 변경될 때마다 실행
+    }, [rowCount]); // data가 변경될 때마다 실행
 
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('ko-KR', {
-            style: 'decimal',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        }).format(amount);
-    };    
+        return new Intl
+            .NumberFormat('ko-KR', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            })
+            .format(amount);
+    };
 
     const adjustWeights = (index, value) => {
         const newDesiredWeights = [...desiredWeights];
@@ -38,6 +44,10 @@ const TableDO = ({
         handleWeightChange(index, newDesiredWeights[index]);
     };
 
+    const handleAddEmptyRow = () => {
+        addEmptyRow(); // 빈 행 추가 함수 호출
+        setRowCount(prevCount => prevCount + 1); // 행 수 증가
+    };
 
     return (
         <Table className="custom-table">
@@ -63,50 +73,67 @@ const TableDO = ({
             <tbody>
                 {
                     data.map((item, index) => {
-                        
+
                         if (item.price === '0' || item.price === null) {
                             return (
                                 <tr key={item.id}>
                                     <td>
-                                        <form>
                                         <input
                                             type="text"
-                                            value={item.name} 
+                                            value={item.name}
                                             onChange={(e) => handleChange(index, 'name', e.target.value)}
-                                            placeholder="종목 입력"/> {/* */}
-                                        </form>
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    fetchStockPrice(item.name, item.marketType); // 엔터 키가 눌리면 searchButton 호출
+                                                    e.preventDefault(); // 기본 동작 방지
+                                                }
+                                            }}
+                                            placeholder="종목 입력"/>
                                     </td>
-                                    {item.name !== "원화" ? (deleteButton(item.marketType, index)): (<td className="option-button"/>)}
-                                    {item.name !== "원화" ? (searchButton(item, index)): (<td className="option-button"/>)}
-                                    
+                                    {
+                                        item.name !== "원화"
+                                            ? (deleteButton(item.marketType, index))
+                                            : (<td className="option-button"/>)
+                                    }
+                                    {
+                                        item.name !== "원화"
+                                            ? (searchButton(item, index))
+                                            : (<td className="option-button"/>)
+                                    }
+
                                     <td>
-                                        {(item.name === "원화" ) ? (
-                                            <span>X</span> 
-                                        ) : (
-                                            <input
-                                                className="number"
-                                                type="number"
-                                                value={item.quantity}
-                                                onChange={(e) => {
-                                                    const newQuantity = e.target.value;
-                                                    handleChange(index, 'quantity', newQuantity);
-                                                    handleChange(index, 'currentPrice', newQuantity * item.price);
-                                                }}
-                                            />
-                                        )}
+                                        {
+                                            (item.name === "원화")
+                                                ? (<span>X</span>)
+                                                : (
+                                                    <input
+                                                        className="number"
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) => {
+                                                            const newQuantity = e.target.value;
+                                                            handleChange(index, 'quantity', newQuantity);
+                                                            handleChange(index, 'currentPrice', newQuantity * item.price);
+                                                        }}/>
+                                                )
+                                        }
                                     </td>
 
                                 </tr>
                             );
                         }
                         // 현재 잔고
-                        const currentprice = item.id == 1 ? item.currentPrice : item.price * item.quantity;
+                        const currentprice = item.id == 1
+                            ? item.currentPrice
+                            : item.price * item.quantity;
 
-                        // 현재 비중 
-                        const currentBalance = currentTotalBalance > 0 ? (currentprice / currentTotalBalance) * 100 : 0;
-                        
+                        // 현재 비중
+                        const currentBalance = currentTotalBalance > 0
+                            ? (currentprice / currentTotalBalance) * 100
+                            : 0;
+
                         // 현재 종목의 희망 비중
-                        const currentDesiredWeight = parseFloat(desiredWeights[index]) || 0; 
+                        const currentDesiredWeight = parseFloat(desiredWeights[index]) || 0;
 
                         // 리밸런싱 비중 계산
                         const rebalanceWeight = totalDesiredWeight > 0
@@ -114,17 +141,25 @@ const TableDO = ({
                             : 0;
 
                         // 희망 투자금 계산
-                        const desiredInvestment = currentTotalBalance * (rebalanceWeight/100);
+                        const desiredInvestment = currentTotalBalance * (rebalanceWeight / 100);
 
                         // 희망 수량 계산
-                        const desiredQuantity = item.name === "원화" ? desiredInvestment : desiredInvestment / item.price;
+                        const desiredQuantity = item.name === "원화"
+                            ? desiredInvestment
+                            : desiredInvestment / item.price;
 
                         // 조절 수량
-                        const quantityControl = item.name ==="원화" ? desiredQuantity-item.currentPrice : desiredQuantity - item.quantity;
+                        const quantityControl = item.name === "원화"
+                            ? desiredQuantity - item.currentPrice
+                            : desiredQuantity - item.quantity;
 
                         // 조절 수량 스타일 결정
-                        const quantityControlStyle = quantityControl > 0 ? 'text-plus' : 'text-minus'; // 양수는 빨간색, 음수는 파란색
-                        const quantityControlValue = quantityControl > 0 ? `+${quantityControl.toFixed(2)}` : quantityControl.toFixed(2);
+                        const quantityControlStyle = quantityControl > 0
+                            ? 'text-plus'
+                            : 'text-minus'; // 양수는 빨간색, 음수는 파란색
+                        const quantityControlValue = quantityControl > 0
+                            ? `+${quantityControl.toFixed(2)}`
+                            : quantityControl.toFixed(2);
 
                         return (
                             <tr key={item.id}>
@@ -134,46 +169,54 @@ const TableDO = ({
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}/>
                                 </td>
-                                {item.name !== "원화" ? (deleteButton(item.marketType, index)): (<td className="option-button"/>)}
-                                {item.name === "원화" ? ( // 주가
-                                    <td></td>
-                                ) : (
-                                <td className="money-expression">₩ {formatCurrency(item.price)}</td>
-                                )}
+                                {
+                                    item.name !== "원화"
+                                        ? (deleteButton(item.marketType, index))
+                                        : (<td className="option-button"/>)
+                                }
+                                {
+                                    item.name === "원화"
+                                        ? ( // 주가
+                                                <td></td>)
+                                        : (<td className="money-expression">₩ {formatCurrency(item.price)}</td>)
+                                }
 
                                 <td>
-                                    {(item.name === "원화" ) ? (
-                                        ""
-                                    ) : (
-                                        <input
-                                            className="number"
-                                            type="number"
-                                            value={item.quantity}
-                                            onChange={(e) => {
-                                                const newQuantity = e.target.value;
-                                                handleChange(index, 'quantity', newQuantity);
-                                                handleChange(index, 'currentPrice', newQuantity * item.price);
-                                            }}
-                                        />
-                                    )}
+                                    {
+                                        (item.name === "원화")
+                                            ? ("")
+                                            : (
+                                                <input
+                                                    className="number"
+                                                    type="number"
+                                                    value={item.quantity}
+                                                    onChange={(e) => {
+                                                        const newQuantity = e.target.value;
+                                                        handleChange(index, 'quantity', newQuantity);
+                                                        handleChange(index, 'currentPrice', newQuantity * item.price);
+                                                    }}/>
+                                            )
+                                    }
                                 </td>
                                 <td>
 
-                                    {item.name === "원화" ? (
-                                        <input
-                                            className="number"
-                                            type="number"
-                                            value={item.currentPrice}
-                                            onChange={(e) => {
-                                                const newCurrentPrice = Number(e.target.value);
-                                                handleChange(index, 'currentPrice', newCurrentPrice);;
-                                            }}
-                                        />
-                                    ) : (
-                                        <span>{formatCurrency(item.currentPrice)}</span>
-                                    )}
+                                    {
+                                        item.name === "원화"
+                                            ? (
+                                                <input
+                                                    className="number"
+                                                    type="number"
+                                                    value={item.currentPrice}
+                                                    onChange={(e) => {
+                                                        const newCurrentPrice = Number(e.target.value);
+                                                        handleChange(index, 'currentPrice', newCurrentPrice);;
+                                                    }}/>
+                                            )
+                                            : (<span>{formatCurrency(item.currentPrice)}</span>)
+                                    }
                                 </td>
-                                <td>{formatCurrency(currentBalance.toFixed(2))} %</td>
+                                <td>{formatCurrency(currentBalance.toFixed(2))}
+                                    %</td>
                                 <td>
                                     <input
                                         type="number"
@@ -182,16 +225,23 @@ const TableDO = ({
                                         value={desiredWeights[index]}
                                         onChange={(e) => adjustWeights(index, e.target.value)}/>
                                 </td>
-                                <td>{rebalanceWeight.toFixed(2)}%</td> {/* 리밸런싱 비중 표시 */}
-                                <td>{formatCurrency(desiredInvestment)}</td> {/* 희망투자금 표시 */}
-                                <td>{desiredQuantity.toFixed(2)}</td> {/* 희망수량 표시 */}
-                                <td className={quantityControlStyle}>{quantityControlValue}</td> {/* 조절 수량 표시 */}
+                                <td>{rebalanceWeight.toFixed(2)}%</td>
+                                {/* 리밸런싱 비중 표시 */}
+                                <td>{formatCurrency(desiredInvestment)}</td>
+                                {/* 희망투자금 표시 */}
+                                <td>{desiredQuantity.toFixed(2)}</td>
+                                {/* 희망수량 표시 */}
+                                <td className={quantityControlStyle}>{quantityControlValue}</td>
+                                {/* 조절 수량 표시 */}
                             </tr>
                         );
                     })
                 }
-                <tr ref={lastRowRef}> {/* 마지막 행에 ref 추가 */}
-                    <td className="td11" onClick={addEmptyRow}><h2>종목 추가</h2></td>
+                <tr ref={lastRowRef}>
+                    {/* 마지막 행에 ref 추가 */}
+                    <td className="td11" onClick={handleAddEmptyRow}>
+                        <h2>종목 추가</h2>
+                    </td>
                 </tr>
             </tbody>
         </Table>
@@ -205,7 +255,7 @@ TableDO.propTypes = {
     desiredWeights: PropTypes.array.isRequired,
     handleWeightChange: PropTypes.func.isRequired,
     foreignDesiredWeights: PropTypes.array.isRequired,
-    totalDesiredWeight: PropTypes.number.isRequired, 
+    totalDesiredWeight: PropTypes.number.isRequired
 };
 
 export default TableDO;
