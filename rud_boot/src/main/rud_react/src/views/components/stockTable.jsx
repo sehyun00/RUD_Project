@@ -43,7 +43,6 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
     const fetchStockPrices = async () => {
-    
         try {
             const domesticStocks = SD.stock?.국장 || [];
             const foreignStocks = SD.stock?.해외장 || [];
@@ -101,12 +100,11 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                     stock.price = 0; // 기본값 처리
                     stock.currentPrice = 0; // 기본값 처리
                 }
-    
-                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기
                 sn++;
-                setProgress((sn / asn) * 100);
                 setLoading(stock.name);
+                setProgress((sn / asn) * 100);
                 setStockNumber(sn);
+                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기  
 
             }
     
@@ -136,6 +134,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
         } finally {
+            await new Promise(resolve => setTimeout(resolve, 600)); 
             setLoading('0');
             setProgress(0);
         }
