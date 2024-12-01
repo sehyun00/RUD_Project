@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
 import '../assets/css/auth.scss'; // 스타일 추가
-import ios from '../assets/images/ios.png';
-import google from '../assets/images/logogoogle.png';
-import jwtDecode from 'jwt-decode';
 import qs from 'qs';
 
 

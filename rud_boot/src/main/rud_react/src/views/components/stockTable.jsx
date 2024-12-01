@@ -355,10 +355,6 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
         );
     }
 
-    if (loading) {
-        return <div>환율을 로딩 중...</div>;
-    }
-
     const fetchDesiredWeights = async () => {
         const stockNames = [...stockData["국장"].map(stock => stock.name), ...stockData["해외장"].map(stock => stock.name)];
         const stockNamesString = stockNames.join(',');
