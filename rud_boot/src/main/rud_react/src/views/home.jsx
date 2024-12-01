@@ -26,8 +26,6 @@ const Home = ({ userID, loginState }) => {
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
-    
-    console.log(userID);
 
     const handleSave = (data) => {
         setStockData(data);

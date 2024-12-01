@@ -32,8 +32,8 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
     
 
     useEffect(() => {
-        console.log(currentData);
-    },[stockData]);
+        console.log(stockData);
+    },[currentData]);
 
     const updateTime = () => {  
         const now = new Date();
@@ -141,7 +141,9 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
     };
 
     useEffect(() => {
-        fetchStockPrices();
+        if (SD && (SD.stock?.국장.length > 0 || SD.stock?.해외장.length > 0)) {
+            fetchStockPrices();
+        }
     }, [SD]);
 
     const fetchStockPrice = async (stockName, marketType) => {
@@ -301,7 +303,6 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
     // 주식 검색 버튼
     const searchButton = (item, index) => {
         const fetchPriceAndUpdate = async () => {
-            console.log(item, index);
             const marketType = item.marketType;
             const stockName = item.name;
             try {
@@ -482,7 +483,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                             </div>
                             <div className="save-table" onClick={saveDataToDB}>
                                 <span>저장하기</span>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

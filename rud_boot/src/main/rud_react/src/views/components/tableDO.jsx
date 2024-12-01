@@ -54,8 +54,6 @@ const TableDO = ({
         const updatedPrice = response; // API 호출로 받은 가격
         const updatedCurrentPrice = updatedPrice * stock.quantity;
         
-        console.log(response, updatedPrice, stock.price);
-        
         if (response === '0' || response === null) {
             alert("주식 정보를 찾아올 수 없어요!")
         } else {
@@ -92,7 +90,6 @@ const TableDO = ({
             <tbody>
                 {
                     data.map((item, index) => {
-
                         if (item.price === '0' || item.price === null) {
                             return (
                                 <tr key={item.id}>
@@ -142,7 +139,7 @@ const TableDO = ({
                             );
                         }
                         // 현재 잔고
-                        const currentprice = item.id == 1
+                        const currentprice = item.name == '원화'
                             ? item.currentPrice
                             : item.price * item.quantity;
 
@@ -257,7 +254,6 @@ const TableDO = ({
                     })
                 }
                 <tr ref={lastRowRef}>
-                    {/* 마지막 행에 ref 추가 */}
                     <td className="td11" onClick={handleAddEmptyRow}>
                         <h2>종목 추가</h2>
                     </td>
