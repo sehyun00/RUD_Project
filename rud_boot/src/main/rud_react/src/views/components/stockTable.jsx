@@ -142,7 +142,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
 
     useEffect(() => {
         fetchStockPrices();
-    }, []);
+    }, [SD]);
 
     const fetchStockPrice = async (stockName, marketType) => {
         try {

@@ -41,7 +41,7 @@ function App() {
 
     // view
     return (
-        <div>
+        <>
             <Header logoutHandler={logoutHandler} loginState={loginState}/>
             <Routes>
                 <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
@@ -55,7 +55,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/home" />} />
                 )}
             </Routes>
-        </div>
+        </>
     );
 }
 

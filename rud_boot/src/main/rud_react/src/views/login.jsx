@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
-import '../assets/css/auth.scss'; // 스타일 추가
 import qs from 'qs';
+import { CSSTransition } from 'react-transition-group'; 
 
+import LoginInformation from './components/loginInformation';
+
+import '../assets/css/auth.scss'; 
+
+import superAnt from "../assets/images/super_ant.png";
+import downArrow from '../assets/images/down_arrow.png';
 
 const Login = ({loginHandler}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showLoginInfo, setShowLoginInfo] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -37,11 +44,38 @@ const Login = ({loginHandler}) => {
 
     };
 
+    const handleImageClick = () => {
+        setShowLoginInfo(prevShow => !prevShow); // 클릭 시 상태 반전
+    };
+
+    const handleClose = () => {
+        setShowLoginInfo(false); // 로그인 정보를 숨김
+    };
+
     return (
-        <div className="auth-container">
-            <div>
+        <div className='auth-container'>
+            <div className='auth-left-container'> 
+                <CSSTransition
+                    in={showLoginInfo}
+                    timeout={300}
+                    classNames="slide"
+                    unmountOnExit
+                >
+                    <LoginInformation onClose={handleClose} />
+                </CSSTransition>
+                <img src={superAnt} className='superAnt'/>
+                <img 
+                    src={downArrow} 
+                    className='down-arrow' 
+                    alt="Down Arrow" 
+                    onClick={handleImageClick} 
+                    style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
+                />
+            </div>
+            <div className='auth-right-container'>
                 <div className="auth-card">
                     <h1 className="auth-title">Superant</h1>
+
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
                             <input
@@ -64,20 +98,8 @@ const Login = ({loginHandler}) => {
                             />
                         </div>
                         <button type="submit">로그인</button>
-                
                     </form>
 
-                    {/* <div className="divider">
-                        <span>or</span>
-                    </div>
-                    <div className='google-ios'>
-                        <button type="button" className='google'>
-                            <img src={google} alt="google"/>Continue with Google
-                        </button>
-                        <button type="button" className='apple'>
-                            <img src={ios} alt="ios"/>Continue with Apple
-                        </button>
-                    </div> */}
                     <div className="signup-link-container">
                         <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
                     </div>

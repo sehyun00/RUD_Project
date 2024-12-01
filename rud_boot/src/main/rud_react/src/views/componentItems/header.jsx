@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Container} from 'reactstrap';
 import {useLocation, Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/componentItems/header.scss';
-import happyCatVideo from '../../assets/images/happycat.mp4';
+import superAnt from '../../assets/images/super_ant.png';
 
 const Header = ({logoutHandler, loginState}) => {
     const location = useLocation();
@@ -18,10 +18,7 @@ const Header = ({logoutHandler, loginState}) => {
         <div className="header">
             <Container className="header-container">
                 <div className="header-left">
-                    <video autoPlay="autoPlay" loop="loop" muted="muted" className="logo-video">
-                        <source src={happyCatVideo} type="video/mp4"/>
-                        Your browser does not support the video tag.
-                    </video>
+                    <img src={superAnt} className="logo-video" />
                     {loginState === true ? (
                     <Link to="/home">
                         <h3>Superant</h3>
