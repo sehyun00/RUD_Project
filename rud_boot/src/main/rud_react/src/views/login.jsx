@@ -5,6 +5,7 @@ import qs from 'qs';
 import { CSSTransition } from 'react-transition-group'; 
 
 import LoginInformation from './components/loginInformation';
+import SignUp from './componentItems/signup';
 
 import '../assets/css/auth.scss'; 
 
@@ -15,6 +16,7 @@ const Login = ({loginHandler}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showLoginInfo, setShowLoginInfo] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -41,7 +43,6 @@ const Login = ({loginHandler}) => {
                 alert('서버와의 연결에 문제가 발생했습니다.');
             }
         }
-
     };
 
     const handleImageClick = () => {
@@ -52,8 +53,13 @@ const Login = ({loginHandler}) => {
         setShowLoginInfo(false); // 로그인 정보를 숨김
     };
 
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
+    };
+
     return (
         <div className='auth-container'>
+            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} />
             <div className='auth-left-container'> 
                 <CSSTransition
                     in={showLoginInfo}
@@ -101,7 +107,7 @@ const Login = ({loginHandler}) => {
                     </form>
 
                     <div className="signup-link-container">
-                        <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
+                    <a onClick={toggleModal} className="signup-link">Superant 계정 생성하기</a>
                     </div>
                 </div>
             </div>
