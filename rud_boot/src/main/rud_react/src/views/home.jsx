@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
+import { useNavigate } from 'react-router-dom';
 
 // components
 import StockTable from "./components/stockTable";
@@ -26,6 +27,7 @@ const Home = ({ userID, loginState }) => {
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
+    const navigate = useNavigate();
     
     console.log(userID);
 
@@ -110,7 +112,10 @@ const Home = ({ userID, loginState }) => {
                 }
             </div>
         );
-    } else {};
+    } else {
+        navigate('/login'); 
+        return null;
+    };
 };
 
 Home.propTypes = {

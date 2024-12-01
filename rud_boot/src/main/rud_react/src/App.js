@@ -43,15 +43,10 @@ function App() {
         <>
             <Header logoutHandler={logoutHandler} loginState={loginState}/>
             <Routes>
-                <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
-                <Route path='/home' element={<Home userID={userID} loginState={loginState}/>} />
-                <Route path="/log" element={<Log userID={userID}/>} />
-
-                {loginState ? (
-                    <Route path="/" element={<Navigate to="/login" />} />
-                ):(
-                    <Route path="/" element={<Navigate to="/home" />} />
-                )}
+                <Route path='/login' element={loginState ? <Navigate to="/home" /> : <Login loginHandler={loginHandler}/>} />
+                <Route path='/home' element={loginState ? <Home userID={userID} loginState={loginState}/> : <Navigate to="/login" />} />
+                <Route path="/log" element={loginState ? <Log userID={userID}/> : <Navigate to="/login" />} />
+                <Route path="/" element={<Navigate to={loginState ? "/home" : "/login"} />} />
             </Routes>
         </>
     );
