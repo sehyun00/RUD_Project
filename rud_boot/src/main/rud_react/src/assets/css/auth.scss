@@ -10,13 +10,43 @@
 .auth-container {
     display: flex;
     flex-direction: row;
-    height: 790px;
+    height: 700px;
 
     .auth-left-container {
         display: flex;
         flex-direction: column;
+        justify-content: space-between; 
+        align-items: center; 
         height: 100%;
         width: 60%;
+        overflow-y: hidden;
+
+        .down-arrow {
+            width: 40px;
+            height: 40px;
+        }
+
+        .slide-enter {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .slide-enter-active {
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .slide-exit {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .slide-exit-active {
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
     }
     
     .auth-right-container {

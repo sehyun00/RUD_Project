@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
-import '../assets/css/auth.scss'; // 스타일 추가
 import qs from 'qs';
+import { CSSTransition } from 'react-transition-group'; 
 
+import LoginInformation from './components/loginInformation';
+
+import '../assets/css/auth.scss'; // 스타일 추가
+
+import downArrow from '../assets/images/down_arrow.png';
 
 const Login = ({loginHandler}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showLoginInfo, setShowLoginInfo] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -37,9 +43,33 @@ const Login = ({loginHandler}) => {
 
     };
 
+    const handleImageClick = () => {
+        setShowLoginInfo(prevShow => !prevShow); // 클릭 시 상태 반전
+    };
+
+    const handleClose = () => {
+        setShowLoginInfo(false); // 로그인 정보를 숨김
+    };
+
     return (
         <div className='auth-container'>
             <div className='auth-left-container'> 
+                <CSSTransition
+                    in={showLoginInfo}
+                    timeout={300}
+                    classNames="slide"
+                    unmountOnExit
+                >
+                    <LoginInformation onClose={handleClose} />
+                </CSSTransition>
+                <div></div>
+                <img 
+                    src={downArrow} 
+                    className='down-arrow' 
+                    alt="Down Arrow" 
+                    onClick={handleImageClick} 
+                    style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
+                />
             </div>
             <div className='auth-right-container'>
                 <div className="auth-card">
