@@ -4,10 +4,13 @@ import axios from 'axios'; // axios 추가
 import '../assets/css/auth.scss'; // 스타일 추가
 import qs from 'qs';
 
+import SignUp from './componentItems/signup';
+
 
 const Login = ({loginHandler}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -34,11 +37,15 @@ const Login = ({loginHandler}) => {
                 alert('서버와의 연결에 문제가 발생했습니다.');
             }
         }
+    };
 
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
     };
 
     return (
         <div className="auth-container">
+            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} />
             <div>
                 <div className="auth-card">
                     <h1 className="auth-title">Superant</h1>
@@ -79,7 +86,7 @@ const Login = ({loginHandler}) => {
                         </button>
                     </div> */}
                     <div className="signup-link-container">
-                        <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
+                        <a onClick={toggleModal} className="signup-link">Superant 계정 생성하기</a>
                     </div>
                 </div>
             </div>

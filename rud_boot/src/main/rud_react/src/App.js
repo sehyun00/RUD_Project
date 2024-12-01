@@ -8,7 +8,7 @@ import "./App.css";
 // components
 import Home from './views/home';
 import Login from './views/login';
-import SignUp from "./views/signup";
+import SignUp from "./views/componentItems/signup";
 
 // component-items
 import Header from "./views/componentItems/header";
@@ -45,7 +45,6 @@ function App() {
             <Header logoutHandler={logoutHandler} loginState={loginState}/>
             <Routes>
                 <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
-                <Route path="/signup" element={<SignUp />} />
                 <Route path='/home' element={<Home userID={userID} loginState={loginState}/>} />
                 <Route path="/log" element={<Log userID={userID}/>} />
 
