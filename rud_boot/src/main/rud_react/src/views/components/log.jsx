@@ -173,7 +173,7 @@ const Log = ({userID}) => {
                                     // 이전 날짜의 총자산을 가져옴
                                     const previousTotal =
                                         index < sortedLogData.length - 1 ? sortedLogData[index + 1].total : undefined;
-
+                                    console.log(previousTotal);
                                     // 변동률 계산
                                     const changeRate = calculateChangeRate(row.total, previousTotal);
 
