@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
 import qs from 'qs';
+
+import SignUp from './componentItems/signup';
 import { CSSTransition } from 'react-transition-group'; 
 
 import LoginInformation from './components/loginInformation';
@@ -14,6 +16,7 @@ import downArrow from '../assets/images/down_arrow.png';
 const Login = ({loginHandler}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
     const [showLoginInfo, setShowLoginInfo] = useState(false);
     const navigate = useNavigate();
 
@@ -41,7 +44,9 @@ const Login = ({loginHandler}) => {
                 alert('서버와의 연결에 문제가 발생했습니다.');
             }
         }
-
+        
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
     };
 
     const handleImageClick = () => {
@@ -53,7 +58,8 @@ const Login = ({loginHandler}) => {
     };
 
     return (
-        <div className='auth-container'>
+ <div className='auth-container'>
+    <SignUp modalOpen={modalOpen} toggleModal={toggleModal} />
             <div className='auth-left-container'> 
                 <CSSTransition
                     in={showLoginInfo}
@@ -101,12 +107,13 @@ const Login = ({loginHandler}) => {
                     </form>
 
                     <div className="signup-link-container">
-                        <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
+                        <a onClick={toggleModal} className="signup-link">Superant 계정 생성하기</a>
                     </div>
                 </div>
             </div>
         </div>
     );
+};
 };
 
 export default Login;
