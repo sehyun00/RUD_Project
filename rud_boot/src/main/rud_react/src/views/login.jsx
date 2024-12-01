@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
 import '../assets/css/auth.scss'; // 스타일 추가
-import ios from '../assets/images/ios.png';
-import google from '../assets/images/logogoogle.png';
-import jwtDecode from 'jwt-decode';
 import qs from 'qs';
 
 
@@ -41,10 +38,13 @@ const Login = ({loginHandler}) => {
     };
 
     return (
-        <div className="auth-container">
-            <div>
+        <div className='auth-container'>
+            <div className='auth-left-container'> 
+            </div>
+            <div className='auth-right-container'>
                 <div className="auth-card">
                     <h1 className="auth-title">Superant</h1>
+
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
                             <input
@@ -67,20 +67,8 @@ const Login = ({loginHandler}) => {
                             />
                         </div>
                         <button type="submit">로그인</button>
-                
                     </form>
 
-                    {/* <div className="divider">
-                        <span>or</span>
-                    </div>
-                    <div className='google-ios'>
-                        <button type="button" className='google'>
-                            <img src={google} alt="google"/>Continue with Google
-                        </button>
-                        <button type="button" className='apple'>
-                            <img src={ios} alt="ios"/>Continue with Apple
-                        </button>
-                    </div> */}
                     <div className="signup-link-container">
                         <a href="/signup" className="signup-link">Superant 계정 생성하기</a>
                     </div>
