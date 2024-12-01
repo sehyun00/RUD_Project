@@ -1,6 +1,6 @@
 // feature
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 // css
 import "./App.css";
@@ -46,8 +46,14 @@ function App() {
             <Routes>
                 <Route path='/login' element={<Login loginHandler={loginHandler}/>} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path='/home' element={<Home userID={userID}/>} />
+                <Route path='/home' element={<Home userID={userID} loginState={loginState}/>} />
                 <Route path="/log" element={<Log userID={userID}/>} />
+
+                {loginState ? (
+                    <Route path="/" element={<Navigate to="/login" />} />
+                ):(
+                    <Route path="/" element={<Navigate to="/home" />} />
+                )}
             </Routes>
         </div>
     );
@@ -55,9 +61,9 @@ function App() {
 
 function AppWrapper() {
     return (
-        <BrowserRouter>
+        <Router>
             <App />
-        </BrowserRouter>
+        </Router>
     );
 }
 

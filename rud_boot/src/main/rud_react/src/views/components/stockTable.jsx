@@ -88,25 +88,6 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
             ];  
             let asn = allStocks.length, sn = 0;
             setAllStocksNumber(asn);
-
-            // 종가를 순차적으로 가져오기
-            for (const stock of allStocks) {
-                try {
-                    console.log(`Fetching price for ${stock.name}...`);
-                    stock.price = await fetchStockPrice(stock.name, stock.marketType);
-                    stock.currentPrice = await stock.price * stock.quantity;
-                } catch (err) {
-                    console.error(`Error fetching price for ${stock.name}:`, err);
-                    stock.price = 0; // 기본값 처리
-                    stock.currentPrice = 0; // 기본값 처리
-                }
-                sn++;
-                setLoading(stock.name);
-                setProgress((sn / asn) * 100);
-                setStockNumber(sn);
-                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기  
-
-            }
     
             // 현금 정보를 stockData에 추가
             const cashDataKRW = {
@@ -127,8 +108,26 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 currentPrice: foreignMoney, // 달러의 현재 가격을 currentPrice에 저장
                 rebalancingRatio:0,
                 marketType: '해외장'
-            };      
-            setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
+            };   
+
+            // 종가를 순차적으로 가져오기
+            for (const stock of allStocks) {
+                try {
+                    console.log(`Fetching price for ${stock.name}...`);
+                    stock.price = await fetchStockPrice(stock.name, stock.marketType);
+                    stock.currentPrice = await stock.price * stock.quantity;
+                } catch (err) {
+                    console.error(`Error fetching price for ${stock.name}:`, err);
+                    stock.price = 0; // 기본값 처리
+                    stock.currentPrice = 0; // 기본값 처리
+                }
+                sn++;
+                setLoading(stock.name);
+                setProgress((sn / asn) * 100);
+                setStockNumber(sn);
+                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기  
+                setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
+            }
             updateTime();
 
         } catch (error) {
