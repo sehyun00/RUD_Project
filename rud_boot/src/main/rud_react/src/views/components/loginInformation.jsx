@@ -2,7 +2,6 @@ import React from "react"
 
 import '../../assets/css/components/loginInformation.scss';
 
-import sssss from "../../assets/images/loadinghomer.gif";
 import downArrow from '../../assets/images/down_arrow.png';
 
 const LoginInformation = ({onClose}) => {

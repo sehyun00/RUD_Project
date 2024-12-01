@@ -6,8 +6,9 @@ import { CSSTransition } from 'react-transition-group';
 
 import LoginInformation from './components/loginInformation';
 
-import '../assets/css/auth.scss'; // 스타일 추가
+import '../assets/css/auth.scss'; 
 
+import superAnt from "../assets/images/super_ant.png";
 import downArrow from '../assets/images/down_arrow.png';
 
 const Login = ({loginHandler}) => {
@@ -62,7 +63,7 @@ const Login = ({loginHandler}) => {
                 >
                     <LoginInformation onClose={handleClose} />
                 </CSSTransition>
-                <div></div>
+                <img src={superAnt} className='superAnt'/>
                 <img 
                     src={downArrow} 
                     className='down-arrow' 
