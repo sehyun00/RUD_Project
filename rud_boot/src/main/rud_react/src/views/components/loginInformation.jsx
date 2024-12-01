@@ -15,28 +15,28 @@ const LoginInformation = ({onClose}) => {
                 onClick={onClose} 
             />
             <div className="information-container">
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>aaaa</h1>
-            <h1>sex</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>aaaa</h1>
+                <h1>sex</h1>
             </div>
         </div>
     );

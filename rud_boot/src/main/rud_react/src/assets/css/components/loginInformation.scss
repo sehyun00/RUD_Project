@@ -5,10 +5,16 @@
     align-items: center; 
     height: 100%;
     width: 60%;
-    overflow-y: auto;
     
-    &::-webkit-scrollbar {
+    .information-container {
         display: flex;
-        width: 0px;
+        flex-direction: column;
+        overflow-y: auto;
+        color: white;
+
+        &::-webkit-scrollbar {
+            display: flex;
+            width: 0px;
+        }
     }
 }
