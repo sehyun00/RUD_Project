@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Container} from 'reactstrap';
 import {useLocation, Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/componentItems/header.scss';
-import superAnt from '../../assets/images/super_ant.png';
+import superAnt from '../../assets/images/ant_head.png';
 
 const Header = ({logoutHandler, loginState}) => {
     const location = useLocation();
@@ -18,7 +18,7 @@ const Header = ({logoutHandler, loginState}) => {
         <div className="header">
             <Container className="header-container">
                 <div className="header-left">
-                    <img src={superAnt} className="logo-video" />
+                    <img src={superAnt} className="logo" />
                     {loginState === true ? (
                     <Link to="/home">
                         <h3>Superant</h3>
