@@ -15,7 +15,7 @@ const calculateChangeRate = (current, previous) => {
 };
 
 // Log 컴포넌트
-const Log = ({userID}) => {
+const Log = ({userID, currentTheme}) => {
     const [logData, setLogData] = useState([]);
     const [isAscending, setIsAscending] = useState(false);
 
@@ -146,7 +146,7 @@ const Log = ({userID}) => {
         <div className="log-container">
             <div className="contents-container">
                 <div className="switch-container">
-                    <div className="table-switch-wrapper">
+                    <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.MainFont }}>
                         <div className="table-switch">
                             <div>
                                 <span>내 기록</span>
@@ -157,7 +157,7 @@ const Log = ({userID}) => {
                 <div className="table-container">
                     <div className="table-wrapper">
                         <Table className="custom-table">
-                            <thead>
+                            <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText}}>
                                 <tr>
                                     <th className="th"></th>
                                     <th className="th" onClick={handleDateClick} style={{ cursor: 'pointer' }}>
@@ -168,7 +168,7 @@ const Log = ({userID}) => {
                                     <th className="th">전 기록 대비 변동률</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                                 {sortedLogData.map((row, index) => {
                                     // 이전 날짜의 총자산을 가져옴
                                     const previousTotal =

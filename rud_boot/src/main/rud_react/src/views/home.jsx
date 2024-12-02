@@ -9,7 +9,7 @@ import StockTable from "./components/stockTable";
 import ImageUpload from "./components/imageUpload";
 import ImageUploadModal from "./componentItems/imageUploadModal";
 
-const Home = ({ userID, loginState }) => {
+const Home = ({ userID, loginState, currentTheme}) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(() => {
         const savedVisible = localStorage.getItem('isImageUploadVisible');
         return savedVisible === 'true'; 
@@ -97,6 +97,7 @@ const Home = ({ userID, loginState }) => {
                     progress ={progress}
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
+                    currentTheme={currentTheme}
                     />
                 ) : (
                     <StockTable 
@@ -106,6 +107,7 @@ const Home = ({ userID, loginState }) => {
                     setProgress={setProgress}
                     loading = {loading}
                     progress ={progress}
+                    currentTheme={currentTheme}
                     />
                 )
     

@@ -24,8 +24,8 @@ function App() {
     useEffect(() => {
         localStorage.setItem('darkMode', isDarkMode);
         const currentTheme = isDarkMode ? darkTheme : lightTheme;
-        document.documentElement.style.backgroundColor = currentTheme.colors.colorBg; // html 배경색
-        document.body.style.color = currentTheme.colors.colorMainFont; // body 텍스트 색상
+        document.documentElement.style.backgroundColor = currentTheme.colors.Bg; // html 배경색
+        document.body.style.color = currentTheme.colors.MainFont; // body 텍스트 색상
     }, [isDarkMode]);
 
     const currentTheme = isDarkMode ? darkTheme : lightTheme;
@@ -55,7 +55,7 @@ function App() {
 
     // view
     return (
-        <html style={{ backgroundColor: currentTheme.colors.colorBg, color: currentTheme.colors.colorMainFont }}>
+        <html style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
         {/* <div style={{ backgroundColor: currentTheme.colors.colorBg, color: currentTheme.colors.colorMainFont }}> */}
 
             <Header logoutHandler={logoutHandler} loginState={loginState} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode}/>
@@ -66,6 +66,7 @@ function App() {
                 <Route path="/" element={<Navigate to={loginState ? "/home" : "/login"} />} />
             </Routes>
         {/* </div> */}
+        <body style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}/>
         </html>
     );
 }

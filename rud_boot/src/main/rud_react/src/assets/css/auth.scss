@@ -64,7 +64,6 @@
             padding: 60px;
             // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
             border-radius: 10px;
-            color: #EAECEF;
         
             .auth-title {
                 margin-bottom: 20px;
@@ -116,18 +115,7 @@
                     font-size: 16px;
             
                     &:hover {
-                        background-color: #213a9680;
-                    }
-            
-                    &.google, &.apple {
-                        margin-bottom: 10px;
-                        border: 1.5px solid #2B3139;
-                        background-color: #181a20;
-            
-                        img {
-                            height: 20px ;
-                            float: left;
-                        }
+                        background-color: #263673;
                     }
                 }
             }
@@ -141,7 +129,6 @@
                     display: block;
                     margin-top: 20px;
                     text-align: center;
-                    color: #EAECEF;
                     font-size: 14px;
                     text-decoration: none;
                     cursor: pointer;

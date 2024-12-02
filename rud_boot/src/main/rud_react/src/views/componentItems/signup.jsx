@@ -95,7 +95,7 @@ const Signup = ({modalOpen, toggleModal}) => {
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="사용자 이름"
+                                placeholder="이름"
                                 className="signup-input"
                                 value={formData.name}
                                 onChange={handleChange}

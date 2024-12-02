@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Alert, Table} from "reactstrap";
 import '../../assets/css/stockTable.scss';
 
-const TableFO = ({
+const TableDO = ({
     data,
     handleChange,
     desiredWeights,
@@ -14,6 +14,7 @@ const TableFO = ({
     searchButton,
     deleteButton,
     fetchStockPrice,
+    currentTheme,
 }) => {
     const lastRowRef = useRef(null); // 마지막 행을 참조할 ref
     const [rowCount, setRowCount] = useState(data.length); // 행 수 상태
@@ -70,7 +71,7 @@ const TableFO = ({
 
     return (
         <Table className="custom-table">
-            <thead>
+            <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                 <tr>
                     <th rowSpan="2" className="th">종목명</th>
                     <th rowSpan="2" className="option-button"></th>
@@ -89,7 +90,7 @@ const TableFO = ({
                     <th className="th">희망수량</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                 {
                     data.map((item, index) => {
 
@@ -107,7 +108,10 @@ const TableFO = ({
                                                     e.preventDefault(); // 기본 동작 방지
                                                 }
                                             }}
-                                            placeholder="종목 입력"/>
+                                            placeholder="종목 입력"
+                                            style={{
+                                                color: currentTheme.colors.MainFont}}
+                                            />
                                     </td>
                                     {
                                         item.name !== "달러"
@@ -133,7 +137,9 @@ const TableFO = ({
                                                             const newQuantity = e.target.value;
                                                             handleChange(index, 'quantity', newQuantity);
                                                             handleChange(index, 'currentPrice', newQuantity * item.price);
-                                                        }}/>
+                                                        }}
+                                                        style={{ color: currentTheme.colors.TableText}}
+                                                        />
                                                 )
                                         }
                                     </td>
@@ -186,7 +192,9 @@ const TableFO = ({
                                     <input
                                         type="text"
                                         value={item.name}
-                                        onChange={(e) => handleChange(index, 'name', e.target.value)}/>
+                                        onChange={(e) => handleChange(index, 'name', e.target.value)}
+                                        style={{ color: currentTheme.colors.TableText}}
+                                        />
                                 </td>
                                 {
                                     item.name !== "달러"
@@ -213,7 +221,9 @@ const TableFO = ({
                                                         const newQuantity = e.target.value;
                                                         handleChange(index, 'quantity', newQuantity);
                                                         handleChange(index, 'currentPrice', newQuantity * item.price);
-                                                    }}/>
+                                                    }}
+                                                    style={{ color: currentTheme.colors.TableText}}
+                                                    />
                                             )
                                     }
                                 </td>
@@ -229,7 +239,9 @@ const TableFO = ({
                                                     onChange={(e) => {
                                                         const newCurrentPrice = Number(e.target.value);
                                                         handleChange(index, 'currentPrice', newCurrentPrice);;
-                                                    }}/>
+                                                    }}
+                                                    style={{ color: currentTheme.colors.TableText}}
+                                                    />
                                             )
                                             : (<span>{formatCurrency(item.currentPrice)}</span>)
                                     }
@@ -242,7 +254,9 @@ const TableFO = ({
                                         min="0"
                                         max="100"
                                         value={desiredWeights[index]}
-                                        onChange={(e) => adjustWeights(index, e.target.value)}/>
+                                        onChange={(e) => adjustWeights(index, e.target.value)}
+                                        style={{ color: currentTheme.colors.TableText}}
+                                        />
                                 </td>
                                 <td>{rebalanceWeight.toFixed(2)}%</td>
                                 {/* 리밸런싱 비중 표시 */}
@@ -267,7 +281,7 @@ const TableFO = ({
     );
 };
 
-TableFO.propTypes = {
+TableDO.propTypes = {
     data: PropTypes.array.isRequired,
     totalBalance: PropTypes.number.isRequired,
     handleChange: PropTypes.func.isRequired,
@@ -277,4 +291,4 @@ TableFO.propTypes = {
     totalDesiredWeight: PropTypes.number.isRequired
 };
 
-export default TableFO;
+export default TableDO;

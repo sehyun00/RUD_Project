@@ -16,7 +16,7 @@ import checkicon from '../../assets/images/checkmark.png';
 import deleteicon from '../../assets/images/trashcan.png';
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
     const [currentTime, setCurrentTime] = useState('');
@@ -443,7 +443,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
     };
 
     return (
-        <div className="stock-container">
+        <div className="stock-container" style={{ backgroundColor: currentTheme.colors.Bg}}>
             <LoadingPage 
             loading={loading} 
             progress={progress} 
@@ -451,11 +451,11 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
             allStocksNumber={allStocksNumber}
             />
             <div className="name-container">
-                <h1>StockTable</h1>
-                <p>{currentTime}</p>
+                <h1 style={{ color: currentTheme.colors.MainFont}}>StockTable</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}>{currentTime}</p>
             </div>
             <div className="switch-container">
-                <div className="table-switch-wrapper">
+                <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper}}>
                     <div className="table-switch">
                         <div className="switch-left">
                             <div
@@ -488,7 +488,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 </div>
             </div>
             <div className="table-container">   
-                <div className="table-wrapper">
+                <div className="table-wrapper" style={{ backgroundColor: currentTheme.colors.TableBg}}>
                     {
                         activeButton === '국장'
                             ? <TableDO
@@ -503,6 +503,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                                     searchButton={searchButton}
                                     deleteButton={deleteButton}
                                     fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
                                     />
                             : <TableFO
                                     data={currentData}
@@ -516,10 +517,11 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                                     searchButton={searchButton}
                                     deleteButton={deleteButton}
                                     fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
                                     />
                     }
                     <table className="custom-table">
-                        <thead>
+                        <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                             <tr>
                                 <th className="th"></th>
                                 <th className="th">총합</th>

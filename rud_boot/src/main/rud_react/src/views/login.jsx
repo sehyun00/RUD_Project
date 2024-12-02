@@ -11,7 +11,6 @@ import '../assets/css/auth.scss';
 
 import superAnt from "../assets/images/super_ant.png";
 import downArrow from '../assets/images/down_arrow.png';
-import { lightTheme, darkTheme } from '../Theme'; 
 
 const Login = ({loginHandler, currentTheme}) => {
 
@@ -60,7 +59,7 @@ const Login = ({loginHandler, currentTheme}) => {
     };
 
     return (
-        <div className='auth-container' style={{ backgroundColor: currentTheme.colors.colorBg, color: currentTheme.colors.colorMainFont }}>
+        <div className='auth-container' style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
             <SignUp modalOpen={modalOpen} toggleModal={toggleModal} /> 
             <div className='auth-left-container'> 
                 <CSSTransition
@@ -82,7 +81,7 @@ const Login = ({loginHandler, currentTheme}) => {
             </div>
             <div className='auth-right-container'>
                 <div className="auth-card">
-                    <h1 className="auth-title">Superant</h1>
+                    <h1 className="auth-title" style={{ color: currentTheme.colors.MainFont }}>Superant</h1>
 
                     <form onSubmit={handleSubmit} className="form">
                         <div className="input-group">
@@ -109,7 +108,7 @@ const Login = ({loginHandler, currentTheme}) => {
                     </form>
 
                     <div className="signup-link-container">
-                    <a onClick={toggleModal} className="signup-link">Superant 계정 생성하기</a>
+                    <a onClick={toggleModal} className="signup-link" style={{ color: currentTheme.colors.MainFont }}>Superant 계정 생성하기</a>
                     </div>
                 </div>
             </div>

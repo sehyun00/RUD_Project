@@ -4,11 +4,10 @@ import '../../assets/css/components/loginInformation.scss';
 
 import downArrow from '../../assets/images/down_arrow.png';
 import shannon from '../../assets/images/shannon_stock.png';
-import { lightTheme, darkTheme } from '../../Theme'; 
 
 const LoginInformation = ({onClose, currentTheme}) => {
     return (
-        <div className="login-information-container" style={{ backgroundColor: currentTheme.colors.colorBg, color: currentTheme.colors.colorMainFont }}>
+        <div className="login-information-container" style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
             <img src={downArrow} className='down-arrow' alt="Down Arrow" onClick={onClose}/>
             <div className="information-container">
                 <h1>리벨런싱이란?</h1>
