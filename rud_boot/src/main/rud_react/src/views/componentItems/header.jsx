@@ -4,7 +4,7 @@ import {useLocation, Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/componentItems/header.scss';
 import superAnt from '../../assets/images/ant_head.png';
 
-const Header = ({logoutHandler, loginState}) => {
+const Header = ({logoutHandler, loginState, setIsDarkMode, isDarkMode}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
@@ -13,6 +13,10 @@ const Header = ({logoutHandler, loginState}) => {
         logoutHandler(); // 로그아웃 상태 업데이트
         navigate('/login'); // 로그인 페이지로 이동
     }
+
+    const toggleTheme = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
 
     return (
         <div className="header">
@@ -28,6 +32,9 @@ const Header = ({logoutHandler, loginState}) => {
                         <h3>Superant</h3>
                     </Link>
                     )}
+                    <button onClick={toggleTheme}>
+                        {isDarkMode ? '라이트 모드' : '다크 모드'}
+                    </button>
                 </div>
                 {
                     !isLoginPage && (

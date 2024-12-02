@@ -11,8 +11,10 @@ import '../assets/css/auth.scss';
 
 import superAnt from "../assets/images/super_ant.png";
 import downArrow from '../assets/images/down_arrow.png';
+import { lightTheme, darkTheme } from '../Theme'; 
 
-const Login = ({loginHandler}) => {
+const Login = ({loginHandler, currentTheme}) => {
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showLoginInfo, setShowLoginInfo] = useState(false);
@@ -58,8 +60,8 @@ const Login = ({loginHandler}) => {
     };
 
     return (
-        <div className='auth-container'>
-            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} />
+        <div className='auth-container' style={{ backgroundColor: currentTheme.colors.colorBg, color: currentTheme.colors.colorMainFont }}>
+            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} /> 
             <div className='auth-left-container'> 
                 <CSSTransition
                     in={showLoginInfo}
@@ -67,7 +69,7 @@ const Login = ({loginHandler}) => {
                     classNames="slide"
                     unmountOnExit
                 >
-                    <LoginInformation onClose={handleClose} />
+                    <LoginInformation onClose={handleClose} currentTheme={currentTheme}/>
                 </CSSTransition>
                 <img src={superAnt} className='superAnt'/>
                 <img 
