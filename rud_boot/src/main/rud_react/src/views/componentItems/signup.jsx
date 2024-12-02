@@ -58,7 +58,7 @@ const Signup = ({modalOpen, toggleModal}) => {
                 console.log('회원가입 성공:', response.data);
 
                 // 로그인 페이지로 이동
-                navigate('/login');
+                toggleModal();
             } catch (error) {
                 if (error.response && error.response.data) {
                     alert("아이디가 이미 존재합니다!"); // 아이디 중복 에러 메시지
