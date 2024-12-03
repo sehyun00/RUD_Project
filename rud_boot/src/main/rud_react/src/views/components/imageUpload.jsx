@@ -1,22 +1,22 @@
+// imageUpload.jsx
 import React, {useState, useRef, useEffect} from "react";
 import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
 import axios from 'axios';
 import Modal from 'react-modal';
 
+//scss
 import '../../assets/css/components/imageUpload.scss';
 
-import questionmarkImage from '../../assets/images/questionmark.png';
-import gofullpagetestImage from '../../assets/images/gofullpagetest.png';
-import cash_blurImage from '../../assets/images/cash_blur.png';
-import stocks_blurImage from '../../assets/images/stocks_blur.png';
-
+// components
 import LoadingPage from '../componentItems/loading'; 
-import ImageUploadModal from '../componentItems/imageUploadModal'
+
+// images
+import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, toggleModal, currentTheme}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
@@ -139,7 +139,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
             <LoadingPage loading={loading} progress={progress}/>
             <div className="contents-container">
                 <div className="switch-container">
-                    <div className="switch-1-wrapper">
+                    <div className="switch-1-wrapper" style={{backgroundColor: currentTheme.colors.SwitchWrapper}}>
                         <div className="switch-1">
                             <div>
                                 <span>이미지 업로드</span>
@@ -161,7 +161,9 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                                 : ''}`}
                             onDrop={handleDrop(0)}
                             onDragOver={handleDragOver(0)}
-                            onDragLeave={handleDragLeave}>
+                            onDragLeave={handleDragLeave}
+                            style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}
+                            >
                             {
                                 files[0] && (
                                     <img src={URL.createObjectURL(files[0])} alt="미리보기" className="image-1"/>
@@ -186,9 +188,12 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                             ref={fileInputRefs[0]}
                             onChange={handleFileInputChange(0)}
                             style={{
-                                display: 'none'
+                                display: 'none',
                             }}
-                            accept="image/*"/> {fileNames[0] && <div className="file-name">{fileNames[0]}</div>}
+                            accept="image/*"/> 
+                            {fileNames[0] && <div className="file-name" 
+                            style={{color: currentTheme.colors.TableText}}>
+                            {fileNames[0]}</div>}
                     </div>
 
                     {/* 두 번째 이미지 박스 */}
@@ -199,7 +204,9 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                                 : ''}`}
                             onDrop={handleDrop(1)}
                             onDragOver={handleDragOver(1)}
-                            onDragLeave={handleDragLeave}>
+                            onDragLeave={handleDragLeave}
+                            style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}
+                            >
                             {
                                 files[1] && (
                                     <img src={URL.createObjectURL(files[1])} alt="미리보기" className="image-2"/>
@@ -226,7 +233,10 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                             style={{
                                 display: 'none'
                             }}
-                            accept="image/*"/> {fileNames[1] && <div className="file-name">{fileNames[1]}</div>}
+                            accept="image/*"/>
+                            {fileNames[0] && <div className="file-name" 
+                            style={{color: currentTheme.colors.TableText}}>
+                            {fileNames[0]}</div>}
                     </div>
                 </div>
                 <div className="confirm-button-container">

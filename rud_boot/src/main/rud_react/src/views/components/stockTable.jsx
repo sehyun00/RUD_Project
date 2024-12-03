@@ -1,7 +1,8 @@
-// feature
+// stockTable.jsx
 import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 // scss
 import '../../assets/css/stockTable.scss';
@@ -10,10 +11,14 @@ import '../../assets/css/stockTable.scss';
 import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 import LoadingPage from '../componentItems/loading'; 
+import StockTableModal from "../componentItems/stockTableModal";
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
 import deleteicon from '../../assets/images/trashcan.png';
+import questionmarkImage from '../../assets/images/questionmark.png';
+
+Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
 const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
@@ -30,6 +35,10 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     const [stockNumber, setStockNumber] =useState(0);
     const [allStocksNumber, setAllStocksNumber] =useState(0);
     
+    const [isModalOpen, setModalOpen] = useState(() => {
+        const savedOpen = localStorage.getItem('isModalOpen');
+        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+    });
 
     useEffect(() => {
         console.log(currentData);
@@ -441,6 +450,15 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             alert('저장 중 오류가 발생했어용!')
         }
     };
+    
+    const toggleModal = () => {
+        setModalOpen(!isModalOpen); // 모달 열기/닫기 토글
+    };
+    
+    useEffect(() => {
+        localStorage.setItem('isModalOpen', isModalOpen);
+    }, [isModalOpen]);
+    
 
     return (
         <div className="stock-container" style={{ backgroundColor: currentTheme.colors.Bg}}>
@@ -450,6 +468,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             stockNumber ={stockNumber} 
             allStocksNumber={allStocksNumber}
             />
+            <StockTableModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
             <div className="name-container">
                 <h1 style={{ color: currentTheme.colors.MainFont}}>StockTable</h1>
                 <p style={{ color: currentTheme.colors.MainFont}}>{currentTime}</p>
@@ -475,6 +494,11 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                             <div className="image-reload" onClick={handleReloadClick}>
                                 <span>이미지 재업로드</span>
                             </div>
+                            <img
+                                className="questionmark"
+                                src={questionmarkImage}
+                                onClick={toggleModal}
+                                alt="질문 마크"/>
                         </div>
                         <div className="switch-right">
                             <div className="DesiredWeight-recommend" onClick={fetchDesiredWeights}>

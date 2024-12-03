@@ -98,6 +98,17 @@
                         }
                     }
                 }
+
+                .questionmark {
+                    margin-left: 10px;
+                    width: 30px;
+                    height: 30px;
+                    cursor: pointer;
+
+                    &:active {
+                        transform: scale(0.95);
+                    }
+                }
                 
                 .switch-right {
                     display: flex;
