@@ -37,7 +37,7 @@ react 5.0.1
 gpu 환경(rtx 3060, cuda 11.2 기준) 설정
 
 1. 가상환경 파이썬 3.9 \
-   conda create -n stock python=3.9 \
+   conda create -n stock python=3.9 
 2. cuda&cudnn 설치 \
    conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0 \
    C:\Users\니컴이름\anaconda3\envs\stock\python.exe -m pip install --upgrade pip \
