@@ -15,24 +15,24 @@ react 5.0.1
     pip install mataplot \
     pip install wget \
     cpu 환경 파이토치 \
-    pip3 install torch torchvision torchaudio \
+    pip3 install torch torchvision torchaudio 
 
 *   cuda 환경(gtx 1650, cuda 10.1 기준) 파이토치 \
     pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html \
     conda install easyocr(설치가 안된다면 아나콘다 프롬포트에서) \
     pip install flask \
-    pip install flask_cors \
+    pip install flask_cors 
 
 -   StockRebalncing_PCA+DeepLearning - python 3.9
 
 1. 가상환경 파이썬 \
-   conda create -n stock \
+   conda create -n stock 
 2. pip 설치 \
    pip install tensorflow \
    pip install keras \
    pip install numpy  \
    pip install pandas \
-   pip install scikit-learn \
+   pip install scikit-learn 
 
 gpu 환경(rtx 3060, cuda 11.2 기준) 설정
 
@@ -44,13 +44,13 @@ gpu 환경(rtx 3060, cuda 11.2 기준) 설정
    pip install "tensorflow<2.11" \
    pip install numpy<2 \
    pip install pandas \
-   pip install scikit-learn \
+   pip install scikit-learn 
 
 -   rud_stockapi - python 3.9 \
     pip install mojito2 \
     pip install flask \
     pip install pandas \
     pip install flask_cors \
-    pip install googletrans \
+    pip install googletrans 
 
 rud_stockapi/koreainvestment.key의 첫번째 줄에 자신의 한국투자증권 앱키, 두번째 줄에 한국투자증권 계좌번호를 입력
