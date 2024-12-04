@@ -188,7 +188,7 @@ const Log = ({userID, currentTheme}) => {
                                         <tr onClick={() => handleRowClick(row.date)}>
                                             <td>{sortedLogData.length - index}</td>
                                             <td>{row.date}</td>
-                                            <td>{row.total.toLocaleString()}원</td>
+                                            <td>{row.total.toLocaleString('ko-KR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} 원</td>
                                             <td>{row.stockCount}개</td>
                                             <td className={changeRateStyle}>
                                                 {changeRate !== '0.00'
