@@ -1,7 +1,8 @@
-// feature
+// stockTable.jsx
 import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 // scss
 import '../../assets/css/stockTable.scss';
@@ -9,15 +10,20 @@ import '../../assets/css/stockTable.scss';
 // components
 import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
+import LoadingPage from '../componentItems/loading'; 
+import StockTableModal from "../componentItems/stockTableModal";
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
+import deleteicon from '../../assets/images/trashcan.png';
+import questionmarkImage from '../../assets/images/questionmark.png';
+
+Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
-    const [loading, setLoading] = useState(false);  
     const [currentTime, setCurrentTime] = useState('');
     const [stockData, setStockData] = useState({"국장": [], "해외장": []});
     const [currentData, setCurrentData] = useState(stockData["국장"]);
@@ -26,10 +32,17 @@ const StockTable = ({Reload, SD}) => {
         "국장": Array(stockData["국장"].length).fill(0),
         "해외장": Array(stockData["해외장"].length).fill(0)
     });
+    const [stockNumber, setStockNumber] =useState(0);
+    const [allStocksNumber, setAllStocksNumber] =useState(0);
+    
+    const [isModalOpen, setModalOpen] = useState(() => {
+        const savedOpen = localStorage.getItem('isModalOpen');
+        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+    });
 
     useEffect(() => {
-        // console.log(currentData);
-    },[currentData]);
+        console.log(currentData);
+    },[stockData]);
 
     const updateTime = () => {  
         const now = new Date();
@@ -40,11 +53,7 @@ const StockTable = ({Reload, SD}) => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
     const fetchStockPrices = async () => {
-        if (loading) 
-            return;
-    
         try {
-
             const domesticStocks = SD.stock?.국장 || [];
             const foreignStocks = SD.stock?.해외장 || [];
             const domesticMoney = Number(SD.cash.원화.replace(/,/g, ''));
@@ -87,13 +96,8 @@ const StockTable = ({Reload, SD}) => {
                 ...domesticData,
                 ...foreignData
             ];  
-    
-            // 종가를 순차적으로 가져오기
-            for (const stock of allStocks) {
-                stock.price = await fetchStockPrice(stock.name, stock.marketType); // currentPrice에 가격 저장
-                stock.currentPrice = await stock.price * stock.quantity;
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
+            let asn = allStocks.length, sn = 0;
+            setAllStocksNumber(asn);
     
             // 현금 정보를 stockData에 추가
             const cashDataKRW = {
@@ -114,14 +118,34 @@ const StockTable = ({Reload, SD}) => {
                 currentPrice: foreignMoney, // 달러의 현재 가격을 currentPrice에 저장
                 rebalancingRatio:0,
                 marketType: '해외장'
-            };      
-            setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
+            };   
+
+            // 종가를 순차적으로 가져오기
+            for (const stock of allStocks) {
+                try {
+                    console.log(`Fetching price for ${stock.name}...`);
+                    stock.price = await fetchStockPrice(stock.name, stock.marketType);
+                    stock.currentPrice = await stock.price * stock.quantity;
+                } catch (err) {
+                    console.error(`Error fetching price for ${stock.name}:`, err);
+                    stock.price = 0; // 기본값 처리
+                    stock.currentPrice = 0; // 기본값 처리
+                }
+                sn++;
+                setLoading(stock.name);
+                setProgress((sn / asn) * 100);
+                setStockNumber(sn);
+                await new Promise(resolve => setTimeout(resolve, 400));     // 비동기 대기  
+                setStockData({"국장": [cashDataKRW, ...domesticData], "해외장": [cashDataUSD, ...foreignData]});
+            }
             updateTime();
 
         } catch (error) {
             console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
         } finally {
-            setLoading(false);
+            await new Promise(resolve => setTimeout(resolve, 600)); 
+            setLoading('0');
+            setProgress(0);
         }
     };
 
@@ -156,7 +180,7 @@ const StockTable = ({Reload, SD}) => {
             } catch (error) {
                 console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
             } finally {
-                setLoading(false);
+                setLoading("0");
             }
         };
 
@@ -286,44 +310,58 @@ const StockTable = ({Reload, SD}) => {
     // 주식 검색 버튼
     const searchButton = (item, index) => {
         const fetchPriceAndUpdate = async () => {
+            console.log(item, index);
             const marketType = item.marketType;
             const stockName = item.name;
             try {
                 const endpoint = marketType === '국장'
                     ? `http://localhost:5001/getkos?name=${stockName}`
                     : `http://localhost:5001/getnas?name=${stockName}`;
-    
+
                 const response = await axios.get(endpoint); 
                 const updatedPrice = response.data; // API 호출로 받은 가격
-                const updatadCurrentPrice = updatedPrice * item.quantity;
+                const updatedCurrentPrice = updatedPrice * item.quantity;
+
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
-                handleChange(index, 'currentPrice', updatadCurrentPrice);
+                handleChange(index, 'currentPrice', updatedCurrentPrice);
             } catch (error) {
                 console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
             }
         };
+
         return (
             <td className="option-button">
-                {item.price === null && 
-                <img 
-                    src ={checkicon} 
-                    className="check-icon"
-                    onClick={fetchPriceAndUpdate}
-                />
-                }
-                {item.price === '0' && 
-                <img 
-                    src ={checkicon} 
-                    className="check-icon"
-                    onClick={fetchPriceAndUpdate}
-                />
-                }
+                {(item.price === null || item.price === '0') && (
+                    <img 
+                        src={checkicon} 
+                        className="check-icon"
+                        onClick={fetchPriceAndUpdate}
+                        alt="Check Icon" // 접근성을 위한 alt 속성 추가
+                    />
+                )}
             </td>
         );
     };
 
-    if (loading) {
-        return <div>환율을 로딩 중...</div>;
+
+    // 행 제거 버튼
+    const deleteButton =(marketType, index) => {
+        const deletestock = () => {
+            setStockData(prevStockData => ({
+                ...prevStockData,
+                [marketType]: prevStockData[marketType].filter((_, i) => i !== index)
+            }));
+        }
+
+        return (
+            <td className="option-button">
+                <img
+                    src ={deleteicon} 
+                    className="delete-icon"
+                    onClick={deletestock}
+                />
+            </td>
+        );
     }
 
     const fetchDesiredWeights = async () => {
@@ -364,6 +402,17 @@ const StockTable = ({Reload, SD}) => {
         const dollarPer = stockData['해외장'].find(stock => stock.name === '달러')?.rebalancingRatio || 0; 
         let totalError = false;
 
+        // 널, 0 값 체크
+        for (const stock of allStocks) {
+            const check = (stock.currentPrice === 0 || stock.currentPrice === null) ? false : true
+            if (check === false ) {
+                alert('주식의 가격이 0이거나 유효하지 않습니다. 함수를 종료합니다.');
+                return; 
+            }
+            
+        }
+
+        // 널, 0이 아니라면 실행
         for (const stock of allStocks) {
             const payload = (stock.name === '원화' || stock.name === '달러') ? {
                 userId,
@@ -377,12 +426,11 @@ const StockTable = ({Reload, SD}) => {
                 userId,
                 rudDate,
                 stockName: stock.name,
-                marketOrder: stock.currentPrice,
+                marketOrder: stock.price,
                 nos: stock.quantity,
                 expertPer: stock.rebalancingRatio,
                 paul: stock.marketType === "국장" ? false : true,
             }
-            console.log(payload);
 
             try {
                 const endpoint = (stock.name === '원화' || stock.name === '달러')
@@ -402,17 +450,33 @@ const StockTable = ({Reload, SD}) => {
             alert('저장 중 오류가 발생했어용!')
         }
     };
+    
+    const toggleModal = () => {
+        setModalOpen(!isModalOpen); // 모달 열기/닫기 토글
+    };
+    
+    useEffect(() => {
+        localStorage.setItem('isModalOpen', isModalOpen);
+    }, [isModalOpen]);
+    
 
     return (
-        <div className="stock-container">
+        <div className="stock-container" style={{ backgroundColor: currentTheme.colors.Bg}}>
+            <LoadingPage 
+            loading={loading} 
+            progress={progress} 
+            stockNumber ={stockNumber} 
+            allStocksNumber={allStocksNumber}
+            />
+            <StockTableModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme} />
             <div className="name-container">
-                <h1>StockTable</h1>
-                <p>{currentTime}</p>
+                <h1 style={{ color: currentTheme.colors.MainFont}}>StockTable</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}>{currentTime}</p>
             </div>
             <div className="switch-container">
-                <div className="table-switch-wrapper">
+                <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper}}>
                     <div className="table-switch">
-                        <div className="switch-right">
+                        <div className="switch-left">
                             <div
                                 className={`table-choice ${activeButton === '국장'
                                     ? 'active'
@@ -430,16 +494,25 @@ const StockTable = ({Reload, SD}) => {
                             <div className="image-reload" onClick={handleReloadClick}>
                                 <span>이미지 재업로드</span>
                             </div>
+                            <img
+                                className="questionmark"
+                                src={questionmarkImage}
+                                onClick={toggleModal}
+                                alt="질문 마크"/>
                         </div>
-                        <div className="switch-left">
-                            <div onClick={fetchDesiredWeights}>희망 비중 추천받기</div>
-                            <div onClick={saveDataToDB}>저장하기</div>
+                        <div className="switch-right">
+                            <div className="DesiredWeight-recommend" onClick={fetchDesiredWeights}>
+                                <span>희망 비중 추천받기</span>
+                            </div>
+                            <div className="save-table" onClick={saveDataToDB}>
+                                <span>저장하기</span>
+                                </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="table-container">   
-                <div className="table-wrapper">
+                <div className="table-wrapper" style={{ backgroundColor: currentTheme.colors.TableBg}}>
                     {
                         activeButton === '국장'
                             ? <TableDO
@@ -451,7 +524,11 @@ const StockTable = ({Reload, SD}) => {
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
-                                    searchButton={searchButton}/>
+                                    searchButton={searchButton}
+                                    deleteButton={deleteButton}
+                                    fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
+                                    />
                             : <TableFO
                                     data={currentData}
                                     totalBalance={calculateCurrentTotalBalance()}
@@ -461,10 +538,14 @@ const StockTable = ({Reload, SD}) => {
                                     currentTotalBalance={currentTotalBalance}
                                     totalDesiredWeight={totalDesiredWeight}
                                     addEmptyRow={addEmptyRow}
-                                    searchButton={searchButton}/>
+                                    searchButton={searchButton}
+                                    deleteButton={deleteButton}
+                                    fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
+                                    />
                     }
                     <table className="custom-table">
-                        <thead>
+                        <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                             <tr>
                                 <th className="th"></th>
                                 <th className="th">총합</th>

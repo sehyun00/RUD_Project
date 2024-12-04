@@ -1,15 +1,19 @@
 import React, {useState} from "react";
 import {Container} from 'reactstrap';
 import {useLocation, Link, useNavigate } from 'react-router-dom';
-import '../../assets/css/componentItems/header.scss';
-import happyCatVideo from '../../assets/images/happycat.mp4';
 
-const Header = ({logoutHandler, loginState}) => {
+//scss
+import '../../assets/css/componentItems/header.scss';
+
+//image
+import superAnt from '../../assets/images/ant_head.png';
+
+const Header = ({logoutHandler, loginState, isDarkMode}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
 
-    const logoutsibal = () => {
+    const logoutbutton = () => {
         logoutHandler(); // 로그아웃 상태 업데이트
         navigate('/login'); // 로그인 페이지로 이동
     }
@@ -18,10 +22,7 @@ const Header = ({logoutHandler, loginState}) => {
         <div className="header">
             <Container className="header-container">
                 <div className="header-left">
-                    <video autoPlay="autoPlay" loop="loop" muted="muted" className="logo-video">
-                        <source src={happyCatVideo} type="video/mp4"/>
-                        Your browser does not support the video tag.
-                    </video>
+                    <img src={superAnt} className="logo" />
                     {loginState === true ? (
                     <Link to="/home">
                         <h3>Superant</h3>
@@ -35,12 +36,15 @@ const Header = ({logoutHandler, loginState}) => {
                 {
                     !isLoginPage && (
                         <div className="header-right">
+                        {/* <button onClick={toggleTheme}>
+                            {isDarkMode ? '라이트 모드' : '다크 모드'}
+                        </button> */}
                             <Link to="/log">
                                 <div className='button'>
                                     <h5>내 기록</h5>
                                 </div>
                             </Link>
-                            <div className="button" onClick={logoutsibal}>
+                            <div className="button" onClick={logoutbutton}>
                                 <h5>로그아웃</h5>
                             </div>
                         </div>

@@ -89,19 +89,11 @@
                     margin: 0; // 여백 조정
                     overflow: auto;
 
-                    tr {
-                        &:hover {
-                            background-color: rgba(0, 0, 0, 0.5);
-                        }
-                    }
-
                     thead {
                         th {
                             text-align: center;
                             padding: 10px 8px; // 패딩 조정
                             font-size: 14px;
-                            background-color: #181a20; // 밝은 배경색
-                            color: #eaecef;
                         }
                         .th {
                             width: 7%;
@@ -111,10 +103,14 @@
                     tbody {
                         overflow: auto;
                         height: auto; // 높이 설정을 제거하여 자동 조정
-                        background-color: #1f25404b;
+                        // background-color: #1f25404b;
                         border: solid #2b3139;
                         border-width: 0 0 2px;
                         cursor: pointer;
+
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.5);
+                        }
 
                         &::-webkit-scrollbar {
                             display: flex;
@@ -135,7 +131,7 @@
                             font-size: 14px;
                             background-color: transparent;
                             border-top: 1px solid #2b3139; // 경계선 추가
-                            color: #eaecef;
+                            // color: #eaecef;
                         }
                         .td11 {
                             width: 1450px;

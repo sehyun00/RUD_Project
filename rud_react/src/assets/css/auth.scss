@@ -9,127 +9,135 @@
 
 .auth-container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    height: 100vh;
-    padding-right: 15%; 
-    background-color: #181a20;
-    width: 100%;
+    flex-direction: row;
+    height: 700px;
 
-    .auth-card {
-        width: 400px;
-        padding: 60px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-        background-color: #181a20;
-        border-radius: 10px;
-        color: #EAECEF;
-    
-        .auth-title {
-            margin-bottom: 20px;
-            text-align: center;
-            color: #EAECEF;
-        }   
+    .auth-left-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        align-items: center; 
+        height: 100%;
+        width: 60%;
+        overflow-y: hidden;
 
-        .form {
-            display: flex;
-            flex-direction: column;
-    
-            .input-group {
-                margin-bottom: 15px;
-    
-                input {
-                    padding: 10px;
-                    border: 1.5px solid #2B3139;
-                    border-radius: 10px;
-                    width: 100%;
-                    color: #EAECEF;
-                    background-color: #181a20;
-    
-                    &::placeholder {
-                        color: #B0B0B0;
-                    }
-                }
-            }
-    
-            .password-message {
-                margin-top: 5px;
-                font-size: 10px;
-            
-                &.match {
-                    color: green;
-                }
-            
-                &.no-match {
-                    color: red;
-                }
-            }
-    
-            button {
-                width: 100%;
-                padding: 10px;
-                background-color: #2a48b6;
-                color: #EAECEF;
-                border: none;
-                border-radius: 10px;
-                cursor: pointer;
-                font-size: 16px;
-        
-                &:hover {
-                    background-color: #213a9680;
-                }
-        
-                &.google, &.apple {
-                    margin-bottom: 10px;
-                    border: 1.5px solid #2B3139;
-                    background-color: #181a20;
-        
-                    img {
-                        height: 20px ;
-                        float: left;
-                    }
-                }
-            }
+        .superAnt {
+            padding-top: 200px;
+        }
+        .down-arrow {
+            width: 40px;
+            height: 40px;
         }
 
-        .signup-link-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+        .slide-enter {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .slide-enter-active {
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .slide-exit {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .slide-exit-active {
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    }
     
-            .signup-link {
-                display: block;
-                margin-top: 20px;
+    .auth-right-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100%;
+        width: 40%;
+    
+        .auth-card {
+            width: 400px;
+            padding: 60px;
+            // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+        
+            .auth-title {
+                margin-bottom: 20px;
                 text-align: center;
-                color: #EAECEF;
-                font-size: 14px;
-                text-decoration: none;
+            }   
+    
+            .form {
+                display: flex;
+                flex-direction: column;
         
-                &:hover {
-                    color: #758ad8;
-                    text-decoration: underline;
+                .input-group {
+                    margin-bottom: 15px;
+        
+                    input {
+                        padding: 10px;
+                        border: 1.5px solid #2B3139;
+                        border-radius: 10px;
+                        width: 100%;
+                        color: #EAECEF;
+                        background-color: #181a20;
+        
+                        &::placeholder {
+                            color: #B0B0B0;
+                        }
+                    }
+                }
+        
+                .password-message {
+                    margin-top: 5px;
+                    font-size: 10px;
+                
+                    &.match {
+                        color: green;
+                    }
+                
+                    &.no-match {
+                        color: red;
+                    }
+                }
+        
+                button {
+                    width: 100%;
+                    padding: 10px;
+                    background-color: #2a48b6;
+                    color: #EAECEF;
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    font-size: 16px;
+            
+                    &:hover {
+                        background-color: #263673;
+                    }
+                }
+            }
+    
+            .signup-link-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+        
+                .signup-link {
+                    display: block;
+                    margin-top: 20px;
+                    text-align: center;
+                    font-size: 14px;
+                    text-decoration: none;
+                    cursor: pointer;
+            
+                    &:hover {
+                        color: #758ad8;
+                    }
                 }
             }
         }
-
-    // .divider {
-    //     display: flex;
-    //     align-items: center;
-    //     margin: 20px 0;
-    //     width: 100%;
-
-    //     &::before,
-    //     &::after {
-    //         content: '';
-    //         flex: 1;
-    //         height: 1px;
-    //         background-color: #2B3139; /* 구분선 색상 */
-    //     }
-
-    //     span {
-    //         margin: 0 10px;
-    //         color: #EAECEF; /* 'or' 텍스트 색상 */
-    //     }
-    // }
     }
 }
