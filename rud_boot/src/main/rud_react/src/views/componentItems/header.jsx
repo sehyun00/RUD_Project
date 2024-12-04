@@ -36,12 +36,9 @@ const Header = ({logoutHandler, loginState, isDarkMode}) => {
                 {
                     !isLoginPage && (
                         <div className="header-right">
-                        {/* <button onClick={toggleTheme}>
-                            {isDarkMode ? '라이트 모드' : '다크 모드'}
-                        </button> */}
-                            <Link to="/log">
+                            <Link to={location.pathname === '/home' ? '/log' : '/home'}>
                                 <div className='button'>
-                                    <h5>내 기록</h5>
+                                    <h5>{location.pathname === '/home' ? '내 기록' : '홈'}</h5>
                                 </div>
                             </Link>
                             <div className="button" onClick={logoutbutton}>

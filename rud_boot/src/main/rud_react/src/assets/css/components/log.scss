@@ -1,11 +1,11 @@
 .log-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: auto;
-    overflow-y: auto;
-    padding: 20px;
+    align-items: center;
+    justify-content: flex-start; // 상단 정렬
+    height: 100%; // 전체 화면 높이
+    overflow-y: auto; // 세로 스크롤 활성화
+    padding: 20px; // 내부 여백
     color: #eaecef;
 
     .contents-container {
