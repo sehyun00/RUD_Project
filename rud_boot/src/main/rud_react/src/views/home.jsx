@@ -1,4 +1,5 @@
-// home.jsx
+// app/home
+
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
