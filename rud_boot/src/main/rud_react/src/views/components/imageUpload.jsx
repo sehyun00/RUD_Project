@@ -139,11 +139,15 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
         <div className="image-upload-container">
             <LoadingPage loading={loading} progress={progress}/>
             <div className="contents-container">
+            <div className="name-container">
+                <h1 style={{ color: currentTheme.colors.MainFont}}>ImageUpload</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}></p>
+            </div>
                 <div className="switch-container">
                     <div className="switch-1-wrapper" style={{backgroundColor: currentTheme.colors.SwitchWrapper}}>
                         <div className="switch-1">
                             <div>
-                                <span>이미지 업로드</span>
+                                <span>테이블로 돌아가기</span>
                             </div>
                             <img
                                 className="questionmark"

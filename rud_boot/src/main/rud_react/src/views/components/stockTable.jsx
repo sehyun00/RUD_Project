@@ -91,7 +91,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                 return acc;
             }, []);
     
-            // 가격을 가져올 종목 리스트 생성
+            // 가격을 불러올 종목 리스트 생성
             const allStocks = [
                 ...domesticData,
                 ...foreignData
@@ -120,7 +120,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                 marketType: '해외장'
             };   
 
-            // 종가를 순차적으로 가져오기
+            // 종가를 순차적으로 불러오기
             for (const stock of allStocks) {
                 try {
                     console.log(`Fetching price for ${stock.name}...`);
@@ -141,7 +141,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             updateTime();
 
         } catch (error) {
-            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            console.error("종가를 불러오는 데 오류가 발생했습니다.", error);
         } finally {
             await new Promise(resolve => setTimeout(resolve, 600)); 
             setLoading('0');
@@ -165,7 +165,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             }
             return null;
         } catch (error) {
-            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            console.error("종가를 불러오는 데 오류가 발생했습니다.", error);
             return null;
         }
     };
@@ -178,7 +178,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                 );
                 setExchangeRate(response.data.rates.KRW);
             } catch (error) {
-                console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
+                console.error("환율을 불러오는 데 오류가 발생했습니다.", error);
             } finally {
                 setLoading("0");
             }
@@ -325,7 +325,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
                 handleChange(index, 'currentPrice', updatedCurrentPrice);
             } catch (error) {
-                console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+                console.error("주식 가격을 불러오는 데 오류가 발생했습니다.", error);
             }
         };
 
@@ -388,7 +388,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
 
 
         } catch (error) {
-            console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
+            console.error("비중 추천을 불러오는 데 오류가 발생했습니다.", error);
         }
     };
 
@@ -445,9 +445,9 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             }
         }
         if (totalError === false) {
-            alert('저장이 완료 됐어용!')
+            alert('저장이 완료 됐습니다!')
         } else {
-            alert('저장 중 오류가 발생했어용!')
+            alert('저장 중 오류가 발생했습니다!')
         }
     };
     

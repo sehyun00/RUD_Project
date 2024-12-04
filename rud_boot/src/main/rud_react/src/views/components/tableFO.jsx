@@ -58,14 +58,14 @@ const TableDO = ({
         console.log(response, updatedPrice, stock.price);
         
         if (response === '0' || response === null) {
-            alert("주식 정보를 찾아올 수 없어요!")
+            alert("주식 정보를 불러올 수 없습니다")
         } else {
             handleChange(index, 'price', updatedPrice); // 가격 업데이트
             handleChange(index, 'currentPrice', updatedCurrentPrice);
 
         }
         } catch (error) {
-            console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+            console.error("주식 가격을 불러오는 데 오류가 발생했습니다.", error);
         }
     }
 
@@ -193,7 +193,7 @@ const TableDO = ({
                                         type="text"
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}
-                                        style={{ color: currentTheme.colors.TableText}}
+                                        style={{ color: currentTheme.colors.TableText, fontWeight: 'bolder'}}
                                         />
                                 </td>
                                 {

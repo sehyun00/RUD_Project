@@ -1,21 +1,31 @@
 .image-upload-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     padding: 20px;
     color: #EAECEF;
 
     .contents-container {
-        width: 1300px;
+        width: 75%;
         margin: auto;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: flex-start;
         height: auto;
         padding: 20px;
         box-sizing: content-box;
+
+        .name-container {
+            display: flex;
+            align-items: flex-end;
+            
+            p {
+                padding-left: 10px;
+                padding-bottom: 10px;
+            }
+        }
 
         .switch-container {
             display: flex;
@@ -24,7 +34,6 @@
             align-items: center;
             width: 100%;
             height: auto;
-            margin-top: 5%;
 
             .switch-1-wrapper {
                 display: flex;
@@ -40,6 +49,7 @@
                     justify-content: space-around;
                     width: auto;
                     padding: 4px 8px;
+                    
 
                     div {
                         border-color: transparent;
@@ -48,9 +58,14 @@
                         background-color: #3254ce;
                         color: #EAECEF;
                         font-weight: 600;
+                        cursor: pointer;
 
                         span {
                             padding: 4px 8px;
+                        }
+
+                        &:active {
+                            transform: scale(0.99);
                         }
                     }
 
@@ -128,7 +143,7 @@
                     }
 
                     &:active {
-                        transform: scale(0.95);
+                        transform: scale(0.97);
                     }
                 }
 
@@ -168,11 +183,12 @@
                 }
 
                 &:active {
-                    transform: scale(0.95);
+                    transform: scale(0.97);
                 }
             }
         }
     }
+    
 }
 
 .info-container {

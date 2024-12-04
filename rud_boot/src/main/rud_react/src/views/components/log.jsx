@@ -8,7 +8,7 @@ import * as XLSX from 'xlsx';
 import '../../assets/css/components/log.scss';
 
 // 변동률 계산 함수
-const calculateChangeRate = (current, previous) => {
+const calculateChangeRate = (current, previous, currentTime) => {
     if (previous === 0 || previous === undefined) return '0.00';
     const changeRate = ((current - previous) / previous) * 100;
     return changeRate.toFixed(2); // 변동률 값만 반환
@@ -145,6 +145,10 @@ const Log = ({userID, currentTheme}) => {
     return (
         <div className="log-container">
             <div className="contents-container">
+            <div className="name-container">
+                <h1 style={{ color: currentTheme.colors.MainFont}}>History</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}></p>
+            </div>
                 <div className="switch-container">
                     <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.MainFont }}>
                         <div className="table-switch">
@@ -172,7 +176,7 @@ const Log = ({userID, currentTheme}) => {
                                 {sortedLogData.map((row, index) => {
                                     // 이전 날짜의 총자산을 가져옴
                                     const previousTotal =
-                                        index < sortedLogData.length - 1 ? sortedLogData[index + 1].total : undefined;
+                                        index < sortedLogData.length - 1 ? parseInt(sortedLogData[index + 1].total, 10) : undefined;
                                     console.log(previousTotal);
                                     // 변동률 계산
                                     const changeRate = calculateChangeRate(row.total, previousTotal);
