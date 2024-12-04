@@ -1,20 +1,24 @@
-from flask import Flask, request, jsonify
-import cv2
-from abc import ABC, abstractmethod
-from pororo import Pororo
-from pororo.pororo import SUPPORTED_TASKS
-from utils.image_util import plt_imshow, put_text
-from utils.image_convert import convert_coord, crop
-from utils.pre_processing import load_with_filter, roi_filter
-from easyocr import Reader
-import warnings
-from typing import List
-import os
+import gc
+from flask_cors import CORS
 import re
-
+from typing import List
+import warnings
+from easyocr import Reader
+from utils.pre_processing import load_with_filter, roi_filter
+from utils.image_convert import convert_coord, crop
+from utils.image_util import plt_imshow, put_text
+from pororo.pororo import SUPPORTED_TASKS
+from pororo import Pororo
+from abc import ABC, abstractmethod
+import cv2
+from flask import Flask, request, jsonify
+import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
+
 warnings.filterwarnings('ignore')
 app = Flask(__name__)
+CORS(app)
 
 # 이미지 저장 경로
 IMAGE_FOLDER = 'images'
@@ -77,6 +81,12 @@ class PororoOcr(BaseOcr):
         self.img_path = img_path
         self.ocr_result = self._ocr(img_path, detail=True)
 
+        img = cv2.imread(img_path)
+        if img is not None:
+            cv2.imshow("OCR Image", img)  # 디버깅 용도로 이미지를 보여줄 수 있음
+            cv2.waitKey(0)  # 키 입력을 기다림
+            cv2.destroyAllWindows()  # 모든 창 닫기
+
         if self.ocr_result['description']:
             ocr_text = self.ocr_result["description"]
         else:
@@ -85,6 +95,9 @@ class PororoOcr(BaseOcr):
         if debug:
             self.show_img_with_ocr(
                 "bounding_poly", "description", "vertices", ["x", "y"])
+
+        del img
+        gc.collect()
 
         return ocr_text
 
@@ -179,7 +192,9 @@ def domestic_stock_data(data):
     # 국내주식 찾기
     dome_index = data.index("국내주식") + 1
     # 첫 번째 "일간 수익금" 찾기
-    first_index = data.index("일간 수익금", dome_index) + 1
+    # first_index = data.index("일간 수익금", dome_index) + 1
+    first_index = next(i for i, line in enumerate(
+        data[dome_index:]) if line.startswith("일간 수익금")) + dome_index
 
     # "국내주식" 뒤의 "개인정보 처리방침" 찾기
     try:
@@ -224,7 +239,14 @@ def foreign_stock_data(data):
     # 해외주식 찾기
     fore_index = data.index("해외주식") + 1
     # 첫 번째 "일간 수익금" 찾기
-    first_index = data.index("일간 수익금", fore_index) + 1
+    # first_index = data.index("일간 수익금", fore_index) + 1
+
+    # 일간 수익금 포함하는 인덱스 찾기
+    first_index = next(i for i, line in enumerate(
+        data[fore_index:]) if "일간 수익금" in line) + fore_index + 1
+
+    # 일간 수익금으로 시작하는 인덱스 찾기
+    # first_index = next(i for i, line in enumerate(data[fore_index:]) if line.startswith("일간 수익금")) + fore_index
 
     # "해외주식" 뒤의 "개인정보 처리방침" 찾기
     try:
@@ -247,16 +269,21 @@ def foreign_stock_data(data):
 
     # 해외 주식 데이터 추출 (해외주식 바로 뒤의 "일간 수익금"부터 종료 인덱스까지)
     for i in range(first_index, end_index):
-        if data[i] not in exclude_items:
-            # 실수 + 주만 살림 ex)1234원, $1234
-            # \은 줄바꿈
-            if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
-               not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
-               not re.match(r'^S\d+', data[i]) and \
-               not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]):
-                cleaned_stock_name = re.sub(
-                    r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
-                foreign_stocks.append(cleaned_stock_name)
+        # if data[i] not in exclude_items:
+        # if not any(item in data[i] for item in exclude_items):
+        line = data[i]
+        if not any(item in line for item in exclude_items):
+            # 주식 이름은 알파벳으로 시작하고, 뒤에 숫자와 주수가 있어야 함
+            if re.match(r'^[A-Z]+$', line) or re.match(r'^\d{1,3}(?:,\d{3})*(?:\.\d+)?\s*주$', line):
+                # 실수 + 주만 살림 ex)1234원, $1234
+                # \은 줄바꿈
+                if not re.match(r'^\$\d+(\.\d+)?', data[i]) and \
+                        not re.search(r'\d+(,\d+)*\s*[원$%]', data[i]) and \
+                        not re.match(r'^S\d+', data[i]) and \
+                        not re.match(r'^\d+(,\d+)*(\.\d+)?$', data[i]):
+                    cleaned_stock_name = re.sub(
+                        r'(\d+(\.\d+)?)\s+주', r'\1주', data[i])
+                    foreign_stocks.append(cleaned_stock_name)
 
     return {"해외장": foreign_stocks}
 
@@ -306,8 +333,9 @@ def find_wallet(data):
                 next_line = data[index + 1]
                 # 숫자 + 원 있으면 원화 키 안에 데이터로 넣음
                 if re.search(r'\d{1,3}(,\d{3})*\s*원', next_line):
-                    wallet["원화"] = re.search(
+                    tmp = re.search(
                         r'(\d{1,3}(,\d{3})*)\s*원', next_line).group(0)
+                    wallet["원화"] = tmp.replace("원", "")
                     found_hanwa = True
                 else:
                     wallet["원화"] = "없음"
@@ -315,14 +343,17 @@ def find_wallet(data):
             # 달러 찾기: 원화 항목의 다음 줄에서 "$"로 시작하는 숫자 찾기
             if index + 2 < len(data):
                 dollar_line = data[index + 2]
-                
+
                 # "S"로 시작하는 경우 "$"로 변경
                 if dollar_line.startswith("S"):
-                    dollar_line = dollar_line.replace("S", "$", 1)  # 첫 번째 "S"를 "$"로 변경
+                    dollar_line = dollar_line.replace(
+                        "S", "$", 1)  # 첫 번째 "S"를 "$"로 변경
 
                 # "$" + 숫자가 있으면 달러 키 안에 데이터로 넣음
                 if re.search(r'\$\d{1,3}(,\d{3})*(\.\d+)?', dollar_line):
-                    wallet["달러"] = re.search(r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', dollar_line).group(0)
+                    tmp = re.search(
+                        r'(\$\d{1,3}(,\d{3})*(\.\d+)?)', dollar_line).group(0)
+                    wallet["달러"] = tmp.replace("$", "")
                     found_dollar = True
                 else:
                     wallet["달러"] = "없음"
@@ -366,17 +397,19 @@ def get_stock():
         if ocr_texts == "No text detected.":
             return jsonify({'error': 'No text detected from image'}), 400
 
+        print('EasyPororoOCR:', ocr_texts)
         # 국장 해외장 리스트에 넣기
         response_data = domestic_stock_data(ocr_texts)
         response_data.update(foreign_stock_data(ocr_texts))
+
         response = jsonify(response_data)
         # CORS 설정(이거 있어야 리액트에서 받을 수 있음)
         response.headers.add('Access-Control-Allow-Origin', '*')
 
         # ocr 전체 결과, 국장 & 해외장 추출 결과
-        print('EasyPororoOCR:', ocr_texts)
+
         print('dome && fore:', response_data)
-        return response_data, 200
+        return response, 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -385,6 +418,8 @@ def get_stock():
         # 이미지 삭제
         if os.path.exists(image_path):
             os.remove(image_path)
+        # 가비지 컬렉션 메모리 정리
+        gc.collect()
 
 
 # 내 계좌 추출
@@ -432,6 +467,8 @@ def get_wallet():
         # 이미지 삭제
         if os.path.exists(image_path):
             os.remove(image_path)
+        # 가비지 컬렉션 메모리 정리
+        gc.collect()
 
 
 if __name__ == "__main__":

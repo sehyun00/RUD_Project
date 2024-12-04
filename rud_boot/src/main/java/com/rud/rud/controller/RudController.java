@@ -93,7 +93,7 @@ public class RudController {
     // 주식은 리스트에 넣어서 보내고
 //    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/csv")
-    public ResponseEntity<List<Csv>> csvRud(@RequestBody Map<String, String> request) {
+    public ResponseEntity<List<Csv>> getCsv(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
         String rudDate = request.get("rudDate");
 

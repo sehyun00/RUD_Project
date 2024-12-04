@@ -1,3 +1,5 @@
+ocr.yaml을 이용해 아나콘다 가상환경 생성(gpu 환경 기준)
+
 사용시 순서 지키셈
 1. 가상환경(conda) 파이썬 3.7 생성 후 실행
 
@@ -24,3 +26,6 @@ rustc를 설치해야 easyocr을 설치할 수 있음
 
 6. 플라스크 설치
 -> pip install flask
+
+cuda 버전(gtx 1650, cuda 10.1)
+pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html

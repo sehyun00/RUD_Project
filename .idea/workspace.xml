@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae8eca40-fd55-4a18-a1b3-d11e23e98e7c" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/rud.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/rud.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/rud.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/rud.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/rud/RudRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/controller/RudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/controller/RudController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/security/handler/CustomAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/java/com/rud/rud/security/handler/CustomAccessDeniedHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/css/main.1e670e05.css" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/css/main.1e670e05.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/453.5892dcc0.chunk.js" beforeDir="false" afterPath="$PROJECT_DIR$/rud_boot/src/main/resources/static/static/js/453.5892dcc0.chunk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rud_stockapi/token.dat" beforeDir="false" afterPath="$PROJECT_DIR$/rud_stockapi/token.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,41 +95,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Gradle.Build rud_boot.executor": "Run",
-    "Gradle.RudApplicationTests.executor": "Run",
-    "Gradle.RudApplicationTests.loginTest.executor": "Run",
-    "Gradle.rud_boot [bootRun].executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.RudApplication.executor": "Run",
-    "git-widget-placeholder": "back)make__rud__DB",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/projects",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Gradle.Build rud_boot.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.RudApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.RudApplicationTests.loginTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.rud_boot [bootRun].executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.RudApplication.executor&quot;: &quot;Run&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;back)spring__security__notJWT&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/k3553/GitHub/RUD_Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\workspace\sb\rud_boot\src\main" />
@@ -213,8 +226,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
       </set>
     </attachedChunks>
   </component>
@@ -243,6 +256,8 @@
       <workItem from="1730692162483" duration="326000" />
       <workItem from="1730692814175" duration="18220000" />
       <workItem from="1730766857842" duration="25000" />
+      <workItem from="1733074520987" duration="3026000" />
+      <workItem from="1733099121257" duration="10502000" />
     </task>
     <servers />
   </component>

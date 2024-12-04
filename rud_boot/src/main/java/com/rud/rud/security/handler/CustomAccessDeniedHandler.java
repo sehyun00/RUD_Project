@@ -29,7 +29,5 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler{
         PrintWriter printWriter = response.getWriter();
         printWriter.println(jsonStr);
         printWriter.close();
-
     }
-
 }
