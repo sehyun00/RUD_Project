@@ -1,14 +1,16 @@
 import React from "react"
 
+//scss
 import '../../assets/css/components/loginInformation.scss';
 
-import downArrow from '../../assets/images/down_arrow.png';
+//images
+import downArrowB from '../../assets/images/down_arrowB.png';
+import downArrowW from '../../assets/images/down_arrowW.png';
 import shannon from '../../assets/images/shannon_stock.png';
 
-const LoginInformation = ({onClose, currentTheme}) => {
+const LoginInformation = ({onClose, currentTheme, isDarkMode}) => {
     return (
-        <div className="login-information-container" style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
-            <img src={downArrow} className='down-arrow' alt="Down Arrow" onClick={onClose}/>
+        <div className="login-information-container" style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>            
             <div className="information-container">
                 <h1>리벨런싱이란?</h1>
                 <div>
@@ -52,6 +54,11 @@ const LoginInformation = ({onClose, currentTheme}) => {
                 <h1/>
                 <p>리벨런싱은 투자 전략의 중요한 요소로, 장기적인 안정성과 수익성을 추구하는 데 필수적인 방법입니다.</p>
             </div>
+            {isDarkMode ? (
+                <img src={downArrowB} className='down-arrow' alt="Down Arrow" onClick={onClose}/>
+            ):(
+                <img src={downArrowW} className="down-arrow" alt="Down Arrow" onClick={onClose}/>
+            )}
         </div>
     );
 };

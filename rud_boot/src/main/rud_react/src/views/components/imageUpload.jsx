@@ -9,14 +9,15 @@ import Modal from 'react-modal';
 import '../../assets/css/components/imageUpload.scss';
 
 // components
-import LoadingPage from '../componentItems/loading'; 
+import LoadingPage from '../componentItems/loading';
+import ImageUploadModal from "../componentItems/imageUploadModal";
 
 // images
 import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, toggleModal, currentTheme}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
@@ -89,7 +90,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, toggle
 
         try {
             const cashResponse = await axios.post(
-                'https://931d-61-34-253-238.ngrok-free.app/wallet',
+                'https://b746-61-34-253-238.ngrok-free.app/wallet',
                 cashFormData,
                 {
                     headers: {
@@ -103,7 +104,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, toggle
             );
 
             const stockResponse = await axios.post(
-                'https://931d-61-34-253-238.ngrok-free.app/upload',
+                'https://b746-61-34-253-238.ngrok-free.app/upload',
                 stockFormData,
                 {
                     headers: {

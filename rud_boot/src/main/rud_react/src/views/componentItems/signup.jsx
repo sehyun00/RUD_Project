@@ -4,9 +4,10 @@ import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {Modal} from 'reactstrap';
 
-import closeImage from '../../assets/images/close.png';
+import closeImageB from '../../assets/images/close.png';
+import closeImageW from '../../assets/images/close_black.png';
 
-const Signup = ({modalOpen, toggleModal}) => {
+const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -77,21 +78,30 @@ const Signup = ({modalOpen, toggleModal}) => {
         isOpen={modalOpen}
         onRequestClose={toggleModal}
         >
-            <div className='card-wrapper'>
-                <div className='card-header'>
+            <div className='card-wrapper' style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
+                <div className='card-header' >
+                    {isDarkMode ? (
                     <img
                         className="close-image" 
-                        src={closeImage} 
+                        src={closeImageB} 
                         alt='닫기'  
                         onClick={toggleModal}
                         />
+                    ):(
+                        <img
+                            className="close-image" 
+                            src={closeImageW} 
+                            alt='닫기'
+                            onClick={toggleModal}
+                            />
+                    )}
                 </div>
                 <div className="auth-card">
-                    <h2 className="auth-title">회원가입</h2>
+                    <h2 className="auth-title" style={{ color: currentTheme.colors.MainFont }}>회원가입</h2>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
                     {/* 에러 메시지 표시 */}
-                    <form onSubmit={handleSubmit} className="form">
-                        <div className="input-group">
+                    <form onSubmit={handleSubmit} className="form" >
+                        <div className="input-group" style={{ backgroundColor: currentTheme.colors.InputBg}}>
                             <input
                                 type="text"
                                 name="name"
@@ -99,7 +109,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.name}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -109,7 +120,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.phoneNumber}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -119,7 +131,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.userId}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -129,7 +142,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.email}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -139,7 +153,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.password}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -149,7 +164,8 @@ const Signup = ({modalOpen, toggleModal}) => {
                                 className="signup-input"
                                 value={formData.checkPassword}
                                 onChange={handleChange}
-                                required="required"/>
+                                required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
                         </div>
 
                         <div className="input-group">

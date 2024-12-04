@@ -2,7 +2,7 @@
 html, body {
     min-height: 100%;
     margin: 0;
-    padding-top: 30px;
+    padding-top: 3%;
     overflow: auto;
 }
 
@@ -18,4 +18,17 @@ html, body {
 a { /*modal Gofullpage 하이퍼링크 */
   color: #3254ce; /* 링크 기본 색상 */
   text-decoration: none; /* 밑줄 제거 */
+}
+
+.mode-change-button {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 40px;
+  height: auto;
+  cursor: pointer;
+  
+  &:active {
+    transform: scale(0.95);
+  }
 }

@@ -468,7 +468,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             stockNumber ={stockNumber} 
             allStocksNumber={allStocksNumber}
             />
-            <StockTableModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
+            <StockTableModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme} />
             <div className="name-container">
                 <h1 style={{ color: currentTheme.colors.MainFont}}>StockTable</h1>
                 <p style={{ color: currentTheme.colors.MainFont}}>{currentTime}</p>

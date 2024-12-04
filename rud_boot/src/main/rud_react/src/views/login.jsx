@@ -10,9 +10,10 @@ import SignUp from './componentItems/signup';
 import '../assets/css/auth.scss'; 
 
 import superAnt from "../assets/images/super_ant.png";
-import downArrow from '../assets/images/down_arrow.png';
+import downArrowB from '../assets/images/down_arrowB.png';
+import downArrowW from '../assets/images/down_arrowW.png';
 
-const Login = ({loginHandler, currentTheme}) => {
+const Login = ({loginHandler, currentTheme, isDarkMode}) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -60,7 +61,7 @@ const Login = ({loginHandler, currentTheme}) => {
 
     return (
         <div className='auth-container' style={{ backgroundColor: currentTheme.colors.Bg, color: currentTheme.colors.MainFont }}>
-            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} /> 
+            <SignUp modalOpen={modalOpen} toggleModal={toggleModal} currentTheme={currentTheme} isDarkMode={isDarkMode}/> 
             <div className='auth-left-container'> 
                 <CSSTransition
                     in={showLoginInfo}
@@ -68,16 +69,24 @@ const Login = ({loginHandler, currentTheme}) => {
                     classNames="slide"
                     unmountOnExit
                 >
-                    <LoginInformation onClose={handleClose} currentTheme={currentTheme}/>
+                    <LoginInformation onClose={handleClose} currentTheme={currentTheme} isDarkMode={isDarkMode}/>
                 </CSSTransition>
                 <img src={superAnt} className='superAnt'/>
+                {isDarkMode ? (
                 <img 
-                    src={downArrow} 
-                    className='down-arrow' 
-                    alt="Down Arrow" 
+                    src={downArrowB} 
+                    className='down-arrow'
                     onClick={handleImageClick} 
                     style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
                 />
+                ):(
+                    <img 
+                        src={downArrowW} 
+                        className='down-arrow'
+                        onClick={handleImageClick} 
+                        style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
+                    />
+                )}
             </div>
             <div className='auth-right-container'>
                 <div className="auth-card">
@@ -92,6 +101,7 @@ const Login = ({loginHandler, currentTheme}) => {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont }}
                             />
                         </div>
                         <div className="input-group">
@@ -102,6 +112,7 @@ const Login = ({loginHandler, currentTheme}) => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required="required"
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont }}
                             />
                         </div>
                         <button type="submit">로그인</button>

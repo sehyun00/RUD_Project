@@ -13,7 +13,7 @@ import stocks_blurImage from '../../assets/images/stocks_blur.png';
 
 Modal.setAppElement('#root');
 
-const ImageUploadModal = ({isModalOpen, toggleModal, }) => {
+const ImageUploadModal = ({isModalOpen, toggleModal, currentTheme }) => {
     return (
 
         <Modal
@@ -24,7 +24,7 @@ const ImageUploadModal = ({isModalOpen, toggleModal, }) => {
             overlayClassName="modal-overlay"
             shouldCloseOnOverlayClick={false}
             tabIndex="-1">
-            <div className="info-content">
+            <div className="info-content" style={{ backgroundColor: currentTheme.colors.TbodyBg, color: currentTheme.colors.MainFont }}>
                 <div className="info-body">
                     <h2>도움말</h2>
                     <p>

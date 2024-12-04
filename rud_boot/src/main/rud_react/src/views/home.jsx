@@ -3,16 +3,19 @@ import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 
 // components
 import StockTable from "./components/stockTable";
 import ImageUpload from "./components/imageUpload";
 import ImageUploadModal from "./componentItems/imageUploadModal";
 
+Modal.setAppElement('#root');
+
 const Home = ({ userID, loginState, currentTheme}) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(() => {
         const savedVisible = localStorage.getItem('isImageUploadVisible');
-        return savedVisible === 'true'; 
+        return savedVisible === 'false'; 
     });
     
     const [stockData, setStockData] = useState(() => {
@@ -86,7 +89,7 @@ const Home = ({ userID, loginState, currentTheme}) => {
     if (loginState === true) {
         return (
             <div className="home-container">
-                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
+                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme}/>
                 {
                 isImageUploadVisible ? (
                     <ImageUpload 

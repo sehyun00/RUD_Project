@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 Modal.setAppElement('#root');
 
-const HomeModal = ({ isOpen, onRequestClose, content }) => {
+const HomeModal = ({ isOpen, onRequestClose, content, currentTheme }) => {
     return (
         <Modal
                 className="info-container"
@@ -14,7 +14,7 @@ const HomeModal = ({ isOpen, onRequestClose, content }) => {
                 overlayClassName="modal-overlay"
                 shouldCloseOnOverlayClick={false}
                 tabIndex="-1">
-                <div className="info-content">
+                <div className="info-content" style={{ backgroundColor: currentTheme.colors.TbodyBg, color: currentTheme.colors.MainFont }}>
                     <div className="info-body">
                         <h2>도움말</h2>
                         <p>
