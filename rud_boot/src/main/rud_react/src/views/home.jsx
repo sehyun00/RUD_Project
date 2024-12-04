@@ -1,4 +1,4 @@
-// home.jsx
+// app/home
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
@@ -12,10 +12,10 @@ import ImageUploadModal from "./componentItems/imageUploadModal";
 
 Modal.setAppElement('#root');
 
-const Home = ({ userID, loginState, currentTheme}) => {
+const Home = ({ userID, loginState, currentTheme }) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(() => {
         const savedVisible = localStorage.getItem('isImageUploadVisible');
-        return savedVisible === 'false'; 
+        return savedVisible === 'true'; // 초기값 설정
     });
     
     const [stockData, setStockData] = useState(() => {
@@ -25,15 +25,13 @@ const Home = ({ userID, loginState, currentTheme}) => {
     
     const [isModalOpen, setModalOpen] = useState(() => {
         const savedOpen = localStorage.getItem('isModalOpen');
-        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+        return savedOpen === 'true'; // 초기값 설정
     });
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
     
-    console.log(userID);
-
     const handleSave = (data) => {
         setStockData(data);
         setImageUploadVisible(false);
@@ -96,8 +94,8 @@ const Home = ({ userID, loginState, currentTheme}) => {
                     onSave={handleSave} 
                     setLoading={setLoading} 
                     setProgress={setProgress} 
-                    loading = {loading}
-                    progress ={progress}
+                    loading={loading}
+                    progress={progress}
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
                     currentTheme={currentTheme}
@@ -108,19 +106,18 @@ const Home = ({ userID, loginState, currentTheme}) => {
                     SD={stockData} 
                     setLoading={setLoading} 
                     setProgress={setProgress}
-                    loading = {loading}
-                    progress ={progress}
+                    loading={loading}
+                    progress={progress}
                     currentTheme={currentTheme}
                     />
                 )
-    
                 }
             </div>
         );
     } else {
         navigate('/login'); 
         return null;
-    };
+    }
 };
 
 Home.propTypes = {

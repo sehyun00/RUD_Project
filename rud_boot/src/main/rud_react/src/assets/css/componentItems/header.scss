@@ -45,13 +45,17 @@
 
         .header-right {
             display: flex;
-            justify-content: space-between;
-            width: 250px;
+            justify-content: flex-end;
+            width: auto;
             font-size: 18px;
+            gap: 10px; 
 
             .button {
+                display: flex;
+                justify-content: center;
                 padding: 10px 15px;
                 border-radius: 8px;
+                width: 100px;
                 cursor: pointer;
 
                 &:hover {
