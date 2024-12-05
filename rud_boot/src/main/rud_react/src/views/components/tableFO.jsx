@@ -1,3 +1,5 @@
+//app/home/stockTable/tableFo
+
 import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
 import {Alert, Table} from "reactstrap";
