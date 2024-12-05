@@ -8,14 +8,14 @@ import * as XLSX from 'xlsx';
 import '../../assets/css/components/log.scss';
 
 // 변동률 계산 함수
-const calculateChangeRate = (current, previous) => {
+const calculateChangeRate = (current, previous, currentTime) => {
     if (previous === 0 || previous === undefined) return '0.00';
     const changeRate = ((current - previous) / previous) * 100;
     return changeRate.toFixed(2); // 변동률 값만 반환
 };
 
 // Log 컴포넌트
-const Log = ({userID}) => {
+const Log = ({userID, currentTheme}) => {
     const [logData, setLogData] = useState([]);
     const [isAscending, setIsAscending] = useState(false);
 
@@ -145,8 +145,12 @@ const Log = ({userID}) => {
     return (
         <div className="log-container">
             <div className="contents-container">
+            <div className="name-container">
+                <h1 style={{ color: currentTheme.colors.MainFont}}>History</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}></p>
+            </div>
                 <div className="switch-container">
-                    <div className="table-switch-wrapper">
+                    <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.MainFont }}>
                         <div className="table-switch">
                             <div>
                                 <span>내 기록</span>
@@ -157,7 +161,7 @@ const Log = ({userID}) => {
                 <div className="table-container">
                     <div className="table-wrapper">
                         <Table className="custom-table">
-                            <thead>
+                            <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText}}>
                                 <tr>
                                     <th className="th"></th>
                                     <th className="th" onClick={handleDateClick} style={{ cursor: 'pointer' }}>
@@ -168,11 +172,11 @@ const Log = ({userID}) => {
                                     <th className="th">전 기록 대비 변동률</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                                 {sortedLogData.map((row, index) => {
                                     // 이전 날짜의 총자산을 가져옴
                                     const previousTotal =
-                                        index < sortedLogData.length - 1 ? sortedLogData[index + 1].total : undefined;
+                                        index < sortedLogData.length - 1 ? parseInt(sortedLogData[index + 1].total, 10) : undefined;
                                     console.log(previousTotal);
                                     // 변동률 계산
                                     const changeRate = calculateChangeRate(row.total, previousTotal);
@@ -184,7 +188,7 @@ const Log = ({userID}) => {
                                         <tr onClick={() => handleRowClick(row.date)}>
                                             <td>{sortedLogData.length - index}</td>
                                             <td>{row.date}</td>
-                                            <td>{row.total.toLocaleString()}원</td>
+                                            <td>{row.total.toLocaleString('ko-KR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} 원</td>
                                             <td>{row.stockCount}개</td>
                                             <td className={changeRateStyle}>
                                                 {changeRate !== '0.00'

@@ -1,17 +1,21 @@
-// home.jsx
+// app/home
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 
 // components
 import StockTable from "./components/stockTable";
 import ImageUpload from "./components/imageUpload";
 import ImageUploadModal from "./componentItems/imageUploadModal";
 
-const Home = ({ userID, loginState }) => {
+Modal.setAppElement('#root');
+
+const Home = ({ userID, loginState, currentTheme }) => {
     const [isImageUploadVisible, setImageUploadVisible] = useState(() => {
         const savedVisible = localStorage.getItem('isImageUploadVisible');
-        return savedVisible === 'true'; 
+        return savedVisible === 'true'; // 초기값 설정
     });
     
     const [stockData, setStockData] = useState(() => {
@@ -21,12 +25,13 @@ const Home = ({ userID, loginState }) => {
     
     const [isModalOpen, setModalOpen] = useState(() => {
         const savedOpen = localStorage.getItem('isModalOpen');
-        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+        return savedOpen === 'true'; // 초기값 설정
     });
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
-
+    const navigate = useNavigate();
+    
     const handleSave = (data) => {
         setStockData(data);
         setImageUploadVisible(false);
@@ -82,17 +87,18 @@ const Home = ({ userID, loginState }) => {
     if (loginState === true) {
         return (
             <div className="home-container">
-                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
+                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme}/>
                 {
                 isImageUploadVisible ? (
                     <ImageUpload 
                     onSave={handleSave} 
                     setLoading={setLoading} 
                     setProgress={setProgress} 
-                    loading = {loading}
-                    progress ={progress}
+                    loading={loading}
+                    progress={progress}
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
+                    currentTheme={currentTheme}
                     />
                 ) : (
                     <StockTable 
@@ -100,15 +106,18 @@ const Home = ({ userID, loginState }) => {
                     SD={stockData} 
                     setLoading={setLoading} 
                     setProgress={setProgress}
-                    loading = {loading}
-                    progress ={progress}
+                    loading={loading}
+                    progress={progress}
+                    currentTheme={currentTheme}
                     />
                 )
-    
                 }
             </div>
         );
-    } else {};
+    } else {
+        navigate('/login'); 
+        return null;
+    }
 };
 
 Home.propTypes = {

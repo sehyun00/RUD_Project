@@ -14,6 +14,7 @@ const TableDO = ({
     searchButton,
     deleteButton,
     fetchStockPrice,
+    currentTheme,
 }) => {
     const lastRowRef = useRef(null); // 마지막 행을 참조할 ref
     const [rowCount, setRowCount] = useState(data.length); // 행 수 상태
@@ -55,20 +56,30 @@ const TableDO = ({
         const updatedCurrentPrice = updatedPrice * stock.quantity;
         
         if (response === '0' || response === null) {
-            alert("주식 정보를 찾아올 수 없어요!")
+            alert("주식 정보를 불러올 수 없습니다")
         } else {
             handleChange(index, 'price', updatedPrice); // 가격 업데이트
             handleChange(index, 'currentPrice', updatedCurrentPrice);
 
         }
         } catch (error) {
-            console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+            console.error("주식 가격을 불러오는 데 오류가 발생했습니다.", error);
+        }
+    }
+
+    const moneyButton = (index) => {
+        const isConfirmed = window.confirm('현금으로 바꾸시면 변경이 불가능합니다.');
+
+        if (isConfirmed) {
+        handleChange(index, 'name', '원화');
+        handleChange(index, 'price', false);
+        handleChange(index, 'quantity', false);
         }
     }
 
     return (
         <Table className="custom-table">
-            <thead>
+            <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                 <tr>
                     <th rowSpan="2" className="th">종목명</th>
                     <th rowSpan="2" className="option-button"></th>
@@ -87,7 +98,7 @@ const TableDO = ({
                     <th className="th">희망수량</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                 {
                     data.map((item, index) => {
                         if (item.price === '0' || item.price === null) {
@@ -104,7 +115,10 @@ const TableDO = ({
                                                     e.preventDefault(); // 기본 동작 방지
                                                 }
                                             }}
-                                            placeholder="종목 입력"/>
+                                            placeholder="종목 입력"
+                                            style={{
+                                                color: currentTheme.colors.MainFont}}
+                                            />
                                     </td>
                                     {
                                         item.name !== "원화"
@@ -118,21 +132,9 @@ const TableDO = ({
                                     }
 
                                     <td>
-                                        {
-                                            (item.name === "원화")
-                                                ? (<span>X</span>)
-                                                : (
-                                                    <input
-                                                        className="number"
-                                                        type="number"
-                                                        value={item.quantity}
-                                                        onChange={(e) => {
-                                                            const newQuantity = e.target.value;
-                                                            handleChange(index, 'quantity', newQuantity);
-                                                            handleChange(index, 'currentPrice', newQuantity * item.price);
-                                                        }}/>
-                                                )
-                                        }
+                                        <div className="money-button" onClick={() => moneyButton(index)}>
+                                            <span>현금</span>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -183,13 +185,11 @@ const TableDO = ({
                                     <input
                                         type="text"
                                         value={item.name}
-                                        onChange={(e) => handleChange(index, 'name', e.target.value)}/>
+                                        onChange={(e) => handleChange(index, 'name', e.target.value)}
+                                        style={{ color: currentTheme.colors.TableText, fontWeight: 'bolder'}}
+                                        />
                                 </td>
-                                {
-                                    item.name !== "원화"
-                                        ? (deleteButton(item.marketType, index))
-                                        : (<td className="option-button"/>)
-                                }
+                                {deleteButton(item.marketType, index)}
                                 {
                                     item.name === "원화"
                                         ? ( // 주가
@@ -210,7 +210,9 @@ const TableDO = ({
                                                         const newQuantity = e.target.value;
                                                         handleChange(index, 'quantity', newQuantity);
                                                         handleChange(index, 'currentPrice', newQuantity * item.price);
-                                                    }}/>
+                                                    }}
+                                                    style={{ color: currentTheme.colors.TableText}}
+                                                    />
                                             )
                                     }
                                 </td>
@@ -226,7 +228,9 @@ const TableDO = ({
                                                     onChange={(e) => {
                                                         const newCurrentPrice = Number(e.target.value);
                                                         handleChange(index, 'currentPrice', newCurrentPrice);;
-                                                    }}/>
+                                                    }}
+                                                    style={{ color: currentTheme.colors.TableText}}
+                                                    />
                                             )
                                             : (<span>{formatCurrency(item.currentPrice)}</span>)
                                     }
@@ -239,7 +243,9 @@ const TableDO = ({
                                         min="0"
                                         max="100"
                                         value={desiredWeights[index]}
-                                        onChange={(e) => adjustWeights(index, e.target.value)}/>
+                                        onChange={(e) => adjustWeights(index, e.target.value)}
+                                        style={{ color: currentTheme.colors.TableText}}
+                                        />
                                 </td>
                                 <td>{rebalanceWeight.toFixed(2)}%</td>
                                 {/* 리밸런싱 비중 표시 */}
@@ -254,9 +260,12 @@ const TableDO = ({
                     })
                 }
                 <tr ref={lastRowRef}>
+                    {/* 마지막 행에 ref 추가 */}
+                    <div>
                     <td className="td11" onClick={handleAddEmptyRow}>
                         <h2>종목 추가</h2>
                     </td>
+                    </div>
                 </tr>
             </tbody>
         </Table>

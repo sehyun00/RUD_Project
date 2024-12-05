@@ -1,7 +1,8 @@
-// feature
+// stockTable.jsx
 import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 // scss
 import '../../assets/css/stockTable.scss';
@@ -10,13 +11,17 @@ import '../../assets/css/stockTable.scss';
 import TableDO from "./tableDO"; // 국내 컴포넌트
 import TableFO from "./tableFO"; // 해외 컴포넌트
 import LoadingPage from '../componentItems/loading'; 
+import StockTableModal from "../componentItems/stockTableModal";
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
 import deleteicon from '../../assets/images/trashcan.png';
+import questionmarkImage from '../../assets/images/questionmark.png';
+
+Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
     const [currentTime, setCurrentTime] = useState('');
@@ -30,6 +35,10 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
     const [stockNumber, setStockNumber] =useState(0);
     const [allStocksNumber, setAllStocksNumber] =useState(0);
     
+    const [isModalOpen, setModalOpen] = useState(() => {
+        const savedOpen = localStorage.getItem('isModalOpen');
+        return savedOpen === 'true'; // 로컬 스토리지에서 boolean 값으로 변환
+    });
 
     useEffect(() => {
         console.log(stockData);
@@ -82,7 +91,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 return acc;
             }, []);
     
-            // 가격을 가져올 종목 리스트 생성
+            // 가격을 불러올 종목 리스트 생성
             const allStocks = [
                 ...domesticData,
                 ...foreignData
@@ -111,7 +120,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 marketType: '해외장'
             };   
 
-            // 종가를 순차적으로 가져오기
+            // 종가를 순차적으로 불러오기
             for (const stock of allStocks) {
                 try {
                     console.log(`Fetching price for ${stock.name}...`);
@@ -132,7 +141,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
             updateTime();
 
         } catch (error) {
-            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            console.error("종가를 불러오는 데 오류가 발생했습니다.", error);
         } finally {
             await new Promise(resolve => setTimeout(resolve, 600)); 
             setLoading('0');
@@ -158,7 +167,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
             }
             return null;
         } catch (error) {
-            console.error("종가를 가져오는 데 오류가 발생했습니다.", error);
+            console.error("종가를 불러오는 데 오류가 발생했습니다.", error);
             return null;
         }
     };
@@ -171,7 +180,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 );
                 setExchangeRate(response.data.rates.KRW);
             } catch (error) {
-                console.error("환율을 가져오는 데 오류가 발생했습니다.", error);
+                console.error("환율을 불러오는 데 오류가 발생했습니다.", error);
             } finally {
                 setLoading("0");
             }
@@ -317,7 +326,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 handleChange(index, 'price', updatedPrice); // 가격 업데이트
                 handleChange(index, 'currentPrice', updatedCurrentPrice);
             } catch (error) {
-                console.error("주식 가격을 가져오는 데 오류가 발생했습니다.", error);
+                console.error("주식 가격을 불러오는 데 오류가 발생했습니다.", error);
             }
         };
 
@@ -380,7 +389,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
 
 
         } catch (error) {
-            console.error("비중 추천을 가져오는 데 오류가 발생했습니다.", error);
+            console.error("비중 추천을 불러오는 데 오류가 발생했습니다.", error);
         }
     };
 
@@ -437,26 +446,36 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
             }
         }
         if (totalError === false) {
-            alert('저장이 완료 됐어용!')
+            alert('저장이 완료 됐습니다!')
         } else {
-            alert('저장 중 오류가 발생했어용!')
+            alert('저장 중 오류가 발생했습니다!')
         }
     };
+    
+    const toggleModal = () => {
+        setModalOpen(!isModalOpen); // 모달 열기/닫기 토글
+    };
+    
+    useEffect(() => {
+        localStorage.setItem('isModalOpen', isModalOpen);
+    }, [isModalOpen]);
+    
 
     return (
-        <div className="stock-container">
+        <div className="stock-container" style={{ backgroundColor: currentTheme.colors.Bg}}>
             <LoadingPage 
             loading={loading} 
             progress={progress} 
             stockNumber ={stockNumber} 
             allStocksNumber={allStocksNumber}
             />
+            <StockTableModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme} />
             <div className="name-container">
-                <h1>StockTable</h1>
-                <p>{currentTime}</p>
+                <h1 style={{ color: currentTheme.colors.MainFont}}>StockTable</h1>
+                <p style={{ color: currentTheme.colors.MainFont}}>{currentTime}</p>
             </div>
             <div className="switch-container">
-                <div className="table-switch-wrapper">
+                <div className="table-switch-wrapper" style={{ backgroundColor: currentTheme.colors.SwitchWrapper}}>
                     <div className="table-switch">
                         <div className="switch-left">
                             <div
@@ -476,6 +495,11 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                             <div className="image-reload" onClick={handleReloadClick}>
                                 <span>이미지 재업로드</span>
                             </div>
+                            <img
+                                className="questionmark"
+                                src={questionmarkImage}
+                                onClick={toggleModal}
+                                alt="질문 마크"/>
                         </div>
                         <div className="switch-right">
                             <div className="DesiredWeight-recommend" onClick={fetchDesiredWeights}>
@@ -489,7 +513,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                 </div>
             </div>
             <div className="table-container">   
-                <div className="table-wrapper">
+                <div className="table-wrapper" style={{ backgroundColor: currentTheme.colors.TableBg}}>
                     {
                         activeButton === '국장'
                             ? <TableDO
@@ -504,6 +528,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                                     searchButton={searchButton}
                                     deleteButton={deleteButton}
                                     fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
                                     />
                             : <TableFO
                                     data={currentData}
@@ -517,12 +542,14 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress}) =>
                                     searchButton={searchButton}
                                     deleteButton={deleteButton}
                                     fetchStockPrice={fetchStockPrice}
+                                    currentTheme={currentTheme}
                                     />
                     }
                     <table className="custom-table">
-                        <thead>
+                        <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                             <tr>
                                 <th className="th"></th>
+                                <th className="option-button"></th>
                                 <th className="th">총합</th>
                                 <th className="th"></th>
                                 <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>

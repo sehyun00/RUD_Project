@@ -1,10 +1,10 @@
-// imageUploadModal.jsx
+// stockTableModal.jsx
 import React from "react";
 import PropTypes from 'prop-types';
 import Modal from 'react-modal'; 
 
 // scss
-import '../../assets/css/componentItems/imageUploadModal.scss';
+import '../../assets/css/componentItems/stockTableModal.scss';
 
 // images
 import gofullpagetestImage from '../../assets/images/gofullpagetest.png';
@@ -13,7 +13,7 @@ import stocks_blurImage from '../../assets/images/stocks_blur.png';
 
 Modal.setAppElement('#root');
 
-const ImageUploadModal = ({isModalOpen, toggleModal, currentTheme }) => {
+const StockTableModal = ({isModalOpen, toggleModal, currentTheme}) => {
     return (
 
         <Modal
@@ -67,7 +67,7 @@ const ImageUploadModal = ({isModalOpen, toggleModal, currentTheme }) => {
     )
 }
 
-ImageUploadModal.propTypes = {
+StockTableModal.propTypes = {
     classes: PropTypes.object
 };
-export default ImageUploadModal;
+export default StockTableModal;
