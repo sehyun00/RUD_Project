@@ -20,7 +20,7 @@ a { /*modal Gofullpage 하이퍼링크 */
   text-decoration: none; /* 밑줄 제거 */
 }
 
-.mode-change-button {
+/* .mode-change-button {
   position: fixed;
   bottom: 50px;
   right: 50px;
@@ -31,4 +31,4 @@ a { /*modal Gofullpage 하이퍼링크 */
   &:active {
     transform: scale(0.95);
   }
-}
+} */

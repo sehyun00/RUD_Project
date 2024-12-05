@@ -9,8 +9,10 @@ import '../../assets/css/componentItems/header.scss';
 
 //image
 import superAnt from '../../assets/images/ant_head.png';
+import modeChangeButtonW from "../../assets/images/mode_changeW.png";
+import modeChangeButtonB from "../../assets/images/mode_changeB.png";
 
-const Header = ({logoutHandler, loginState, isDarkMode}) => {
+const Header = ({logoutHandler, loginState, isDarkMode, toggleTheme}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
@@ -38,6 +40,13 @@ const Header = ({logoutHandler, loginState, isDarkMode}) => {
                 {
                     !isLoginPage && (
                         <div className="header-right">
+                            <div className="mode-change-button">
+                            {isDarkMode ? (
+                                <img src={modeChangeButtonB} className="mode-change-button" onClick={toggleTheme}/>
+                            ):(
+                                <img src={modeChangeButtonW} className="mode-change-button" onClick={toggleTheme}/>
+                            )}
+                            </div>
                             <Link to={location.pathname === '/home' ? '/log' : '/home'}>
                                 <div className='button'>
                                     <h5>{location.pathname === '/home' ? '내 기록' : '홈'}</h5>

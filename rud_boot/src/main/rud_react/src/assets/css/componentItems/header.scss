@@ -46,9 +46,19 @@
         .header-right {
             display: flex;
             justify-content: flex-end;
+            align-items: center;
             width: auto;
             font-size: 18px;
             gap: 10px; 
+            
+            .mode-change-button {
+                width: 25px;
+                height: 25px;
+                cursor: pointer;
+                &:active {
+                transform: scale(0.95);
+                }
+            }
 
             .button {
                 display: flex;
