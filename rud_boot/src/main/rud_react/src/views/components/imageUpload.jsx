@@ -18,7 +18,7 @@ import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme, BackTable}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
@@ -91,7 +91,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
 
         try {
             const cashResponse = await axios.post(
-                'https://b746-61-34-253-238.ngrok-free.app/wallet',
+                'https://a5f9-61-34-253-238.ngrok-free.app/wallet',
                 cashFormData,
                 {
                     headers: {
@@ -105,7 +105,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
             );
 
             const stockResponse = await axios.post(
-                'https://b746-61-34-253-238.ngrok-free.app/upload',
+                'https://a5f9-61-34-253-238.ngrok-free.app/upload',
                 stockFormData,
                 {
                     headers: {
@@ -147,7 +147,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                 <div className="switch-container">
                     <div className="switch-1-wrapper" style={{backgroundColor: currentTheme.colors.SwitchWrapper}}>
                         <div className="switch-1">
-                            <div>
+                            <div onClick={BackTable}>
                                 <span>테이블로 돌아가기</span>
                             </div>
                             <img

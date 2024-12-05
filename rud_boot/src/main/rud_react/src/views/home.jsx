@@ -1,4 +1,5 @@
 // app/home
+
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
@@ -39,10 +40,14 @@ const Home = ({ userID, loginState, currentTheme }) => {
     };
 
     const handleReloadImageUpload = () => {
-        setStockData(null);
+        // setStockData(null);
         setImageUploadVisible(true);
         setModalOpen(true); // 이미지 업로드로 돌아갈 때 모달 열기
     };
+
+    const handleBackToTable = () => {
+        setImageUploadVisible(false);
+    }
 
     const closeModal = () => {
         setModalOpen(false); // 모달 닫기
@@ -87,7 +92,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
     if (loginState === true) {
         return (
             <div className="home-container">
-                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme}/>
+                <ImageUploadModal 
+                isModalOpen={isModalOpen} 
+                toggleModal={toggleModal} 
+                currentTheme={currentTheme}/>
                 {
                 isImageUploadVisible ? (
                     <ImageUpload 
@@ -99,6 +107,7 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
                     currentTheme={currentTheme}
+                    BackTable={handleBackToTable}
                     />
                 ) : (
                     <StockTable 
