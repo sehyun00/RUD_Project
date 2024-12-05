@@ -90,7 +90,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
 
         try {
             const cashResponse = await axios.post(
-                'https://b746-61-34-253-238.ngrok-free.app/wallet',
+                'https://a5f9-61-34-253-238.ngrok-free.app/wallet',
                 cashFormData,
                 {
                     headers: {
@@ -104,7 +104,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
             );
 
             const stockResponse = await axios.post(
-                'https://b746-61-34-253-238.ngrok-free.app/upload',
+                'https://a5f9-61-34-253-238.ngrok-free.app/upload',
                 stockFormData,
                 {
                     headers: {

@@ -44,6 +44,17 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
         console.log(stockData);
     },[currentData]);
 
+    useEffect(() => {
+        const savedStockData = localStorage.getItem('stockData');
+        if (savedStockData) {
+            setStockData(JSON.parse(savedStockData));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('stockData', JSON.stringify(stockData));
+    }, [currentData]);
+
     const updateTime = () => {  
         const now = new Date();
         setCurrentTime(now.toLocaleString()); // 현재 시간을 문자열로 설정
@@ -52,6 +63,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     useEffect(() => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
+    
     const fetchStockPrices = async () => {
         try {
             const domesticStocks = SD.stock?.국장 || [];
@@ -482,14 +494,16 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                 className={`table-choice ${activeButton === '국장'
                                     ? 'active'
                                     : ''}`}
-                                onClick={() => handleButtonClick('국장')}>
+                                onClick={() => handleButtonClick('국장')}
+                                style={{color: activeButton === '해외장' ? currentTheme.colors.SwitchChoice : '', fontWeight: 600 }}>
                                 <span>국내</span>
                             </div>
                             <div
                                 className={`table-choice ${activeButton === '해외장'
                                     ? 'active'
                                     : ''}`}
-                                onClick={() => handleButtonClick('해외장')}>
+                                onClick={() => handleButtonClick('해외장')}
+                                style={{color: activeButton === '국장' ? currentTheme.colors.SwitchChoice : '' , fontWeight: 600}}>
                                 <span>해외</span>
                             </div>
                             <div className="image-reload" onClick={handleReloadClick}>

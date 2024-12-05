@@ -74,7 +74,7 @@ const TableDO = ({
         handleChange(index, 'name', '원화');
         handleChange(index, 'price', false);
         handleChange(index, 'quantity', false);
-        }
+        } 
     }
 
     return (
@@ -92,10 +92,11 @@ const TableDO = ({
                 <tr>
                     <th className="th">수량</th>
                     <th className="th">잔고 (₩)</th>
-                    <th className="th">비중 (%)</th>
-                    <th className="th">비중 (%)</th>
+                    <th className="percent">비중 (%)</th>
+                    <th className="percent">비중 (%)</th>
                     <th className="th">희망투자금 (₩)</th>
                     <th className="th">희망수량</th>
+                    <th style={{width: '5px'}} />
                 </tr>
             </thead>
             <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
@@ -235,7 +236,7 @@ const TableDO = ({
                                             : (<span>{formatCurrency(item.currentPrice)}</span>)
                                     }
                                 </td>
-                                <td>{formatCurrency(currentBalance.toFixed(2))}
+                                <td className="percent">{formatCurrency(currentBalance.toFixed(2))}
                                     %</td>
                                 <td>
                                     <input
@@ -247,7 +248,7 @@ const TableDO = ({
                                         style={{ color: currentTheme.colors.TableText}}
                                         />
                                 </td>
-                                <td>{rebalanceWeight.toFixed(2)}%</td>
+                                <td className="percent">{rebalanceWeight.toFixed(2)}%</td>
                                 {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td>
                                 {/* 희망투자금 표시 */}

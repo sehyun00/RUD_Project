@@ -109,6 +109,7 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     loading={loading}
                     progress={progress}
                     currentTheme={currentTheme}
+                    searchstock={isImageUploadVisible}
                     />
                 )
                 }
