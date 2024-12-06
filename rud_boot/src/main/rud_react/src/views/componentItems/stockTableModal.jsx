@@ -24,23 +24,26 @@ const StockTableModal = ({isModalOpen, toggleModal, currentTheme}) => {
             overlayClassName="modal-overlay"
             shouldCloseOnOverlayClick={false}
             tabIndex="-1">
-            <div className="info-content" style={{ backgroundColor: currentTheme.colors.TbodyBg, color: currentTheme.colors.MainFont }}>
-                <div className="info-body">
+            <div className="info-content" style={{ backgroundColor: currentTheme.colors.TbodyBg, color: currentTheme.colors.MainFont, fontWeight: '550' }}>
+            <div className="info-body">
                     <h2>도움말</h2>
                     <p>
-                        1. chrome 웹 스토어에서{' '}
+                        1. 웹 스토어에서 Gofullpage 확장 프로그램 설치{' '}
                         <a
                             href="https://chromewebstore.google.com/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl?hl=ko&utm_source=ext_sidebar"
                             target="_blank"
-                            rel="noopener noreferrer">
-                            Gofullpage
+                            rel="noopener noreferrer"
+                            style={{ color: '#3254CE', fontWeight: '600', cursor:'pointer' }}
+                            >
+                            Chrome &nbsp;
                         </a>
-                        확장 프로그램 설치{' '}
                         <a
                             href="https://microsoftedge.microsoft.com/addons/detail/gofullpage-full-page-sc/hfaciehifhdcgoolaejkoncjciicbemc?refid=bingshortanswersdownload"
                             target="_blank"
-                            rel="noopener noreferrer">
-                            (Edge 브라우저)
+                            rel="noopener noreferrer"
+                            style={{ color: '#3254CE', fontWeight: '600', cursor:'pointer' }}
+                            >
+                            Edge
                         </a>
                     </p>
                     <br/>

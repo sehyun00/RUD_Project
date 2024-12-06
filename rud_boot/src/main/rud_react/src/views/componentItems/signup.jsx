@@ -112,7 +112,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -123,7 +123,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.phoneNumber}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -134,7 +134,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.userId}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -145,7 +145,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -156,7 +156,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
                         <div className="input-group">
                             <input
@@ -167,7 +167,7 @@ const Signup = ({modalOpen, toggleModal, currentTheme, isDarkMode}) => {
                                 value={formData.checkPassword}
                                 onChange={handleChange}
                                 required="required"
-                                style={{ backgroundColor: currentTheme.colors.InputBg}}/>
+                                style={{ backgroundColor: currentTheme.colors.InputBg, color: currentTheme.colors.MainFont}}/>
                         </div>
 
                         <div className="input-group">

@@ -15,7 +15,7 @@ import StockTableModal from "../componentItems/stockTableModal";
 
 // images
 import checkicon from '../../assets/images/checkmark.png';
-import deleteicon from '../../assets/images/trashcan.png';
+import deleteicon from '../../assets/images/remove.png';
 import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
@@ -502,7 +502,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                     ? 'active'
                                     : ''}`}
                                 onClick={() => handleButtonClick('국장')}
-                                style={{color: activeButton === '해외장' ? currentTheme.colors.SwitchChoice : '', fontWeight: 600 }}>
+                                style={{color: activeButton === '해외장' ? currentTheme.colors.SwitchChoice : '' , fontWeight: 600 }}>
                                 <span>국내</span>
                             </div>
                             <div
@@ -514,7 +514,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                 <span>해외</span>
                             </div>
                             <div className="image-reload" onClick={handleReloadClick}>
-                                <span>이미지 재업로드</span>
+                                <span>이미지 업로드</span>
                             </div>
                             <img
                                 className="questionmark"

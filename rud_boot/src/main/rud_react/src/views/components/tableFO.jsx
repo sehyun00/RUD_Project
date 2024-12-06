@@ -187,7 +187,7 @@ const TableDO = ({
                                         type="text"
                                         value={item.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}
-                                        style={{ color: currentTheme.colors.TableText, fontWeight: 'bolder'}}
+                                        style={{ color: currentTheme.colors.TableText, fontWeight: '600'}}
                                         />
                                 </td>
                                 {deleteButton(item.marketType, index)}

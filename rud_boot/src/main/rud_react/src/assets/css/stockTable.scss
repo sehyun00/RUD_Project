@@ -186,13 +186,13 @@
                 }
 
                 thead {
-                    // padding-right: 5px;
+                    border-bottom: 2px solid #2B3139;
                     th {
                         text-align: center;
                         padding: 10px 8px;
                         font-size: 14px;
                         font-weight: bold;
-                        border-bottom: 2px solid #2B3139;
+                        cursor: help;
                     }
                     .th {
                         width: 140px;
