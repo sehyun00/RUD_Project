@@ -21,7 +21,7 @@ import questionmarkImage from '../../assets/images/questionmark.png';
 Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme, loginState, userCheck, userID}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
     const [currentTime, setCurrentTime] = useState('');
@@ -50,6 +50,13 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
             setStockData(JSON.parse(savedStockData));
         }
     }, []);
+
+    useEffect(() => {
+        if (loginState!==userID) {
+            setStockData({"국장": [], "해외장": []});
+            userCheck();
+        };
+    },[loginState]);
 
     useEffect(() => {
         localStorage.setItem('stockData', JSON.stringify(stockData));
@@ -165,7 +172,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
         if (SD && (SD.stock?.국장.length > 0 || SD.stock?.해외장.length > 0)) {
             fetchStockPrices();
         }
-    }, [SD]);
+    }, [SD, loginState]);
 
     const fetchStockPrice = async (stockName, marketType) => {
         try {

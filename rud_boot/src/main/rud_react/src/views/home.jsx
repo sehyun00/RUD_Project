@@ -27,6 +27,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
         const savedOpen = localStorage.getItem('isModalOpen');
         return savedOpen === 'true'; // 초기값 설정
     });
+    const [isLoginState, setLoginState] = useState(() => {
+        const savedLogin = localStorage.getItem('isLoginState');
+        return savedLogin ? savedLogin : null; // 초기값 설정
+    })
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
@@ -74,6 +78,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
     }, [isImageUploadVisible]);
 
     useEffect(() => {
+        localStorage.setItem('isLoginState', isLoginState);
+    }, [isLoginState]);
+
+    useEffect(() => {
         localStorage.setItem('stockData', JSON.stringify(stockData));
         if (stockData === null) {
             localStorage.removeItem('stockData'); // 데이터가 없으면 로컬 스토리지에서 제거
@@ -83,6 +91,17 @@ const Home = ({ userID, loginState, currentTheme }) => {
     useEffect(() => {
         localStorage.setItem('isModalOpen', isModalOpen);
     }, [isModalOpen]);
+
+    // useEffect(() => {
+    //     if (isLoginState !== loginState) {
+    //         setLoginState(null);
+    //     } else {
+    //         setLoginState(userID);
+    //     }
+    // },[loginState]);
+    const userCheck = () => {
+        setLoginState(userID);
+    }
     
     if (loginState === true) {
         return (
@@ -110,6 +129,9 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     progress={progress}
                     currentTheme={currentTheme}
                     searchstock={isImageUploadVisible}
+                    loginState={isLoginState}
+                    userCheck={userCheck}
+                    userID={userID}
                     />
                 )
                 }
