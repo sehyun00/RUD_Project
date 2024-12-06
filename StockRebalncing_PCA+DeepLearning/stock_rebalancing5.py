@@ -37,8 +37,8 @@ def load_data(file_path):
 
 # 데이터 전처리
 def preprocess_data(data):
-    features = data[['주가', '보유수량', '연간하락률', '연간성장률', '총자산']]
-    target = (data['주가'] * data['보유수량'] * data['연간성장률']) / data['총자산']
+    features = data[['주가', '보유수량', '연간하락확률', '연간성장률', '총자산']]
+    target = ((data['주가'] * data['보유수량'] * (1+data['연간성장률'])) / data['총자산']) * (1-data['연간하락확률'])
     
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features)
@@ -61,7 +61,7 @@ def create_model(input_dim):
     return model
 
 # 모델 학습
-def train_model(model, X_train, y_train, X_val, y_val, epochs=200, batch_size=32):
+def train_model(model, X_train, y_train, X_val, y_val, epochs=10, batch_size=32):
     # TensorBoard 콜백 설정
     log_dir = os.path.join("logs", "fit", "model")
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
@@ -105,7 +105,7 @@ def main(file_path):
         pca_features, target, data.index, test_size=0.2, random_state=42
     )
 
-    models = [create_model(input_dim=X_train.shape[1]) for _ in range(5)]
+    models = [create_model(input_dim=X_train.shape[1]) for _ in range(1)]
     for model in models:
         train_model(model, X_train, y_train, X_val, y_val)
 

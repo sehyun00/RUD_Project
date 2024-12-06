@@ -16,8 +16,8 @@ def generate_dummy_data(num_samples=20000):
         '주식명': np.random.choice(stock_names, num_samples),
         '주가': np.random.uniform(100, 500, num_samples),
         '보유수량': np.random.randint(1, 100, num_samples),
-        '연간하락률': np.random.uniform(0, 0.2, num_samples),
-        '연간성장률': np.random.uniform(0, 0.3, num_samples),
+        '연간하락확률': np.random.uniform(0, 0.5, num_samples),
+        '연간성장률': np.random.uniform(0, 0.5, num_samples),
         '총자산': np.random.uniform(10000, 1000000, num_samples)
     }
     
@@ -27,5 +27,26 @@ def generate_dummy_data(num_samples=20000):
     df.to_csv('data2.csv', index=False)
     print("더미 데이터가 data2.csv 파일로 저장되었습니다.")
 
+def dummy_data(num_samples=2000):
+    np.random.seed(42)
+
+    data = {
+        '주식명': np.random.choice(['원화', '달러'], num_samples),
+        '주가': np.random.uniform(1000, 100000, num_samples),
+        '보유수량': 1,
+        '연간하락확률': 0,
+        '연간성장률': 0.2,
+        '총자산': np.random.uniform(10000, 1000000, num_samples)
+    }
+
+    # DataFrame 생성
+    df = pd.DataFrame(data)
+
+    # csv 파일에 추가
+    df.to_csv('data2.csv', mode='a', header=False, index=False)
+    print(f"{num_samples}개의 더미 데이터가 data2.csv 파일에 추가되었습니다.")
+
+
 if __name__ == "__main__":
     generate_dummy_data()
+    dummy_data()
