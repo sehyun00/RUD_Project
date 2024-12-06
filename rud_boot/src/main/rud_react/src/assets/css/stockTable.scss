@@ -270,8 +270,25 @@
                                     background-color: rgba(0,0,0,0.1);
                                 }
                             }
-                            .money-button{
-                                
+                            .money-button {
+                                padding: 8px 0;
+                                margin: 0 20%;
+                                text-align: center;
+                                height: 36px;
+                                width: 60%;
+                                border-radius: 8px;
+                                background-color: #3254ce;
+                                color:#EAECEF;
+                                font-weight: bolder;
+                                cursor: pointer;
+    
+                                &:hover {
+                                    background-color: #263673;
+                                }
+
+                                &:active {
+                                    transform: scale(0.95);
+                                }   
                             }
                         }
                         .td11 {
