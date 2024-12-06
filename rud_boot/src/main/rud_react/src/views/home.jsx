@@ -43,7 +43,6 @@ const Home = ({ userID, loginState, currentTheme }) => {
     };
 
     const handleReloadImageUpload = () => {
-        setStockData(null);
         setImageUploadVisible(true);
         setModalOpen(true); // 이미지 업로드로 돌아갈 때 모달 열기
     };
@@ -56,6 +55,9 @@ const Home = ({ userID, loginState, currentTheme }) => {
         setModalOpen(!isModalOpen); // 모달 열기/닫기 토글
     };
 
+    const returnStockTable = () => {
+        setImageUploadVisible(false);
+    }
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'Enter') {
@@ -118,6 +120,7 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
                     currentTheme={currentTheme}
+                    returnStockTable={returnStockTable}
                     />
                 ) : (
                     <StockTable 

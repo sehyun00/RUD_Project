@@ -11,14 +11,13 @@ import '../../assets/css/components/imageUpload.scss';
 
 // components
 import LoadingPage from '../componentItems/loading';
-import ImageUploadModal from "../componentItems/imageUploadModal";
 
 // images
 import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme, BackTable}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme, BackTable, returnStockTable}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
@@ -147,7 +146,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                 <div className="switch-container">
                     <div className="switch-1-wrapper" style={{backgroundColor: currentTheme.colors.SwitchWrapper}}>
                         <div className="switch-1">
-                            <div onClick={BackTable}>
+                            <div onClick={returnStockTable}>
                                 <span>테이블로 돌아가기</span>
                             </div>
                             <img
@@ -240,9 +239,9 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                                 display: 'none'
                             }}
                             accept="image/*"/>
-                            {fileNames[0] && <div className="file-name" 
+                            {fileNames[1] && <div className="file-name" 
                             style={{color: currentTheme.colors.TableText}}>
-                            {fileNames[0]}</div>}
+                            {fileNames[1]}</div>}
                     </div>
                 </div>
                 <div className="confirm-button-container">
