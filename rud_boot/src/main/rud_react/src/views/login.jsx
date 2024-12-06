@@ -1,3 +1,5 @@
+// app/login
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios 추가
@@ -12,6 +14,8 @@ import '../assets/css/auth.scss';
 import superAnt from "../assets/images/super_ant.png";
 import downArrowB from '../assets/images/down_arrowB.png';
 import downArrowW from '../assets/images/down_arrowW.png';
+import upArrowB from '../assets/images/up_arrowB.png';
+import upArrowW from '../assets/images/up_arrowW.png';
 
 const Login = ({loginHandler, currentTheme, isDarkMode}) => {
 
@@ -74,14 +78,14 @@ const Login = ({loginHandler, currentTheme, isDarkMode}) => {
                 <img src={superAnt} className='superAnt'/>
                 {isDarkMode ? (
                 <img 
-                    src={downArrowB} 
+                    src={showLoginInfo ? downArrowB : upArrowB} 
                     className='down-arrow'
                     onClick={handleImageClick} 
                     style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
                 />
                 ):(
                     <img 
-                        src={downArrowW} 
+                        src={showLoginInfo ? downArrowW : upArrowW}
                         className='down-arrow'
                         onClick={handleImageClick} 
                         style={{ display: showLoginInfo ? 'none' : 'block' }} // Toggle display
