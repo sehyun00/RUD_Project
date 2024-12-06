@@ -67,11 +67,6 @@ function App() {
                 <Route path="/log" element={loginState ? <Log userID={userID}  currentTheme={currentTheme}/> : <Navigate to="/login" />} />
                 <Route path="/" element={<Navigate to={loginState ? "/home" : "/login"} />} />
             </Routes>
-            {/* {isDarkMode ? (
-                <img src={modeChangeButtonB} className="mode-change-button" onClick={toggleTheme}/>
-            ):(
-                <img src={modeChangeButtonW} className="mode-change-button" onClick={toggleTheme}/>
-            )} */}
         </>
     );
 }

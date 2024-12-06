@@ -37,8 +37,6 @@ const Header = ({logoutHandler, loginState, isDarkMode, toggleTheme}) => {
                     </Link>
                     )}
                 </div>
-                {
-                    !isLoginPage && (
                         <div className="header-right">
                             <div className="mode-change-button">
                             {isDarkMode ? (
@@ -47,17 +45,23 @@ const Header = ({logoutHandler, loginState, isDarkMode, toggleTheme}) => {
                                 <img src={modeChangeButtonW} className="mode-change-button" onClick={toggleTheme}/>
                             )}
                             </div>
+                            {
+                !isLoginPage && (
                             <Link to={location.pathname === '/home' ? '/log' : '/home'}>
                                 <div className='button'>
                                     <h5>{location.pathname === '/home' ? '내 기록' : '홈'}</h5>
                                 </div>
                             </Link>
+                                )
+                            }
+                            {
+                !isLoginPage && (
                             <div className="button" onClick={logoutbutton}>
                                 <h5>로그아웃</h5>
                             </div>
+                                )
+                            }
                         </div>
-                    )
-                }
             </Container>
         </div>
     );
