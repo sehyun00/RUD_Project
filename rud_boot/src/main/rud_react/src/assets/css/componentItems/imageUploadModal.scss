@@ -11,13 +11,10 @@
 
     .info-content {
         display: flex;
-        // flex-direction: column;
         width: 1200px;
         height: 80%;
         padding: 20px;
-        background: #1f2540;
         border-radius: 10px;
-        color: #EAECEF;
         line-height: 2;
         position: relative;
         margin: auto;
@@ -72,6 +69,10 @@
         
             &:hover {
                 background-color: #213a9680;
+            }
+
+            &:active {
+                transform: scale(0.97);
             }
         }
     }
