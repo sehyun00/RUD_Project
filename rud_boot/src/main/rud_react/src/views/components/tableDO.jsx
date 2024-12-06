@@ -137,6 +137,7 @@ const TableDO = ({
                                             <span>현금</span>
                                         </div>
                                     </td>
+                                    <td style={{width:'1000px'}}/>
 
                                 </tr>
                             );
