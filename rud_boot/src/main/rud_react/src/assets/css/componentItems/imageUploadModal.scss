@@ -70,6 +70,10 @@
             &:hover {
                 background-color: #213a9680;
             }
+
+            &:active {
+                transform: scale(0.97);
+            }
         }
     }
 }
