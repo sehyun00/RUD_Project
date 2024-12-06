@@ -22,7 +22,7 @@ import questionmarkImage from '../../assets/images/questionmark.png';
 Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme, loginState}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
     const [currentTime, setCurrentTime] = useState('');
@@ -42,8 +42,23 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     });
 
     useEffect(() => {
-        console.log(currentData);
-    },[stockData]);
+        console.log(SD);
+    },[currentData]);
+
+    useEffect(() => {
+        const savedStockData = localStorage.getItem('tableStockData');
+        if (SD !== null) {
+            if (savedStockData) {
+                setStockData(JSON.parse(savedStockData));
+            }
+        } else {
+            setStockData({"국장": [], "해외장": []});
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('tableStockData', JSON.stringify(stockData));
+    }, [currentData]);
 
     const updateTime = () => {  
         const now = new Date();
@@ -53,6 +68,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     useEffect(() => {
         updateTime(); // 컴포넌트가 마운트될 때 현재 시간 설정
     }, [stockData]);
+    
     const fetchStockPrices = async () => {
         try {
             const domesticStocks = SD.stock?.국장 || [];
@@ -151,7 +167,9 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     };
 
     useEffect(() => {
-        fetchStockPrices();
+        if (SD && (SD.stock?.국장.length > 0 || SD.stock?.해외장.length > 0)) {
+            fetchStockPrices();
+        }
     }, [SD]);
 
     const fetchStockPrice = async (stockName, marketType) => {
@@ -311,7 +329,6 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     // 주식 검색 버튼
     const searchButton = (item, index) => {
         const fetchPriceAndUpdate = async () => {
-            console.log(item, index);
             const marketType = item.marketType;
             const stockName = item.name;
             try {
@@ -482,14 +499,16 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                 className={`table-choice ${activeButton === '국장'
                                     ? 'active'
                                     : ''}`}
-                                onClick={() => handleButtonClick('국장')}>
+                                onClick={() => handleButtonClick('국장')}
+                                style={{color: activeButton === '해외장' ? currentTheme.colors.SwitchChoice : '', fontWeight: 600 }}>
                                 <span>국내</span>
                             </div>
                             <div
                                 className={`table-choice ${activeButton === '해외장'
                                     ? 'active'
                                     : ''}`}
-                                onClick={() => handleButtonClick('해외장')}>
+                                onClick={() => handleButtonClick('해외장')}
+                                style={{color: activeButton === '국장' ? currentTheme.colors.SwitchChoice : '' , fontWeight: 600}}>
                                 <span>해외</span>
                             </div>
                             <div className="image-reload" onClick={handleReloadClick}>
@@ -507,7 +526,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                             </div>
                             <div className="save-table" onClick={saveDataToDB}>
                                 <span>저장하기</span>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -549,16 +568,17 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                         <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                             <tr>
                                 <th className="th"></th>
+                                <th className="option-button"></th>
                                 <th className="th">총합</th>
                                 <th className="th"></th>
                                 <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>
-                                <th className="th"></th>
+                                <th style={{width: '100px'}}/>
                                 <th className="th">{Math.round(totalDesiredWeight)}</th>
+                                <th style={{width: '100px'}}/>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
-                                <th className="th">{/*  */}</th>
-                                <th className="option-button"></th>
+                                <th style={{width: '5px'}}/>
                             </tr>
                         </thead>
                     </table>

@@ -28,9 +28,16 @@ const Home = ({ userID, loginState, currentTheme }) => {
         const savedOpen = localStorage.getItem('isModalOpen');
         return savedOpen === 'true'; // 초기값 설정
     });
+
+    const [isUserConfirm, setUserConfirm] = useState(() => {
+        const savedUser = localStorage.getItem('isUserConfirm');
+        return savedUser === null; 
+    });
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
+
+
     const navigate = useNavigate();
     
     const handleSave = (data) => {
@@ -88,6 +95,14 @@ const Home = ({ userID, loginState, currentTheme }) => {
     useEffect(() => {
         localStorage.setItem('isModalOpen', isModalOpen);
     }, [isModalOpen]);
+
+    useEffect(() => {
+        if(isUserConfirm !== userID) {
+            setStockData(null);
+            localStorage.removeItem('stockData'); 
+            localStorage.setItem('isUserConfirm', isUserConfirm);
+        }
+    })
     
     if (loginState === true) {
         return (
@@ -118,6 +133,8 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     loading={loading}
                     progress={progress}
                     currentTheme={currentTheme}
+                    searchstock={isImageUploadVisible}
+                    loginState={loginState}
                     />
                 )
                 }
