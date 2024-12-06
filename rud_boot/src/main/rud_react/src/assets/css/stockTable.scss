@@ -1,13 +1,12 @@
 .stock-container {
     width: 75%;
-    min-width: 1432px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     height: auto;
-    overflow: auto;
+    overflow-y: auto;
     padding: 20px;
     box-sizing: content-box;
 
@@ -270,27 +269,6 @@
                                     outline: none;
                                     background-color: rgba(0,0,0,0.1);
                                 }
-                            }
-
-                            .money-button {
-                                padding: 8px 0;
-                                margin: 0 20%;
-                                text-align: center;
-                                height: 36px;
-                                width: 60%;
-                                border-radius: 8px;
-                                background-color: #3254ce;
-                                color:#EAECEF;
-                                font-weight: bolder;
-                                cursor: pointer;
-    
-                                &:hover {
-                                    background-color: #263673;
-                                }
-
-                                &:active {
-                                    transform: scale(0.95);
-                                }   
                             }
                         }
                         .td11 {

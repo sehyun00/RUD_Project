@@ -12,7 +12,11 @@ import Login from './views/login';
 // component-items
 import Header from "./views/componentItems/header";
 import Log from "./views/components/log";
-import { lightTheme, darkTheme } from "./Theme.js"
+import { lightTheme, darkTheme } from "./Theme.js";
+
+//image
+import modeChangeButtonW from "./assets/images/mode_changeW.png";
+import modeChangeButtonB from "./assets/images/mode_changeB.png";
 
 function App() {
     // localStorage에서 초기값을 가져옵니노
@@ -60,18 +64,18 @@ function App() {
     // view
     return (
         <>
-            <Header logoutHandler={logoutHandler} loginState={loginState} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} toggleTheme={toggleTheme}/>
+            <Header logoutHandler={logoutHandler} loginState={loginState} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode}/>
             <Routes>
                 <Route path='/login' element={loginState ? <Navigate to="/home" /> : <Login loginHandler={loginHandler} currentTheme={currentTheme} isDarkMode={isDarkMode}/>} />
                 <Route path='/home' element={loginState ? <Home userID={userID} loginState={loginState}  currentTheme={currentTheme}/> : <Navigate to="/login" />} />
                 <Route path="/log" element={loginState ? <Log userID={userID}  currentTheme={currentTheme}/> : <Navigate to="/login" />} />
                 <Route path="/" element={<Navigate to={loginState ? "/home" : "/login"} />} />
             </Routes>
-            {/* {isDarkMode ? (
+            {isDarkMode ? (
                 <img src={modeChangeButtonB} className="mode-change-button" onClick={toggleTheme}/>
             ):(
                 <img src={modeChangeButtonW} className="mode-change-button" onClick={toggleTheme}/>
-            )} */}
+            )}
         </>
     );
 }

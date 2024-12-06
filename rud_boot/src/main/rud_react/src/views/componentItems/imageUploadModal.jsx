@@ -1,5 +1,4 @@
-// app/home/login/imageUploadModal
-
+// imageUploadModal.jsx
 import React from "react";
 import PropTypes from 'prop-types';
 import Modal from 'react-modal'; 

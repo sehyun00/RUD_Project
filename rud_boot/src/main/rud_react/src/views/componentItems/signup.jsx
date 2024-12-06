@@ -1,5 +1,3 @@
-// app/home/login/signup
-
 import React, {useState} from 'react';
 import '../../assets/css/componentItems/signup.scss';
 import {useNavigate} from 'react-router-dom';

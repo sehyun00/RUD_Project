@@ -1,5 +1,3 @@
-//app/Theme
-
 export const lightTheme = {
     colors: {
     Main: "1F2540",

@@ -1,5 +1,3 @@
-//app/home/login/loginInfomation
-
 import React from "react"
 
 //scss

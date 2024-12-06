@@ -1,5 +1,3 @@
-//app/home/stockTable/tableFo
-
 import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
 import {Alert, Table} from "reactstrap";
@@ -71,16 +69,6 @@ const TableDO = ({
         }
     }
 
-    const moneyButton = (index) => {
-        const isConfirmed = window.confirm('현금으로 바꾸시면 변경이 불가능합니다.');
-
-        if (isConfirmed) {
-        handleChange(index, 'name', '원화');
-        handleChange(index, 'price', false);
-        handleChange(index, 'quantity', false);
-        } 
-    }
-
     return (
         <Table className="custom-table">
             <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
@@ -96,11 +84,10 @@ const TableDO = ({
                 <tr>
                     <th className="th">수량</th>
                     <th className="th">잔고 (₩)</th>
-                    <th className="percent">비중 (%)</th>
-                    <th className="percent">비중 (%)</th>
+                    <th className="th">비중 (%)</th>
+                    <th className="th">비중 (%)</th>
                     <th className="th">희망투자금 (₩)</th>
                     <th className="th">희망수량</th>
-                    <th style={{width: '5px'}} />
                 </tr>
             </thead>
             <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
@@ -136,12 +123,26 @@ const TableDO = ({
                                             ? (searchButton(item, index))
                                             : (<td className="option-button"/>)
                                     }
+
                                     <td>
-                                        <div className="money-button" onClick={() => moneyButton(index)}>
-                                            <span>현금</span>
-                                        </div>
+                                        {
+                                            (item.name === "달러")
+                                                ? (<span>X</span>)
+                                                : (
+                                                    <input
+                                                        className="number"
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) => {
+                                                            const newQuantity = e.target.value;
+                                                            handleChange(index, 'quantity', newQuantity);
+                                                            handleChange(index, 'currentPrice', newQuantity * item.price);
+                                                        }}
+                                                        style={{ color: currentTheme.colors.TableText}}
+                                                        />
+                                                )
+                                        }
                                     </td>
-                                    <td style={{width:'1000px'}}/>
 
                                 </tr>
                             );
@@ -195,7 +196,11 @@ const TableDO = ({
                                         style={{ color: currentTheme.colors.TableText, fontWeight: 'bolder'}}
                                         />
                                 </td>
-                                {deleteButton(item.marketType, index)}
+                                {
+                                    item.name !== "달러"
+                                        ? (deleteButton(item.marketType, index))
+                                        : (<td className="option-button"/>)
+                                }
                                 {
                                     item.name === "달러"
                                         ? ( // 주가
@@ -241,7 +246,7 @@ const TableDO = ({
                                             : (<span>{formatCurrency(item.currentPrice)}</span>)
                                     }
                                 </td>
-                                <td className="percent">{formatCurrency(currentBalance.toFixed(2))}
+                                <td>{formatCurrency(currentBalance.toFixed(2))}
                                     %</td>
                                 <td>
                                     <input
@@ -253,7 +258,7 @@ const TableDO = ({
                                         style={{ color: currentTheme.colors.TableText}}
                                         />
                                 </td>
-                                <td className="percent">{rebalanceWeight.toFixed(2)}%</td>
+                                <td>{rebalanceWeight.toFixed(2)}%</td>
                                 {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td>
                                 {/* 희망투자금 표시 */}

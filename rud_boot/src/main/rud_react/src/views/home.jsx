@@ -1,5 +1,4 @@
 // app/home
-
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
@@ -28,16 +27,9 @@ const Home = ({ userID, loginState, currentTheme }) => {
         const savedOpen = localStorage.getItem('isModalOpen');
         return savedOpen === 'true'; // 초기값 설정
     });
-
-    const [isUserConfirm, setUserConfirm] = useState(() => {
-        const savedUser = localStorage.getItem('isUserConfirm');
-        return savedUser === null; 
-    });
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
-
-
     const navigate = useNavigate();
     
     const handleSave = (data) => {
@@ -47,14 +39,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
     };
 
     const handleReloadImageUpload = () => {
-        // setStockData(null);
+        setStockData(null);
         setImageUploadVisible(true);
         setModalOpen(true); // 이미지 업로드로 돌아갈 때 모달 열기
     };
-
-    const handleBackToTable = () => {
-        setImageUploadVisible(false);
-    }
 
     const closeModal = () => {
         setModalOpen(false); // 모달 닫기
@@ -95,22 +83,11 @@ const Home = ({ userID, loginState, currentTheme }) => {
     useEffect(() => {
         localStorage.setItem('isModalOpen', isModalOpen);
     }, [isModalOpen]);
-
-    useEffect(() => {
-        if(isUserConfirm !== userID) {
-            setStockData(null);
-            localStorage.removeItem('stockData'); 
-            localStorage.setItem('isUserConfirm', isUserConfirm);
-        }
-    })
     
     if (loginState === true) {
         return (
             <div className="home-container">
-                <ImageUploadModal 
-                isModalOpen={isModalOpen} 
-                toggleModal={toggleModal} 
-                currentTheme={currentTheme}/>
+                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme}/>
                 {
                 isImageUploadVisible ? (
                     <ImageUpload 
@@ -122,7 +99,6 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
                     currentTheme={currentTheme}
-                    BackTable={handleBackToTable}
                     />
                 ) : (
                     <StockTable 
@@ -134,7 +110,6 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     progress={progress}
                     currentTheme={currentTheme}
                     searchstock={isImageUploadVisible}
-                    loginState={loginState}
                     />
                 )
                 }

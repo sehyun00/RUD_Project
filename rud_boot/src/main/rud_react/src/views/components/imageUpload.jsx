@@ -1,5 +1,4 @@
-// app/home/imageUpload
-
+// imageUpload.jsx
 import React, {useState, useRef, useEffect} from "react";
 import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
@@ -18,7 +17,7 @@ import questionmarkImage from '../../assets/images/questionmark.png';
 
 Modal.setAppElement('#root');
 
-const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme, BackTable}) => {
+const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModalOpen, toggleModal, currentTheme}) => {
     const [files, setFiles] = useState([null, null]);
     const [fileNames, setFileNames] = useState(["", ""]);
     const [draggingIndex, setDraggingIndex] = useState(null);
@@ -147,7 +146,7 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
                 <div className="switch-container">
                     <div className="switch-1-wrapper" style={{backgroundColor: currentTheme.colors.SwitchWrapper}}>
                         <div className="switch-1">
-                            <div onClick={BackTable}>
+                            <div>
                                 <span>테이블로 돌아가기</span>
                             </div>
                             <img

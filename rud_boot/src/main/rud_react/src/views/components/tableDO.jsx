@@ -1,5 +1,3 @@
-//app/home/stockTable/tableDo
-
 import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
 import {Alert, Table} from "reactstrap";
@@ -139,7 +137,6 @@ const TableDO = ({
                                             <span>현금</span>
                                         </div>
                                     </td>
-                                    <td style={{width:'1000px'}}/>
 
                                 </tr>
                             );
