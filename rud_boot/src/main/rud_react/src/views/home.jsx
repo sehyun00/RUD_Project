@@ -1,5 +1,4 @@
 // app/home
-
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import '../assets/css/home.scss';
@@ -28,16 +27,13 @@ const Home = ({ userID, loginState, currentTheme }) => {
         const savedOpen = localStorage.getItem('isModalOpen');
         return savedOpen === 'true'; // 초기값 설정
     });
-
-    const [isUserConfirm, setUserConfirm] = useState(() => {
-        const savedUser = localStorage.getItem('isUserConfirm');
-        return savedUser === null; 
-    });
+    const [isLoginState, setLoginState] = useState(() => {
+        const savedLogin = localStorage.getItem('isLoginState');
+        return savedLogin ? savedLogin : null; // 초기값 설정
+    })
     
     const [loading, setLoading] = useState("0");
     const [progress, setProgress] = useState(0);
-
-
     const navigate = useNavigate();
     
     const handleSave = (data) => {
@@ -47,14 +43,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
     };
 
     const handleReloadImageUpload = () => {
-        // setStockData(null);
+        setStockData(null);
         setImageUploadVisible(true);
         setModalOpen(true); // 이미지 업로드로 돌아갈 때 모달 열기
     };
-
-    const handleBackToTable = () => {
-        setImageUploadVisible(false);
-    }
 
     const closeModal = () => {
         setModalOpen(false); // 모달 닫기
@@ -86,6 +78,10 @@ const Home = ({ userID, loginState, currentTheme }) => {
     }, [isImageUploadVisible]);
 
     useEffect(() => {
+        localStorage.setItem('isLoginState', isLoginState);
+    }, [isLoginState]);
+
+    useEffect(() => {
         localStorage.setItem('stockData', JSON.stringify(stockData));
         if (stockData === null) {
             localStorage.removeItem('stockData'); // 데이터가 없으면 로컬 스토리지에서 제거
@@ -96,21 +92,21 @@ const Home = ({ userID, loginState, currentTheme }) => {
         localStorage.setItem('isModalOpen', isModalOpen);
     }, [isModalOpen]);
 
-    useEffect(() => {
-        if(isUserConfirm !== userID) {
-            setStockData(null);
-            localStorage.removeItem('stockData'); 
-            localStorage.setItem('isUserConfirm', isUserConfirm);
-        }
-    })
+    // useEffect(() => {
+    //     if (isLoginState !== loginState) {
+    //         setLoginState(null);
+    //     } else {
+    //         setLoginState(userID);
+    //     }
+    // },[loginState]);
+    const userCheck = () => {
+        setLoginState(userID);
+    }
     
     if (loginState === true) {
         return (
             <div className="home-container">
-                <ImageUploadModal 
-                isModalOpen={isModalOpen} 
-                toggleModal={toggleModal} 
-                currentTheme={currentTheme}/>
+                <ImageUploadModal isModalOpen={isModalOpen} toggleModal={toggleModal} currentTheme={currentTheme}/>
                 {
                 isImageUploadVisible ? (
                     <ImageUpload 
@@ -122,7 +118,6 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     isModalOpen={isModalOpen}
                     toggleModal={toggleModal}
                     currentTheme={currentTheme}
-                    BackTable={handleBackToTable}
                     />
                 ) : (
                     <StockTable 
@@ -134,7 +129,9 @@ const Home = ({ userID, loginState, currentTheme }) => {
                     progress={progress}
                     currentTheme={currentTheme}
                     searchstock={isImageUploadVisible}
-                    loginState={loginState}
+                    loginState={isLoginState}
+                    userCheck={userCheck}
+                    userID={userID}
                     />
                 )
                 }

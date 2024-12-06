@@ -1,5 +1,4 @@
-// app/home/stockTable
-
+// stockTable.jsx
 import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -22,7 +21,7 @@ import questionmarkImage from '../../assets/images/questionmark.png';
 Modal.setAppElement('#root');
 
 // StockTable 컴포넌트 정의
-const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme, loginState}) => {
+const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, currentTheme, loginState, userCheck, userID}) => {
     const [activeButton, setActiveButton] = useState("국장");
     const [exchangeRate, setExchangeRate] = useState(0);
     const [currentTime, setCurrentTime] = useState('');
@@ -42,22 +41,25 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     });
 
     useEffect(() => {
-        console.log(SD);
+        console.log(stockData);
     },[currentData]);
 
     useEffect(() => {
-        const savedStockData = localStorage.getItem('tableStockData');
-        if (SD !== null) {
-            if (savedStockData) {
-                setStockData(JSON.parse(savedStockData));
-            }
-        } else {
-            setStockData({"국장": [], "해외장": []});
+        const savedStockData = localStorage.getItem('stockData');
+        if (savedStockData) {
+            setStockData(JSON.parse(savedStockData));
         }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('tableStockData', JSON.stringify(stockData));
+        if (loginState!==userID) {
+            setStockData({"국장": [], "해외장": []});
+            userCheck();
+        };
+    },[loginState]);
+
+    useEffect(() => {
+        localStorage.setItem('stockData', JSON.stringify(stockData));
     }, [currentData]);
 
     const updateTime = () => {  
@@ -170,7 +172,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
         if (SD && (SD.stock?.국장.length > 0 || SD.stock?.해외장.length > 0)) {
             fetchStockPrices();
         }
-    }, [SD]);
+    }, [SD, loginState]);
 
     const fetchStockPrice = async (stockName, marketType) => {
         try {
@@ -572,13 +574,13 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                 <th className="th">총합</th>
                                 <th className="th"></th>
                                 <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>
-                                <th style={{width: '100px'}}/>
+                                <th className="th"></th>
                                 <th className="th">{Math.round(totalDesiredWeight)}</th>
-                                <th style={{width: '100px'}}/>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
-                                <th style={{width: '5px'}}/>
+                                <th className="th">{/*  */}</th>
+                                <th className="option-button"></th>
                             </tr>
                         </thead>
                     </table>

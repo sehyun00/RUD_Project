@@ -1,5 +1,3 @@
-//app/home/stockTable/tableFo
-
 import React, {useEffect, useState, useRef} from "react";
 import PropTypes from 'prop-types';
 import {Alert, Table} from "reactstrap";
@@ -57,8 +55,6 @@ const TableDO = ({
         const updatedPrice = response; // API 호출로 받은 가격
         const updatedCurrentPrice = updatedPrice * stock.quantity;
         
-        console.log(response, updatedPrice, stock.price);
-        
         if (response === '0' || response === null) {
             alert("주식 정보를 불러올 수 없습니다")
         } else {
@@ -75,7 +71,7 @@ const TableDO = ({
         const isConfirmed = window.confirm('현금으로 바꾸시면 변경이 불가능합니다.');
 
         if (isConfirmed) {
-        handleChange(index, 'name', '원화');
+        handleChange(index, 'name', '달러');
         handleChange(index, 'price', false);
         handleChange(index, 'quantity', false);
         } 
@@ -106,7 +102,6 @@ const TableDO = ({
             <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                 {
                     data.map((item, index) => {
-
                         if (item.price === '0' || item.price === null) {
                             return (
                                 <tr key={item.id}>
@@ -136,18 +131,18 @@ const TableDO = ({
                                             ? (searchButton(item, index))
                                             : (<td className="option-button"/>)
                                     }
+
                                     <td>
                                         <div className="money-button" onClick={() => moneyButton(index)}>
                                             <span>현금</span>
                                         </div>
                                     </td>
-                                    <td style={{width:'1000px'}}/>
-
+                                    <td style={{width: '1000px'}}/>
                                 </tr>
                             );
                         }
                         // 현재 잔고
-                        const currentprice = item.id == 1
+                        const currentprice = item.name == '달러'
                             ? item.currentPrice
                             : item.price * item.quantity;
 
@@ -200,7 +195,7 @@ const TableDO = ({
                                     item.name === "달러"
                                         ? ( // 주가
                                                 <td></td>)
-                                        : (<td className="money-expression">$ {formatCurrency(item.price)}</td>)
+                                        : (<td className="money-expression">₩ {formatCurrency(item.price)}</td>)
                                 }
 
                                 <td>
@@ -267,9 +262,11 @@ const TableDO = ({
                 }
                 <tr ref={lastRowRef}>
                     {/* 마지막 행에 ref 추가 */}
+                    <div>
                     <td className="td11" onClick={handleAddEmptyRow}>
                         <h2>종목 추가</h2>
                     </td>
+                    </div>
                 </tr>
             </tbody>
         </Table>
