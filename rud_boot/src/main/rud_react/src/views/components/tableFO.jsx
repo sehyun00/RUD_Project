@@ -31,8 +31,17 @@ const TableDO = ({
         return new Intl
             .NumberFormat('ko-KR', {
                 style: 'decimal',
-                minimumFractionDigits: 0,
+                minimumFractionDigits: 2,
                 maximumFractionDigits: 2
+            })
+            .format(amount);
+    };    
+    const formatstock = (amount) => {
+        return new Intl
+            .NumberFormat('ko-KR', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             })
             .format(amount);
     };
@@ -84,29 +93,37 @@ const TableDO = ({
                     <th rowSpan="2" className="th">종목명</th>
                     <th rowSpan="2" className="option-button"></th>
                     <th rowSpan="2" className="th">주가</th>
-                    <th colSpan="3">현재</th>
+                    <th className="th">수량</th>
+                    <th className="th">잔고 ($)</th>
+                    <th className="percent">현재 (%)</th>
+                    {/* <th colSpan="3">현재</th> */}
                     <th rowSpan="2" className="th">희망비중</th>
-                    <th colSpan="3">리밸런싱</th>
+                    <th className="percent">리밸런싱 (%)</th>
+                    <th className="th">희망투자금 ($)</th>
+                    <th className="th">희망수량</th>
+                    {/* <th colSpan="3">리밸런싱</th> */}
                     <th rowSpan="2" className="th">수량조절</th>
                 </tr>
-                <tr>
+                {/* <tr>
                     <th className="th">수량</th>
-                    <th className="th">잔고 (₩)</th>
+                    <th className="th">잔고 ($)</th>
                     <th className="percent">비중 (%)</th>
                     <th className="percent">비중 (%)</th>
-                    <th className="th">희망투자금 (₩)</th>
+                    <th className="th">희망투자금 ($)</th>
                     <th className="th">희망수량</th>
                     <th style={{width: '5px'}} />
-                </tr>
+                </tr> */}
             </thead>
             <tbody style={{ backgroundColor: currentTheme.colors.SwitchWrapper, color: currentTheme.colors.TableText }}>
                 {
                     data.map((item, index) => {
+                        const hasMoney = data.some(item => item.name === "달러");
                         if (item.price === '0' || item.price === null) {
                             return (
                                 <tr key={item.id}>
                                     <td>
                                         <input
+                                            className="name"
                                             type="text"
                                             value={item.name}
                                             onChange={(e) => handleChange(index, 'name', e.target.value)}
@@ -131,11 +148,12 @@ const TableDO = ({
                                             ? (searchButton(item, index))
                                             : (<td className="option-button"/>)
                                     }
-
                                     <td>
-                                        <div className="money-button" onClick={() => moneyButton(index)}>
-                                            <span>현금</span>
-                                        </div>
+                                        {!hasMoney && (
+                                            <div className="money-button" onClick={() => moneyButton(index)}>
+                                                <span>현금</span>
+                                            </div>
+                                        )}
                                     </td>
                                     <td style={{width: '1000px'}}/>
                                 </tr>
@@ -177,25 +195,21 @@ const TableDO = ({
                             ? 'text-plus'
                             : 'text-minus'; // 양수는 빨간색, 음수는 파란색
                         const quantityControlValue = quantityControl > 0
-                            ? `+${quantityControl.toFixed(2)}`
-                            : quantityControl.toFixed(2);
+                            ? `+${quantityControl}`
+                            : quantityControl;
 
+                        console.log(item.name, quantityControlValue);
                         return (
                             <tr key={item.id}>
-                                <td>
-                                    <input
-                                        type="text"
-                                        value={item.name}
-                                        onChange={(e) => handleChange(index, 'name', e.target.value)}
-                                        style={{ color: currentTheme.colors.TableText, fontWeight: '600'}}
-                                        />
+                                <td className="name">
+                                {item.name}
                                 </td>
                                 {deleteButton(item.marketType, index)}
                                 {
                                     item.name === "달러"
                                         ? ( // 주가
                                                 <td></td>)
-                                        : (<td className="money-expression">₩ {formatCurrency(item.price)}</td>)
+                                        : (<td className="money-expression">$ {formatCurrency(item.price)}</td>)
                                 }
 
                                 <td>
@@ -204,7 +218,6 @@ const TableDO = ({
                                             ? ("")
                                             : (
                                                 <input
-                                                    className="number"
                                                     type="number"
                                                     value={item.quantity}
                                                     onChange={(e) => {
@@ -224,19 +237,20 @@ const TableDO = ({
                                             ? (
                                                 <input
                                                     className="number"
-                                                    type="number"
-                                                    value={item.currentPrice}
+                                                    type="text"
+                                                    value={formatCurrency(item.currentPrice)} // 포맷된 값 표시
                                                     onChange={(e) => {
-                                                        const newCurrentPrice = Number(e.target.value);
-                                                        handleChange(index, 'currentPrice', newCurrentPrice);;
-                                                    }}
+                                                        const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+                                                        const numericValue = Number(value);
+                                                        handleChange(index, 'currentPrice', numericValue); // 부모 상태 업데이트
+                                                    }}                                        
                                                     style={{ color: currentTheme.colors.TableText}}
                                                     />
                                             )
                                             : (<span>{formatCurrency(item.currentPrice)}</span>)
                                     }
                                 </td>
-                                <td className="percent">{formatCurrency(currentBalance.toFixed(2))}
+                                <td className="percent">{currentBalance.toFixed(2)}
                                     %</td>
                                 <td>
                                     <input
@@ -252,9 +266,9 @@ const TableDO = ({
                                 {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td>
                                 {/* 희망투자금 표시 */}
-                                <td>{desiredQuantity.toFixed(2)}</td>
+                                <td>{formatstock(desiredQuantity)} {item.name === '달러' ? '$' : '주'} </td>
                                 {/* 희망수량 표시 */}
-                                <td className={quantityControlStyle}>{quantityControlValue}</td>
+                                <td className={quantityControlStyle} >{formatstock(quantityControlValue)}  {item.name === '달러' ? '$' : '주'}</td>
                                 {/* 조절 수량 표시 */}
                             </tr>
                         );

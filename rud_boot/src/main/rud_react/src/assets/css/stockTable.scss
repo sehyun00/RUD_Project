@@ -173,6 +173,8 @@
 
                 .option-button {
                     width: 40px;
+                    padding: 0 0;
+                    text-align: center;
 
                     .check-icon {
                         width: 50%;
@@ -211,10 +213,10 @@
 
                     &::-webkit-scrollbar {
                         display: flex;
-                        width: 5px;
+                        width: 4px;
                         height: 5px;
                         border-radius: 6px;
-                        background-color: transparent;
+                        background-color: rgba(0,0,0,0.1);
                     }
                     &::-webkit-scrollbar-thumb {
                         background: #8eaaff86;
@@ -224,7 +226,7 @@
                     .money-expression {
                         align-items: center;
                         text-align: justify;
-                        padding: 18px 35px 0;
+                        padding: 18px 20px 0;
 
                         &:after {
                             content: ' ';
@@ -235,27 +237,34 @@
 
                     tr {
                         height: 60px;
+                        border-top: 1px solid #2B3139;
+                        
+                        .name {
+                            text-align: center;
+                        }
 
                         td {
                             width: 140px;
-                            text-align: center;
-                            padding: 10px 0;
+                            text-align: end;
+                            padding: 10px 20px;
                             font-size: 14px;
-                            border-top: 1px solid #2B3139;
+
+    
+                            .number {
+                                padding-right: 12px;
+                            }
     
                             input {
-                                width: 80%;
-                                text-align: center;
+                                width: 100%;
+                                text-align: end;
                                 height: 36px;
                                 box-sizing: border-box;
                                 border: 1px solid #2B3139;
                                 border-radius: 8px;
                                 background-color: transparent;
                                 transition: border-color 5s;
-    
-                                .numer {
-                                    padding-left: 10px;
-                                }
+                                // padding-right: 10px;
+                                gap: 10px;
     
                                 &::-webkit-inner-spin-button,
                                 &::-webkit-outer-spin-button {
@@ -273,7 +282,7 @@
                             }
 
                             .money-button {
-                                padding: 8px 0;
+                                padding: 8px 0px ;
                                 margin: 0 20%;
                                 text-align: center;
                                 height: 36px;
@@ -295,7 +304,8 @@
                         }
                         .td11 {
                             width: 1432px;
-                            padding-top: 15px;
+                            padding-top: 10px;
+                            text-align: center;
                             cursor: pointer;
                         }
                         .text-plus {

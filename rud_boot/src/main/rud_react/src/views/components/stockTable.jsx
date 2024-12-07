@@ -574,13 +574,12 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
                                 <th className="th">총합</th>
                                 <th className="th"></th>
                                 <th className="th">{formatCurrency(currentTotalBalance, activeButton === '해외장')}</th>
-                                <th className="th"></th>
+                                <th className="percent"></th>
                                 <th className="th">{Math.round(totalDesiredWeight)}</th>
+                                <th className="percent">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
                                 <th className="th">{/*  */}</th>
-                                <th className="th">{/*  */}</th>
-                                <th className="option-button"></th>
                             </tr>
                         </thead>
                     </table>
