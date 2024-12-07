@@ -37,6 +37,16 @@ const TableDO = ({
             .format(amount);
     };
 
+    const formatstock = (amount) => {
+        return new Intl
+            .NumberFormat('ko-KR', {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })
+            .format(amount);
+    };
+
     const adjustWeights = (index, value) => {
         const newDesiredWeights = [...desiredWeights];
         newDesiredWeights[index] = Math.min(100, Math.max(0, value)); // 범위 제한
@@ -81,19 +91,19 @@ const TableDO = ({
         <Table className="custom-table">
             <thead style={{ backgroundColor: currentTheme.colors.TheadBg, color: currentTheme.colors.TableText }}>
                 <tr>
-                    <th rowSpan="2" className="th">종목명</th>
+                    <th className="th">종목명</th>
                     <th rowSpan="2" className="option-button"></th>
-                    <th rowSpan="2" className="th">주가</th>
+                    <th className="th">주가</th>
                     <th className="th">수량</th>
                     <th className="th">잔고 (₩)</th>
                     <th className="percent">현재 (%)</th>
                     {/* <th colSpan="3">현재</th> */}
-                    <th rowSpan="2" className="th">희망비중</th>
+                    <th className="th">희망비중</th>
                     <th className="percent">리밸런싱 (%)</th>
                     <th className="th">희망투자금 (₩)</th>
                     <th className="th">희망수량</th>
                     {/* <th colSpan="3">리밸런싱</th> */}
-                    <th rowSpan="2" className="th">수량조절</th>
+                    <th className="th">수량조절</th>
                 </tr>
                 {/* <tr>
                     <th className="th">수량</th>
@@ -186,8 +196,8 @@ const TableDO = ({
                             ? 'text-plus'
                             : 'text-minus'; // 양수는 빨간색, 음수는 파란색
                         const quantityControlValue = quantityControl > 0
-                            ? `+${formatCurrency(quantityControl)}`
-                            : formatCurrency(quantityControl);
+                            ? `+${quantityControl}`
+                            : quantityControl;
 
                         return (
                             <tr key={item.id}>
@@ -256,9 +266,9 @@ const TableDO = ({
                                 {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td>
                                 {/* 희망투자금 표시 */}
-                                <td>{formatCurrency(desiredQuantity)} {item.name === '원화' ? '₩' : '주'} </td>
+                                <td>{formatstock(desiredQuantity)} {item.name === '원화' ? '₩' : '주'} </td>
                                 {/* 희망수량 표시 */}
-                                <td className={quantityControlStyle}>{quantityControlValue}  {item.name === '원화' ? '₩' : '주'}</td>
+                                <td className={quantityControlStyle}>{formatstock(quantityControlValue)}  {item.name === '원화' ? '₩' : '주'}</td>
                                 {/* 조절 수량 표시 */}
                             </tr>
                         );

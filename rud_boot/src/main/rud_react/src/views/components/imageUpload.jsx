@@ -79,59 +79,62 @@ const ImageUpload = ({onSave, setLoading, setProgress, loading, progress, isModa
             return;
         }
 
-        setLoading("imageupload");
-        setProgress(0);
-
         const cashFormData = new FormData();
         cashFormData.append('file', cashFile); // cashFile이 올바르게 설정되어 있는지 확인
 
         const stockFormData = new FormData();
         stockFormData.append('file', stockFile); // stockFile이 올바르게 설정되어 있는지 확인
 
-        try {
-            const cashResponse = await axios.post(
-                'https://a5f9-61-34-253-238.ngrok-free.app/wallet',
-                cashFormData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: () => {
-                        const percentCompleted = 0;
-                        setProgress(percentCompleted);
-                    }
-                }
-            );
-
-            const stockResponse = await axios.post(
-                'https://a5f9-61-34-253-238.ngrok-free.app/upload',
-                stockFormData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: () => {
-                        const percentCompleted = 50;
-                        setProgress(percentCompleted); // 진행도 업데이트
-                    }
-                }
-            );
-            setProgress(100);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            console.log('Cash Upload Success:', cashResponse.data);
-            console.log('Stock Upload Success:', stockResponse.data);
-            onSave({cash: cashResponse.data, stock: stockResponse.data});
-        } catch (error) {
-            console.error('Upload Error:', error);
-            alert("파일 업로드 실패: " + (
-                error.response
-                    ? error.response.data.error
-                    : "서버 오류"
-            ));
-        } finally {
-            setLoading("0");
+        if (window.confirm("저장하시겠습니까?")) {
+            setLoading("imageupload");
             setProgress(0);
+            try {
+                const cashResponse = await axios.post(
+                    'https://a5f9-61-34-253-238.ngrok-free.app/wallet',
+                    cashFormData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        onUploadProgress: () => {
+                            const percentCompleted = 0;
+                            setProgress(percentCompleted);
+                        }
+                    }
+                );
+
+                const stockResponse = await axios.post(
+                    'https://a5f9-61-34-253-238.ngrok-free.app/upload',
+                    stockFormData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        onUploadProgress: () => {
+                            const percentCompleted = 50;
+                            setProgress(percentCompleted); // 진행도 업데이트
+                        }
+                    }
+                );
+                setProgress(100);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                console.log('Cash Upload Success:', cashResponse.data);
+                console.log('Stock Upload Success:', stockResponse.data);
+                onSave({cash: cashResponse.data, stock: stockResponse.data});
+            } catch (error) {
+                console.error('Upload Error:', error);
+                alert("파일 업로드 실패: " + (
+                    error.response
+                        ? error.response.data.error
+                        : "서버 오류"
+                ));
+            } finally {
+                setLoading("0");
+                setProgress(0);
+            }
+        } else {
+            console.log("저장을 취소했습니다.");
         }
     };
 

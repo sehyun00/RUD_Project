@@ -44,7 +44,6 @@ const Home = ({ userID, loginState, currentTheme }) => {
 
     const handleReloadImageUpload = () => {
         setImageUploadVisible(true);
-        setModalOpen(true); // 이미지 업로드로 돌아갈 때 모달 열기
     };
 
     const closeModal = () => {

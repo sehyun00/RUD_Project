@@ -35,15 +35,6 @@ const TableDO = ({
                 maximumFractionDigits: 2
             })
             .format(amount);
-    };    
-    const formatstock = (amount) => {
-        return new Intl
-            .NumberFormat('ko-KR', {
-                style: 'decimal',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            })
-            .format(amount);
     };
 
     const adjustWeights = (index, value) => {
@@ -266,9 +257,9 @@ const TableDO = ({
                                 {/* 리밸런싱 비중 표시 */}
                                 <td>{formatCurrency(desiredInvestment)}</td>
                                 {/* 희망투자금 표시 */}
-                                <td>{formatstock(desiredQuantity)} {item.name === '달러' ? '$' : '주'} </td>
+                                <td>{formatCurrency(desiredQuantity)} {item.name === '달러' ? '$' : '주'} </td>
                                 {/* 희망수량 표시 */}
-                                <td className={quantityControlStyle} >{formatstock(quantityControlValue)}  {item.name === '달러' ? '$' : '주'}</td>
+                                <td className={quantityControlStyle} >{formatCurrency(quantityControlValue)}  {item.name === '달러' ? '$' : '주'}</td>
                                 {/* 조절 수량 표시 */}
                             </tr>
                         );
