@@ -246,7 +246,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
     };
 
     const handleReloadClick = () => {
-        if (window.confirm("재업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
+        if (window.confirm("업로드 하시겠습니까? 기존에 입력한 내용은 사라집니다.")) {
             Reload();
         }
     };
@@ -424,7 +424,7 @@ const StockTable = ({Reload, SD, setLoading, setProgress, loading, progress, cur
 
         // 널, 0 값 체크
         for (const stock of allStocks) {
-            const check = (stock.currentPrice === 0 || stock.currentPrice === null) ? false : true
+            const check = (stock.price === 0 || stock.price === null || stock.price === "0") ? false : true
             if (check === false ) {
                 alert('주식의 가격이 0이거나 유효하지 않습니다. 함수를 종료합니다.');
                 return; 
